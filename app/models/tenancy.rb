@@ -1,3 +1,5 @@
+require 'active_support/core_ext/date'
+
 class Tenancy < ApplicationRecord
   belongs_to :rentable, polymorphic: true
   belongs_to :tenant
