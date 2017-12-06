@@ -5,6 +5,7 @@ class CreateProperties < ActiveRecord::Migration[5.1]
       t.belongs_to  :landlord, index: true
       t.string      :address
       t.string      :postcode
+      t.numeric     :size
       t.boolean     :active
       t.timestamps
     end

@@ -1,5 +1,6 @@
 class Tenant < ApplicationRecord
   has_and_belongs_to_many :users
+  has_many :contacts, as: :contactable
   has_many :tenancies
   has_many :tenant_checks
 
