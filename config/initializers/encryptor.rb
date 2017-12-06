@@ -1,4 +1,4 @@
-ApplicationHelper::Encryptor.new do |config|
+ApplicationHelper::Encryptor.initialize do |config|
   # => Initialize the application symmetric encryptor module
 
   # config.salt = ''
