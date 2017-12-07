@@ -1,24 +1,14 @@
-# README
+<p align="center"><img src="https://github.com/homematehq/homemate/blob/master/logo.png" height="100px" width="100px"></p> 
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# HomeMate
 
-Things you may want to cover:
+HomeMate is a tenancy management system designed to reduce the burden of the landlord. It is built with the [Ruby on 
+Rails](http://rubyonrails.org/) framework.
 
-* Ruby version
+## License
 
-* System dependencies
+Copyright &copy; Andrew Ying 2017.
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+HomeMate is a free software: you can redistribute it and/or modify it under the terms of the [GNU General Public 
+License](LICENSE.md) as published by the Free Software Foundation. This program is distributed in the hope that it will 
+be useful, but **WITHOUT ANY WARRANTY**; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
