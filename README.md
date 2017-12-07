@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/homematehq/homemate/blob/master/logo.png" height="100px" width="100px"></p> 
+<p align="center"><img src="https://github.com/homematehq/homemate/blob/master/logo.png" height="200px" width="200px"></p> 
 
 # HomeMate
 
