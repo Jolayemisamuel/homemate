@@ -1,5 +1,16 @@
 {
   "name": "homemate",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "@rails/webpacker": "^3.0.2",
+    "bootstrap": "4.0.0-beta.2",
+    "coffeescript": "1.12.7",
+    "jquery-ujs": "^1.2.2",
+    "popper.js": "^1.12.9",
+    "slideout": "^1.0.1",
+    "turbolinks": "^5.0.3"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^2.9.6"
+  }
 }
