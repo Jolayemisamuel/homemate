@@ -1,16 +1,38 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Tenant</title>
+    <title><%= @title ? (@title + ' - ') : '' %> - HomeMate</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <%= csrf_meta_tags %>
-
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    <%= yield %>
+    <div class="d-flex container-fluid dashboard-container m-0 p-0">
+      <div class="row w-100 m-0 p-0">
+        <div class="dashboard-sidebar col-md-3 col-lg-2 m-0 bg-dark">
+          <%= render "shared/navigation" %>
+        </div>
+        <div class="dashboard-content d-flex flex-column col-md-9 col-lg-10 m-0 p-0">
+          <header class="w-100 py-2 px-4 bg-white">
+            <ul class="nav justify-content-end">
+              <li class="nav-item">
+                <a class="nav-link" href="#">Logout</a>
+              </li>
+            </ul>
+          </header>
+          <div class="w-100 py-3 px-4">
+            <%= render "shared/alert" %>
+            <%= yield %>
+          </div>
+          <footer class="w-100 py-2 px-4 mt-auto">
+            <small class="text-muted">&copy; Andrew Ying 2017.</small>
+          </footer>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
