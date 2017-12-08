@@ -1,7 +1,7 @@
 class CreateTenants < ActiveRecord::Migration[5.1]
   def change
     create_table      :tenants do |t|
-      t.name          :tenants
+      t.string        :name
       t.timestamps
     end
 
