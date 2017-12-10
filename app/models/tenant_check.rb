@@ -5,10 +5,14 @@ class TenantCheck < ApplicationRecord
   has_many :documents, as: :attachable
 
   def self.valid
-    if :expires
-      return :expires.future?
-    else
-      return true
-    end
+    where('expires >= ?', Date.current)
+  end
+
+  def self.expires_in(length = 1.month)
+    where('expires IS NOT NULL AND expires < ?', Date.current + length)
+  end
+
+  def self.is_valid
+    :expires.today? || :expires.future?
   end
 end

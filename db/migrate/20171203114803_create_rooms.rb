@@ -6,6 +6,7 @@ class CreateRooms < ActiveRecord::Migration[5.1]
       t.numeric     :size
       t.numeric     :charge_weight
       t.boolean     :active
+      t.boolean     :occupied_override, nullable: true
       t.timestamps
     end
   end

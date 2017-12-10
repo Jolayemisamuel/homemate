@@ -11,10 +11,15 @@ class Tenancy < ApplicationRecord
   validates :start_date, presence: true
 
   def self.active
-    if :end_date
-      return :start_date.past? && :end_date.future?
-    else
-      return :start_date.past?
-    end
+    today = Date.current
+    where("start_date <= ? AND (end_date >= ? OR end_date IS NULL)", today, today)
+  end
+
+  def self.future
+    where("start_date > ?", Date.current.end_of_day);
+  end
+
+  def self.is_active
+    (:start_date.past? || :start_date.today?) && :end_date&.future?
   end
 end
