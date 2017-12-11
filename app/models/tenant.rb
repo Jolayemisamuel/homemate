@@ -1,5 +1,5 @@
 class Tenant < ApplicationRecord
-  has_and_belongs_to_many :users
+  has_many :users
   has_many :contacts, as: :contactable, dependent: :destroy
 
   has_many :tenancies, dependent: :restrict_with_exception
@@ -18,11 +18,19 @@ class Tenant < ApplicationRecord
   end
 
   def self.active_tenancy
-    :tenancies.active.first
+    :tenancies.active
   end
 
-  def self.future_tenancies
+  def self.future_tenancy
     :tenancies.future
+  end
+
+  def self.current_tenancy
+    if self.active_tenancy.present?
+      return self.active_tenancy
+    else
+      return self.future_tenancy
+    end
   end
 
   def self.has_active_mandate

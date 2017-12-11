@@ -4,6 +4,6 @@ class ApplicationController < ActionController::Base
   private
 
   def current_user
-    @current_user ||= super && User.includes(:tenants, :landlords).where(id: @current_user.id)
+    @current_user ||= super && User.includes(:tenant, :landlord).where(id: @current_user.id)
   end
 end

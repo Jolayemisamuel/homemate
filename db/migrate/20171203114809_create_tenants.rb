@@ -5,11 +5,6 @@ class CreateTenants < ActiveRecord::Migration[5.1]
       t.timestamps
     end
 
-    create_join_table :users, :tenants do |t|
-      t.index         :user_id
-      t.index         :tenant_id
-    end
-
     create_join_table :tenants, :contacts do |t|
       t.index         :tenant_id
       t.index         :contact_id

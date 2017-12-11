@@ -1,0 +1,3 @@
+<% @title = 'Home' %>
+
+<%= render([current_user.tenant, current_user.landlord]) || render(partial: 'setup') %>

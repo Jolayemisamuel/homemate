@@ -12,11 +12,11 @@ class Tenancy < ApplicationRecord
 
   def self.active
     today = Date.current
-    where("start_date <= ? AND (end_date >= ? OR end_date IS NULL)", today, today)
+    where("start_date <= ? AND (end_date >= ? OR end_date IS NULL)", today, today).first
   end
 
   def self.future
-    where("start_date > ?", Date.current.end_of_day);
+    where("start_date > ?", Date.current.end_of_day).order(start_date: :asc).first
   end
 
   def self.is_active

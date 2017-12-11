@@ -1,0 +1,96 @@
+<h2>
+  Landlord view&nbsp;&nbsp;
+  <small class="text-muted">Your properties and tenants</small>
+</h2>
+
+<table class="table" id="properties">
+  <thead class="thead-light">
+  <tr>
+    <th></th>
+    <th>Properties</th>
+    <th>Tenants</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% landlord.properties.each do |property| %>
+  <tr>
+    <th scope="row">
+      <% if property.rooms.present? %>
+      <a href="#property-<%= property.id %>-rooms" data-toggle="collapse" aria-expanded="false">
+        <i title="Expand" class="fas fa-plus-circle"></i>
+      </a>
+      <% end %>
+    </th>
+    <td>
+      <%= property.name %><br />
+      <small class="text-muted"><%= property.address %> <%= property.postcode %></small>
+    </td>
+    <td>
+      <% if ~property.rooms.present? && property.tenancies.active.present? %>
+        <%= property.tenancies.active.tenant.name %>
+      <% elsif ~property.rooms.present? && property.tenancies.future.present? %>
+        <%= property.tenancies.future.tenant.name %> <small>(future)</small>
+      <% elsif ~property.rooms.present? %>
+        Unoccupied - <%= link_to('Add tenant', create_tenant_path) %>
+      <% end %>
+    </td>
+    <td>
+      <div class="btn-group btn-group-sm" role="group">
+        <%= link_to(property_path(property), class: 'btn btn-info', alt: 'View details') do %>
+          <i class="fas fa-search"></i>
+        <% end %>
+        <%= link_to(edit_property_path(property), class: 'btn btn-warning', alt: 'Edit') do %>
+          <i class="fas fa-edit"></i>
+        <% end %>
+        <%= link_to(post_property_path(property), data: {:confirm => 'Are you sure?'}, method: :delete,
+          class: 'btn btn-danger', alt: 'Delete') do %>
+          <i class="fas fa-trash"></i>
+        <% end %>
+      </div>
+    </td>
+  </tr>
+  <% if property.rooms.present? %>
+  <div class="collapse" id="property-<%= property.id %>-rooms" data-parent="#properties">
+    <% property.rooms.each do |room| %>
+      <tr>
+        <th scope="row"></th>
+        <td><%= room.name %></td>
+        <td>
+          <% if room.tenancies.active.present? %>
+            <%= room.tenancies.active.tenant.name %>
+          <% elsif room.tenancies.future.present? %>
+            <%= room.tenancies.future.tenant.name %> <small>(future)</small>
+          <% else %>
+            Unoccupied - <%= link_to('Add tenant', create_tenant_path) %>
+          <% end %>
+        </td>
+        <td>
+          <div class="btn-group btn-group-sm" role="group">
+            <%= link_to(room_path(room), class: 'btn btn-info', alt: 'View details') do %>
+              <i class="fas fa-search"></i>
+            <% end %>
+            <%= link_to(edit_room_path(room), class: 'btn btn-warning', alt: 'Edit') do %>
+              <i class="fas fa-edit"></i>
+            <% end %>
+            <%= link_to(post_room_path(room), data: {:confirm => 'Are you sure?'}, method: :delete,
+              class: 'btn btn-danger', alt: 'Delete') do %>
+              <i class="fas fa-trash"></i>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </div>
+  <% end %>
+  <% end %>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td colspan="4">
+      <%= link_to('Add property', create_property_path, class: 'btn btn-primary float-right') %>&nbsp;
+      <%= link_to('Add tenant', create_tenant_path, class: 'btn btn-primary float-right') %>
+    </td>
+  </tr>
+  </tfoot>
+</table>

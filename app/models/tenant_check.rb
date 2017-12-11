@@ -9,7 +9,8 @@ class TenantCheck < ApplicationRecord
   end
 
   def self.expires_in(length = 1.month)
-    where('expires IS NOT NULL AND expires < ?', Date.current + length)
+    today = Date.current
+    where('expires IS NOT NULL AND expires >= ? AND expires < ?', today, today + length)
   end
 
   def self.is_valid

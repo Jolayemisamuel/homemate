@@ -8,14 +8,19 @@ class Invoice < ApplicationRecord
   validates :balance, numericality: true
 
   def self.overdue
-    where('due_date < ?', Date.current)
+    where('issued = TRUE AND due_date IS NOT NULL AND due_date < ?', Date.current)
   end
 
   def self.due_soon(length = 3.days)
-    where('due_date < ?', Date.current + length)
+    today = Date.current
+    where('issued = TRUE AND due_date IS NOT NULL AND due_date >= ? AND due_date < ?', today, today + length)
+  end
+
+  def self.due_today
+    self.due_soon(1.day)
   end
 
   def self.is_overdue
-    :due_date&.past?
+    :issued && :due_date&.past?
   end
 end
