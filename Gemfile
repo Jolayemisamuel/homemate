@@ -14,10 +14,11 @@ gem 'jbuilder', '~> 2.5'
 gem 'redis', '~> 3.0'
 gem 'bcrypt', '~> 3.1.7'
 
+gem 'config'
 gem 'devise'
 gem 'paperclip', '~> 5.0.0'
+gem 'pdfkit', '~> 0.8'
 gem 'gocardless', '~> 1.13'
-gem 'administrate'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
