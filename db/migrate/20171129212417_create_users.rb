@@ -7,8 +7,6 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.string      :email
       t.string      :encrypted_password, null: false, default: ""
       t.datetime    :remember_created_at
-      t.belongs_to  :landlord, nullable: true
-      t.belongs_to  :tenant, nullable: true
       t.integer     :sign_in_count, null: false, default: 0
       t.datetime    :current_sign_in_at
       t.datetime    :last_sign_in_at

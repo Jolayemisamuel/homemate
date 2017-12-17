@@ -10,19 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171206124032) do
-
-  create_table "charge_schemes", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "charge_schemes_utilities", id: false, force: :cascade do |t|
-    t.integer "charge_scheme_id", null: false
-    t.integer "utility_id", null: false
-    t.index ["charge_scheme_id"], name: "index_charge_schemes_utilities_on_charge_scheme_id"
-    t.index ["utility_id"], name: "index_charge_schemes_utilities_on_utility_id"
-  end
+ActiveRecord::Schema.define(version: 20171217011914) do
 
   create_table "contacts", force: :cascade do |t|
     t.string "name"
@@ -48,19 +36,36 @@ ActiveRecord::Schema.define(version: 20171206124032) do
     t.index ["tenant_id"], name: "index_contacts_tenants_on_tenant_id"
   end
 
+  create_table "deposits", force: :cascade do |t|
+    t.integer "tenancy_id"
+    t.decimal "amount"
+    t.boolean "refunded", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenancy_id"], name: "index_deposits_on_tenancy_id"
+  end
+
   create_table "documents", force: :cascade do |t|
     t.string "name"
     t.string "attachable_type"
     t.integer "attachable_id"
-    t.string "file_file_name"
-    t.string "file_content_type"
-    t.integer "file_file_size"
-    t.datetime "file_updated_at"
+    t.string "file_path"
+    t.string "file_type"
     t.boolean "encrypted", default: false, null: false
     t.string "iv"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["attachable_type", "attachable_id"], name: "index_documents_on_attachable_type_and_attachable_id"
+  end
+
+  create_table "invoices", force: :cascade do |t|
+    t.integer "tenant_id"
+    t.boolean "issued", default: false, null: false
+    t.date "due_on"
+    t.decimal "balance"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_invoices_on_tenant_id"
   end
 
   create_table "landlords", force: :cascade do |t|
@@ -69,11 +74,16 @@ ActiveRecord::Schema.define(version: 20171206124032) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "landlords_users", id: false, force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "landlord_id", null: false
-    t.index ["landlord_id"], name: "index_landlords_users_on_landlord_id"
-    t.index ["user_id"], name: "index_landlords_users_on_user_id"
+  create_table "mandates", force: :cascade do |t|
+    t.integer "tenant_id"
+    t.string "method"
+    t.string "reference"
+    t.boolean "active", default: true, null: false
+    t.string "last_message"
+    t.date "last_success"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_mandates_on_tenant_id"
   end
 
   create_table "properties", force: :cascade do |t|
@@ -94,6 +104,7 @@ ActiveRecord::Schema.define(version: 20171206124032) do
     t.decimal "size"
     t.decimal "charge_weight"
     t.boolean "active"
+    t.boolean "occupied_override"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["property_id"], name: "index_rooms_on_property_id"
@@ -105,13 +116,11 @@ ActiveRecord::Schema.define(version: 20171206124032) do
     t.integer "tenant_id"
     t.decimal "rent"
     t.string "rent_period", default: "m", null: false
-    t.integer "charge_scheme_id"
     t.integer "rent_payment_day", default: 1, null: false
     t.date "start_date"
     t.date "end_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["charge_scheme_id"], name: "index_tenancies_on_charge_scheme_id"
     t.index ["rentable_type", "rentable_id"], name: "index_tenancies_on_rentable_type_and_rentable_id"
     t.index ["tenant_id"], name: "index_tenancies_on_tenant_id"
   end
@@ -131,17 +140,38 @@ ActiveRecord::Schema.define(version: 20171206124032) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "tenants_users", id: false, force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "tenant_id", null: false
-    t.index ["tenant_id"], name: "index_tenants_users_on_tenant_id"
-    t.index ["user_id"], name: "index_tenants_users_on_user_id"
+  create_table "transactions", force: :cascade do |t|
+    t.integer "invoice_id"
+    t.decimal "amount"
+    t.string "description"
+    t.string "external_reference"
+    t.string "transactionable_type"
+    t.integer "transactionable_id"
+    t.boolean "processed", default: true, null: false
+    t.date "credit_date"
+    t.boolean "failed", default: false, null: false
+    t.string "failure_message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invoice_id"], name: "index_transactions_on_invoice_id"
+    t.index ["transactionable_type", "transactionable_id"], name: "index_transactions_on_transactionable"
+  end
+
+  create_table "user_associations", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "associable_type"
+    t.integer "associable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["associable_type", "associable_id"], name: "index_user_associations_on_associable_type_and_associable_id"
+    t.index ["user_id"], name: "index_user_associations_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
-    t.string "email", default: "", null: false
+    t.string "username"
+    t.string "email"
     t.string "encrypted_password", default: "", null: false
     t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0, null: false
@@ -154,25 +184,52 @@ ActiveRecord::Schema.define(version: 20171206124032) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   create_table "utilities", force: :cascade do |t|
+    t.integer "property_id"
     t.string "name"
     t.string "provider_name"
+    t.string "price_plan"
+    t.boolean "prepay_charges", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["property_id"], name: "index_utilities_on_property_id"
   end
 
   create_table "utility_charges", force: :cascade do |t|
+    t.integer "utility_id"
+    t.decimal "amount"
+    t.integer "usage_from_id"
+    t.integer "usage_to_id"
+    t.date "usage_from_date"
+    t.date "usage_to_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["usage_from_id"], name: "index_utility_charges_on_usage_from_id"
+    t.index ["usage_to_id"], name: "index_utility_charges_on_usage_to_id"
+    t.index ["utility_id"], name: "index_utility_charges_on_utility_id"
+  end
+
+  create_table "utility_prices", force: :cascade do |t|
     t.string "name"
     t.integer "utility_id"
-    t.decimal "charge"
+    t.decimal "price"
     t.boolean "usage_based"
     t.string "usage_unit"
     t.string "length_unit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["utility_id"], name: "index_utility_charges_on_utility_id"
+    t.index ["utility_id"], name: "index_utility_prices_on_utility_id"
+  end
+
+  create_table "utility_usages", force: :cascade do |t|
+    t.integer "utility_id"
+    t.date "date"
+    t.decimal "reading"
+    t.boolean "projected", default: false, null: false
+    t.index ["utility_id"], name: "index_utility_usages_on_utility_id"
   end
 
 end
