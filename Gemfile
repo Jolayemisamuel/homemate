@@ -16,6 +16,7 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'config'
 gem 'devise'
+gem 'simple_form'
 gem 'paperclip', '~> 5.0.0'
 gem 'pdfkit', '~> 0.8'
 gem 'gocardless', '~> 1.13'
