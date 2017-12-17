@@ -1,6 +1,6 @@
 <h2>
   Tenant view&nbsp;&nbsp;
-  <small class="text-muted">Your tenancies, documents and bills</small>
+  <small class="text-muted font-weight-light">Your tenancies, documents and bills</small>
 </h2>
 
 <div class="card w-100">
@@ -18,9 +18,14 @@
       </div>
       <div class="col-12 col-md-6">
         <ul class="nav flex-column">
-          <% if ~tenant.tenant_checks.valid.present? %>
+          <% unless tenant.has_valid_mandate %>
             <li class="nav-item">
-              <%= link_to('Right to Rent check', 'page#tenant_check', class: 'nav-link text-danger font-weight-bold') %>
+              <%= link_to('Set-up mandate', new_mandate_path, class: 'nav-link text-danger font-weight-bold') %>
+            </li>
+          <% end %>
+          <% unless tenant.tenant_checks.valid.present? %>
+            <li class="nav-item">
+              <%= link_to('Right to Rent check', new_tenant_check_path, class: 'nav-link text-danger font-weight-bold') %>
             </li>
           <% end %>
           <li class="nav-item">

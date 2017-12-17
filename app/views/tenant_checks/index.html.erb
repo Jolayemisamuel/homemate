@@ -1,0 +1,38 @@
+<% @title = "Tenant Checks for " + @tenant.name %>
+
+<h1>Tenant Checks for <%= @tenant.name %></h1>
+
+<table class="table">
+  <thead class="thead-light">
+  <tr>
+    <th></th>
+    <th>Document Type</th>
+    <th>File</th>
+    <th>Status</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @tenant_checks.unscoped.each do |check| %>
+  <tr>
+    <th><%= check.created_at.to_formatted_s(:rfc822) %></th>
+    <td><%= check.document_type %></td>
+    <td>
+      <%= link_to(view_document_path(check.document), class: 'btn btn-info btn-small', alt: 'View') do %>
+        <i class="fas fa-cloud-download-alt"></i>&nbsp;&nbsp;View
+      <% end %>
+    </td>
+    <td>
+      <% if check.active %>
+        <strong>Active</strong>
+        <% if check.expires.present? %>
+        <br />
+        <small class="text-muted"><strong>Expires on: </strong><%= check.expires.to_formatted_s(:rfc822) %></small>
+        <% end %>
+      <% else %>
+        <strong>Expired</strong>
+      <% end %>
+    </td>
+  </tr>
+  <% end %>
+  </tbody>
+</table>

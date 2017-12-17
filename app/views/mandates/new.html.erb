@@ -1,0 +1,18 @@
+<% @title = 'Create Mandate' %>
+
+<h1>Create Direct Debit Mandate</h1>
+<p class="lead">
+  All payments are processed through our payment provider, <a href="https://gocardless.com" target="_blank">GoCardless
+  </a>, by Direct Debit. Please press the button below to set up your Direct Debit Mandate. If you experience any issue
+  &nbsp;with setting this up, please <a href="mailto:help@gocardless.com">contact GoCardless</a>.
+</p>
+<div class="alert alert-info" role="alert">
+  <p>
+    <strong><i class="fas fa-info-circle"></i>&nbsp;&nbsp;FYI:</strong> Payments are protected by the Direct Debit
+    &nbsp;Guarantee and will show up on your bank statement as to <i class="font-weight-bold">GoCardless Ltd</i>.
+  </p>
+</div>
+
+<%= form_for(:mandate, url: create_mandate_path) do |f| %>
+  <%= f.submit "Create Mandate", class: "btn btn-primary" %>
+<% end %>

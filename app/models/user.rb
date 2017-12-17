@@ -3,11 +3,11 @@ class User < ApplicationRecord
 
   has_one :user_association
 
-  def self.is_tenant?
-    :user_association.associable.is_a? Tenant
+  def is_tenant?
+    user_association.associable.is_a? Tenant
   end
 
-  def self.is_landlord?
-    :user_association.associable.is_a? Landlord
+  def is_landlord?
+    user_association.associable.is_a? Landlord
   end
 end

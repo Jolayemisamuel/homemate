@@ -1,0 +1,16 @@
+<% @title = 'Create Utility' %>
+
+<h2>Create Utility for <%= @property.name %></h2>
+
+<%= simple_form_for(@utility, property_utilities_path(@property), wrapper: :horizontal_form) do |f| %>
+  <%= f.input :name, label: 'Name' %>
+  <%= f.input :provider_name, label: 'Service Provider' %>
+  <%= f.boolean :prepay_charges, 'Charges are prepaid?' %>
+
+  <div class="form-group row">
+    <div class="col btn-group">
+      <%= f.submit "Create", class: "btn btn-primary" %>
+      <%= link_to("Back", property_path(@property), class: "btn btn-secondary") %>
+    </div>
+  </div>
+<% end %>

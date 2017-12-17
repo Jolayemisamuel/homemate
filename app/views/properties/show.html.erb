@@ -1,0 +1,72 @@
+<% @title = @property.name %>
+
+<h2><span class="text-muted">Property: </span><%= @property.name %></h2>
+<p>
+  <%= @property.address %>
+  <% if @property.postcode.present? %>
+    &nbsp;<%= @property.postcode %>
+  <% end %>
+  <% if !@property.rooms.present? && @property.tenancies.active.present? %>
+    <br /><%= @property.tenancies.active.tenant.name %>
+  <% elsif !@property.rooms.present? && @property.tenancies.future.present? %>
+    <br /><%= @property.tenancies.future.tenant.name %> <small>(future)</small>
+  <% elsif !@property.rooms.present? %>
+    <br />Unoccupied - <%= link_to('Add tenancy', new_tenancy_path) %>
+  <% end %>
+</p>
+
+<table class="table" id="utilities">
+  <thead class="thead-light">
+  <tr>
+    <th></th>
+    <th>Utility</th>
+    <th>Provider</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody class="bg-white">
+    <% @property.utilities.each do |utility| %>
+    <tr>
+      <th scope="row">
+        <% if utility.utility_prices.present? %>
+          <a href="#utility-<%= utility.id %>-prices" data-toggle="collapse" aria-expanded="false">
+            <i title="Expand" class="fas fa-plus-circle"></i>
+          </a>
+        <% end %>
+      </th>
+      <th><%= utility.name %></th>
+      <td><%= utility.provider_name %></td>
+      <td></td>
+    </tr>
+    <% if utility.utility_prices.present? %>
+      <div class="collapse" id="utility-<%= utility.id %>-prices" data-parent="#utilities">
+        <% utility.utility_prices.each do |price| %>
+        <tr>
+          <td colspan="3"><%= price.name %> - <%= price.readable_price %></td>
+          <td>
+            <div class="btn-group btn-group-sm" role="group">
+              <%= link_to(edit_utility_price_path(price), class: 'btn btn-warning', alt: 'Edit') do %>
+                <i class="fas fa-edit"></i>
+              <% end %>
+              <%= link_to(utility_price_path(price), data: {:confirm => 'Are you sure?'}, method: :delete,
+                class: 'btn btn-danger', alt: 'Delete') do %>
+                <i class="fas fa-trash"></i>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+        <% end %>
+      </div>
+    <% end %>
+    <% end %>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td colspan="4">
+      <div class="btn-group float-right">
+        <%= link_to('Add utility', new_property_utility_path(@property), class: 'btn btn-primary') %>
+      </div>
+    </td>
+  </tr>
+  </tfoot>
+</table>

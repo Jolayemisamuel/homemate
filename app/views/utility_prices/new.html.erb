@@ -1,0 +1,19 @@
+<% @title = 'Add Pricing Entry' %>
+
+<h2>Add Pricing Entry for <%= @utility.name %></h2>
+
+<%= simple_form_for(@utility_price, utility_prices_path, wrapper: :horizontal_form) do |f| %>
+  <%= f.input :name, label: 'Name' %>
+  <%= f.boolean :usage_based, 'Usage based?' %>
+  <%= f.input :price, min: 0, step: 0.01, label: 'Unit Charge' %>
+  <%= f.input :usage_unit, label: 'Usage Unit', hint: 'Only if it is a usage-based charge' %>
+  <%= f.input :length_unit, collection: [:d => 'Day', :w => 'Week', :m => 'Month'], label: 'Unit',
+    hint: 'Only if it is a standing charge' %>
+
+  <div class="form-group row">
+    <div class="col btn-group">
+      <%= f.submit "Add", class: "btn btn-primary" %>
+      <%= link_to("Back", property_utilities_path(@utility.property), class: "btn btn-secondary") %>
+    </div>
+  </div>
+<% end %>
