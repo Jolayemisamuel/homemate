@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= @title ? (@title + ' - ') : '' %> - HomeMate</title>
+    <title><%= @title ? (@title + ' - ') : '' %>HomeMate</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <%= csrf_meta_tags %>
@@ -13,23 +13,45 @@
   <body>
     <div class="d-flex container-fluid dashboard-container m-0 p-0">
       <div class="row w-100 m-0 p-0">
-        <div class="dashboard-sidebar col-md-3 col-lg-2 m-0 bg-dark">
+        <div class="dashboard-sidebar col-md-3 col-lg-2 m-0 bg-dark d-none d-md-block">
           <%= render "shared/navigation" %>
         </div>
-        <div class="dashboard-content d-flex flex-column col-md-9 col-lg-10 m-0 p-0">
-          <header class="w-100 py-2 px-4 bg-white">
-            <ul class="nav justify-content-end">
-              <li class="nav-item">
-                <a class="nav-link" href="#">Logout</a>
+        <div class="dashboard-content d-flex flex-column col-12 col-md-9 col-lg-10 m-0 p-0">
+          <div class="collapse pb-2 bg-dark d-md-none" id="mobile-menu">
+            <%= render "shared/navigation" %>
+          </div>
+          <header class="d-flex w-100 px-4 py-2 bg-white justify-content-end">
+            <ul class="nav w-50 d-md-none">
+              <li class="nav-item d-flex">
+                <a class="nav-link p-0 align-self-center toggle-button" data-toggle="collapse" href="#mobile-menu"
+                   aria-expanded="false" aria-controls="mobile-menu">
+                  <span class="fa-layers fa-2x fa-fw">
+                    <i class="fas fa-square"></i>
+                    <i class="fas fa-bars fa-inverse" data-fa-transform="shrink-7"></i>
+                  </span>
+                </a>
               </li>
             </ul>
+            <ul class="nav w-50 justify-content-end">
+              <div class="dropdown">
+                <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+                  <%= current_user.user_association.associable.name %>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right text-right">
+                  <%= link_to('Logout', destroy_user_session_path, method: :delete, class: 'dropdown-item') %>
+                </div>
+              </div>
+            </ul>
           </header>
-          <div class="w-100 py-3 px-4">
+          <div class="w-100 mt-1 py-3 px-4">
             <%= render "shared/alert" %>
             <%= yield %>
           </div>
           <footer class="w-100 py-2 px-4 mt-auto">
-            <small class="text-muted">&copy; Andrew Ying 2017.</small>
+            <small class="text-muted">
+              &copy; Andrew Ying 2017. HomeMate is an open-source software licensed under GNU GPL v3.
+            </small>
           </footer>
         </div>
       </div>
