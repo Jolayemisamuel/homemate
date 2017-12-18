@@ -6,34 +6,34 @@ class Tenant < ApplicationRecord
   has_many :tenant_checks, dependent: :destroy
   has_many :mandates, dependent: :destroy
   has_many :invoices
-  has_many :transactions, through: :invoices
+  has_many :transactions
   has_many :deposits
 
-  def self.balance
-    :invoices.where(issued: true).sum(:amount)
+  def balance
+    transactions.where(processed: true).sum(:amount)
   end
 
-  def self.pending_balance
-    :invoices.where(issued: false).sum(:amount)
+  def pending_balance
+    transactions.sum(:amount)
   end
 
-  def self.active_tenancy
-    :tenancies.active
+  def active_tenancy
+    tenancies.active.first
   end
 
-  def self.future_tenancy
-    :tenancies.future
+  def future_tenancy
+    tenancies.future.first
   end
 
-  def self.current_tenancy
-    if self.active_tenancy.present?
-      return self.active_tenancy
+  def current_tenancy
+    if active_tenancy.present?
+      active_tenancy
     else
-      return self.future_tenancy
+      future_tenancy
     end
   end
 
-  def self.has_active_mandate
-    :mandates.present?
+  def has_active_mandate?
+    mandates.present?
   end
 end

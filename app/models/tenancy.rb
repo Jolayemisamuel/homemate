@@ -10,16 +10,20 @@ class Tenancy < ApplicationRecord
   validates :rent, numericality: true
   validates :start_date, presence: true
 
-  def self.active
+  def active
     today = Date.current
-    where("start_date <= ? AND (end_date >= ? OR end_date IS NULL)", today, today).first
+    where("start_date <= ? AND (end_date >= ? OR end_date IS NULL)", today, today)
   end
 
-  def self.future
-    where("start_date > ?", Date.current.end_of_day).order(start_date: :asc).first
+  def future
+    where("start_date > ?", Date.current.end_of_day).order(start_date: :asc)
   end
 
-  def self.is_active
-    (:start_date.past? || :start_date.today?) && :end_date&.future?
+  def is_active?
+    (start_date.past? || start_date.today?) && (end_date.empty? || end_date.future?)
+  end
+
+  def is_future?
+    start_date.future?
   end
 end
