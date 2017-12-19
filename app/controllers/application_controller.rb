@@ -3,6 +3,10 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def current_user
+    @current_user ||= super && User.includes({user_association: :associable}).find(@current_user.id)
+  end
+
   def require_tenant
     unless current_user.is_tenant?
       flash[:error] = 'You are not authorised to visit this page'

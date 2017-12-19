@@ -2,10 +2,11 @@
 
 <h2>Create Utility for <%= @property.name %></h2>
 
-<%= simple_form_for(@utility, property_utilities_path(@property), wrapper: :horizontal_form) do |f| %>
+<%= simple_form_for(@utility, url: property_utilities_path(@property), wrapper: :horizontal_form) do |f| %>
   <%= f.input :name, label: 'Name' %>
   <%= f.input :provider_name, label: 'Service Provider' %>
-  <%= f.boolean :prepay_charges, 'Charges are prepaid?' %>
+  <%= f.input :included_in_rent, 'Included in rent?' %>
+  <%= f.input :prepay_charges, 'Charges are prepaid?' %>
 
   <div class="form-group row">
     <div class="col btn-group">

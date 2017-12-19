@@ -61,8 +61,10 @@ ActiveRecord::Schema.define(version: 20171217011914) do
   create_table "invoices", force: :cascade do |t|
     t.integer "tenant_id"
     t.boolean "issued", default: false, null: false
+    t.date "issued_on"
     t.date "due_on"
     t.decimal "balance"
+    t.boolean "paid", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tenant_id"], name: "index_invoices_on_tenant_id"
@@ -141,12 +143,14 @@ ActiveRecord::Schema.define(version: 20171217011914) do
   end
 
   create_table "transactions", force: :cascade do |t|
+    t.integer "tenant_id"
     t.integer "invoice_id"
     t.decimal "amount"
     t.string "description"
     t.string "external_reference"
     t.string "transactionable_type"
     t.integer "transactionable_id"
+    t.boolean "payment", default: false, null: false
     t.boolean "processed", default: true, null: false
     t.date "credit_date"
     t.boolean "failed", default: false, null: false
@@ -154,6 +158,7 @@ ActiveRecord::Schema.define(version: 20171217011914) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["invoice_id"], name: "index_transactions_on_invoice_id"
+    t.index ["tenant_id"], name: "index_transactions_on_tenant_id"
     t.index ["transactionable_type", "transactionable_id"], name: "index_transactions_on_transactionable"
   end
 
@@ -191,7 +196,7 @@ ActiveRecord::Schema.define(version: 20171217011914) do
     t.integer "property_id"
     t.string "name"
     t.string "provider_name"
-    t.string "price_plan"
+    t.boolean "included_in_rent", default: false, null: false
     t.boolean "prepay_charges", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

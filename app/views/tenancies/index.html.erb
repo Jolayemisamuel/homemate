@@ -1,0 +1,30 @@
+<% @title = 'Tenancies at ' + @rentable.name %>
+
+<h2>Current &amp; Future Tenancies at <%= @rentable.name %></h2>
+
+<table class="table">
+  <thead class="thead-light">
+  <tr>
+    <th>Tenant</th>
+    <th>Rent</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody class="bg-white">
+  <% @tenancies.each do |t| %>
+    <tr>
+      <th><%= t.tenant.name %></th>
+      <td></td>
+      <td>
+        <% if t.is_active? %>
+          <span class="badge badge-success">Active<%= t.end_date.present? ' till ' + t.end_date.to_s(:rfc822) %></span>
+        <% elsif t.is_future? %>
+          <span class="badge badge-warning">Future</span>
+        <% else %>
+          <span class="badge badge-secondary">Past</span>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

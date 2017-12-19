@@ -6,13 +6,17 @@ class Room < ApplicationRecord
   has_many :utility_usages, through: :property
   has_many :utility_charges, through: :property
 
-  default_scope {where(active: true)}
+  validates_associated :property
+  validates :name, presence: true
+  validates :size, numericality: { greater_than: 0 }, allow_nil: true
 
-  def self.occupied
-    if defined? :occupied_override
-      return :occupied_override
+  default_scope { where(active: true) }
+
+  def is_occupied?
+    if defined? occupied_override
+      occupied_override
     else
-      return :tenancies.active.present?
+      tenancies.active.present?
     end
   end
 end

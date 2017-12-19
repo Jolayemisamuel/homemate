@@ -132,7 +132,18 @@ SimpleForm.setup do |config|
     b.optional :readonly
     b.use :label
     b.wrapper tag: 'div', class: 'form-inline' do |ba|
-      ba.use :input, class: 'form-control'
+      ba.use :input, class: 'custom-select'
+      ba.use :error, wrap_with: { tag: 'small', class: 'form-text text-danger text-muted' }
+      ba.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
+    end
+  end
+
+  config.wrappers :horizontal_multiselect, tag: 'div', class: 'form-group', error_class: 'is-invalid' do |b|
+    b.use :html5
+    b.optional :readonly
+    b.use :label, class: 'col-sm-3 col-form-label'
+    b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
+      ba.use :input, class: 'custom-select'
       ba.use :error, wrap_with: { tag: 'small', class: 'form-text text-danger text-muted' }
       ba.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
     end
@@ -154,6 +165,27 @@ SimpleForm.setup do |config|
 
     b.use :error, wrap_with: { tag: 'small', class: 'form-text text-danger text-muted' }
     b.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
+  end
+
+  config.wrappers :horizontal_input_group, tag: 'div', class: 'form-group', error_class: 'is-invalid' do |b|
+    b.use :html5
+    b.use :placeholder
+    b.optional :maxlength
+    b.optional :minlength
+    b.optional :pattern
+    b.optional :min_max
+    b.optional :readonly
+    b.use :label, class: 'col-sm-3 col-form-label'
+
+    b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
+      ba.wrapper tag: 'div', class: 'input-group col-sm-9' do |g|
+        g.use :icon, wrap_with: { tag: 'span', class: 'input-group-addon' }
+        g.use :input, class: 'form-control'
+      end
+
+      ba.use :error, wrap_with: { tag: 'small', class: 'form-text text-danger text-muted' }
+      ba.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
+    end
   end
 
   config.default_wrapper = :vertical_form

@@ -2,12 +2,12 @@
   Landlord view&nbsp;&nbsp;
   <small class="text-muted font-weight-light">Your properties and tenants</small>
 </h2>
-<table class="table" id="properties">
+<table class="table table-responsive-md" id="properties">
   <thead class="thead-light">
   <tr>
     <th></th>
-    <th>Properties</th>
-    <th>Tenants</th>
+    <th>Property</th>
+    <th>Tenant</th>
     <th></th>
   </tr>
   </thead>
@@ -31,13 +31,18 @@
       <% elsif !property.rooms.present? && property.tenancies.future.present? %>
         <%= property.tenancies.future.tenant.name %> <small>(future)</small>
       <% elsif !property.rooms.present? %>
-        Unoccupied - <%= link_to('Add tenancy', new_tenancy_path) %>
+        Unoccupied - <%= link_to('Add tenancy', new_property_tenancy_path(property)) %>
       <% end %>
     </td>
-    <td>
+    <td class="text-right">
       <div class="btn-group btn-group-sm" role="group">
         <%= link_to(property_path(property), class: 'btn btn-info', alt: 'View details') do %>
           <i class="fas fa-search"></i>
+        <% end %>
+        <% unless property.tenancies.active.present? || property.tenancies.future.present? %>
+          <%= link_to(new_property_room_path(property), class: 'btn btn-primary', alt: 'Add Room') do %>
+            <i class="fas fa-add"></i>
+          <% end %>
         <% end %>
         <%= link_to(edit_property_path(property), class: 'btn btn-warning', alt: 'Edit') do %>
           <i class="fas fa-edit"></i>
@@ -61,7 +66,7 @@
           <% elsif room.tenancies.future.present? %>
             <%= room.tenancies.future.tenant.name %> <small>(future)</small>
           <% else %>
-            Unoccupied - <%= link_to('Add tenancy', new_tenancy_path) %>
+            Unoccupied - <%= link_to('Add tenancy', new_room_tenancy_path(room)) %>
           <% end %>
         </td>
         <td>
@@ -87,9 +92,8 @@
   <tfoot>
   <tr>
     <td colspan="4">
-      <div class="btn-group float-right">
+      <div class="float-right">
         <%= link_to('Add property', new_property_path, class: 'btn btn-primary') %>
-        <%= link_to('Add tenancy', new_tenancy_path, class: 'btn btn-secondary') %>
       </div>
     </td>
   </tr>

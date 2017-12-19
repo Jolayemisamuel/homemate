@@ -1,0 +1,42 @@
+<% @title = 'Invoice' %>
+
+<h2>
+  Invoice
+  <% unless @invoice.issued? %>
+  &nbsp;<span class="badge badge-danger">Draft</span>
+  <% end %>
+</h2>
+
+<div class="row">
+  <div class="col col-md-6">
+    <strong>Issued:</strong> <%= @invoice.issued_on.to_s(:rfc822) %>
+    <strong>Due:</strong> <%= @invoice.due_on.to_s(:rfc822) %>
+  </div>
+  <div class="col col-md-6 text-right">
+    <h1 class="display-3 <%= @invoice.balance_is_credit? ? 'text-success' : 'text-warning' %>">
+      <%= @invoice.readable_balance %>
+    </h1>
+    <% if @invoice.is_overdue? %>
+    <h4 class="text-danger">OVERDUE</h4>
+    <% end %>
+  </div>
+</div>
+
+<table class="table">
+  <thead class="thead-light">
+  <tr>
+    <th>Date</th>
+    <th>Description</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody class="bg-white">
+  <% @invoice.transactions.each do |t| %>
+  <tr>
+    <td><%= t.credit_date.to_s(:rfc822) %></td>
+    <td><%= t.description %></td>
+    <td><%= t.amount %></td>
+  </tr>
+  <% end %>
+  </tbody>
+</table>

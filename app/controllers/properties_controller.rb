@@ -1,21 +1,29 @@
 class PropertiesController < ApplicationController
-  before_action :require_landlord
+  before_action :authenticate_user!
+  before_action :require_landlord, except: [:show]
 
   def index
-    @properties = current_user.user_association.associable.properties.all
+    @properties = current_user.landlord.properties.all
   end
 
   def show
-    @property = Property.find(params[:id])
+    if current_user.is_landlord?
+      @property = current_user.landlord.properties.find(params[:id])
+    elsif current_user.is_tenant?
+      @property = current_user.tenant.active_tenancy.property
+
+      redirect_to property_path(@property) if @property.id != params[:id]
+    else
+      abort
+    end
   end
 
   def new
-    @property = current_user.user_association.associable.properties.new
+    @property = current_user.landlord.properties.new
   end
 
   def create
-    @property = current_user.user_association.associable.properties.new(property_params)
-    @property.active = true
+    @property = current_user.landlord.properties.new(property_params)
 
     if @property.valid?
       @property.save
@@ -27,7 +35,6 @@ class PropertiesController < ApplicationController
   end
 
   def destroy
-    @property = Property.find(params[:id])
     @property.destroy
 
     redirect_back properties_path

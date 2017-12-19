@@ -7,16 +7,18 @@ class Tenancy < ApplicationRecord
   has_many :transactions, as: :transactionable
   has_one :deposit
 
-  validates :rent, numericality: true
+  validates_associated :tenant
+  validates :rent, numericality: { greater_than: 0 }
+  validate :validate_rent_payment_day
   validates :start_date, presence: true
 
-  def active
+  def self.active
     today = Date.current
-    where("start_date <= ? AND (end_date >= ? OR end_date IS NULL)", today, today)
+    where('start_date <= ? AND (end_date >= ? OR end_date IS NULL)', today, today)
   end
 
-  def future
-    where("start_date > ?", Date.current.end_of_day).order(start_date: :asc)
+  def self.future
+    where('start_date > ?', Date.current.end_of_day).order(start_date: :asc)
   end
 
   def is_active?
@@ -25,5 +27,17 @@ class Tenancy < ApplicationRecord
 
   def is_future?
     start_date.future?
+  end
+
+  private
+
+  def validate_rent_payment_day
+    if rent_period == 'w'
+      errors.add(:rent_payment_day, 'is not a valid rent payment day') unless rent_payment_day.in?(1..7)
+    elsif rent_period == 'm'
+      errors.add(:rent_payment_day, 'is not a valid rent payment day') unless rent_payment_day.in?(1..28)
+    else
+      errors.add(:rent_period, 'is not a valid rent period')
+    end
   end
 end

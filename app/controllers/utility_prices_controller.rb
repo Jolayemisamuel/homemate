@@ -1,13 +1,13 @@
 class UtilityPricesController < ApplicationController
-  before_action :require_landlord
+  before_action :authenticate_user!, :require_landlord
 
   def new
-    @utility = Utility.find(params[:utility_id])
+    @utility = current_user.landlord.utilities.find(params[:utility_id])
     @utility_charge = @utility.utility_prices.new
   end
 
   def create
-    @utility = Utility.find(params[:utility_id])
+    @utility = current_user.landlord.utilities.find(params[:utility_id])
     @utility_charge = @utility.utility_prices.new(charge_params)
 
     if @utility_charge.valid?

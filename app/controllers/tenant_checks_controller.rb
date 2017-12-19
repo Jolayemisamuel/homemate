@@ -1,4 +1,7 @@
 class TenantChecksController < ApplicationController
+  before_action :authenticate_user!
+  before_action :require_landlord, except: [:new]
+
   def index
     @tenant_checks = TenantCheck.all
   end
@@ -6,9 +9,10 @@ class TenantChecksController < ApplicationController
   def new
     @tenant = Tenant.find(params[:tenant_id])
 
-    if current_user.is_tenant? && current_user.user_association.associable == @tenant
+    if current_user.is_tenant? && current_user.tenant == @tenant
       render 'info'
     elsif current_user.is_landlord?
+      @tenant_check = @tenant.tenant_checks.new
       render 'new'
     else
       flash[:error] = 'You are not authorised to visit this page'
@@ -17,11 +21,6 @@ class TenantChecksController < ApplicationController
   end
 
   def create
-    unless current_user.is_landlord?
-      flash[:error] = 'You are not authorised to visit this page'
-      redirect_back root_path
-    end
-
     @tenant = Tenant.find(params[:tenant_id])
     @tenant_check = @tenant.tenant_checks.new(tenant_check_params)
 

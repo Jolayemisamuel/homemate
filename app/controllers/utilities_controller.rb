@@ -1,19 +1,15 @@
 class UtilitiesController < ApplicationController
-  before_action :require_landlord, except: [:index]
+  before_action :authenticate_user!
+  before_action :require_landlord, except: [:index, :show]
   layout 'application'
 
-  def show
-    @property = Property.find(params[:property_id])
-    @utilities = @property.utilities
-  end
-
   def new
-    @property = Property.find(params[:property_id])
+    @property = current_user.landlord.properties.find(params[:property_id])
     @utility = @property.utilities.new
   end
 
   def create
-    @property = Property.find(params[:property_id])
+    @property = current_user.landlord.properties.find(params[:property_id])
     @utility = @property.utilities.new(utility_params)
 
     if @utility.valid?
@@ -25,9 +21,17 @@ class UtilitiesController < ApplicationController
     end
   end
 
+  def destroy
+    @utility = current_user.landlord.utilities.find(params[:id])
+    @property = @utility.property
+    @utility.destroy
+
+    redirect_to property_path(@property)
+  end
+
   private
 
   def utility_params
-    params.require(:utility).permit(:name)
+    params.require(:utility).permit(:name, :provider_name, :included_in_rent, :prepay_charges)
   end
 end

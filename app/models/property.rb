@@ -7,5 +7,10 @@ class Property < ApplicationRecord
   has_many :utility_usages, through: :utilities
   has_many :utility_charges, through: :utilities
 
-  default_scope {where(active: true)}
+  validates :name, presence: true
+  validates :address, presence: true
+  validates :postcode, presence: true
+  validates :size, numericality: true, allow_nil: true
+
+  default_scope { where(active: true) }
 end

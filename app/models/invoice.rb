@@ -6,18 +6,20 @@ class Invoice < ApplicationRecord
   has_many :documents, as: :attachable
 
   validates :balance, numericality: true
+  validates :issued_on, presence: true, if: :issued
+  validates :issued, inclusion: { in: [true, false] }
 
-  def overdue
+  def self.overdue
     where('issued = TRUE AND paid = FALSE AND due_on IS NOT NULL AND due_on < ?', Date.current)
   end
 
-  def due_soon(length = 3.days)
+  def self.due_soon(length = 3.days)
     today = Date.current
     where('issued = TRUE AND paid = FALSE AND due_on IS NOT NULL AND due_on >= ? AND due_on < ?',
       today, today + length)
   end
 
-  def due_today
+  def self.due_today
     self.due_soon(1.day)
   end
 

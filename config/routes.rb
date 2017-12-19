@@ -6,12 +6,19 @@ Rails.application.routes.draw do
       get :complete, on: :new
     end
     resources :invoices
+    resources :transactions
   end
 
   resources :properties, shallow: true do
-    resources :rooms, only: [:new, :create, :show]
+    resources :tenancies, only: [:index, :new, :create]
+
+    resources :rooms, only: [:index, :new, :create, :destroy] do
+      resources :tenancies, only: [:index, :new, :create]
+    end
+
     resources :utilities do
-      resources :prices, controller: 'utility_prices'
+      resources :prices, only: [:new, :create, :destroy], controller: 'utility_prices'
+      resources :usages, only: [:index, :new, :create, :destroy], controller: 'utility_usages'
     end
   end
 
@@ -19,7 +26,7 @@ Rails.application.routes.draw do
     resources :checks, controller: 'tenant_checks'
   end
 
-  resources :tenancies
+  resources :tenancies, except: [:new, :create]
 
   devise_for :users, controllers: {
       sessions: 'users/sessions'

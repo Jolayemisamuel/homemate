@@ -2,17 +2,22 @@ require 'active_support/core_ext/securerandom'
 require 'gocardless_pro'
 
 class MandatesController < ApplicationController
-  before_action :authenticate_user!, :require_tenant
-  layout 'application'
+  before_action :authenticate_user!
+  before_action :require_tenant, except: [:index, :show]
 
   def new
-    if current_user.user_association.associable.mandate.present?
-      flash[:error] = 'You already have an active mandate associated'
+    if current_user.tenant.mandates.present?
+      flash[:error] = 'You are not authorised to visit this page'
       redirect_back root_path
     end
   end
 
   def create
+    if current_user.tenant.mandates.present?
+      flash[:error] = 'You are not authorised to visit this page'
+      redirect_back root_path
+    end
+
     client = gocardless_client
 
     token = SecureRandom.base58(12)
@@ -36,6 +41,11 @@ class MandatesController < ApplicationController
   def complete
     unless params[:redirect_flow_id] && session[:gocardless_token]
       abort
+    end
+
+    if current_user.tenant.mandates.present?
+      flash[:error] = 'You are not authorised to visit this page'
+      redirect_back root_path
     end
 
     client = self.gocardless_client
