@@ -16,6 +16,8 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'config'
 gem 'devise'
+gem 'inky-rb', require: 'inky'
+gem 'premailer-rails'
 gem 'simple_form'
 gem 'paperclip', '~> 5.0.0'
 gem 'pdfkit', '~> 0.8'
@@ -25,6 +27,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
+  gem 'yard'
 end
 
 group :development do
