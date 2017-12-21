@@ -17,8 +17,8 @@ class InvoicesController < ApplicationController
       @invoice = current_user.tenant.invoices.find(params[:id]).include(:transactions)
 
       unless @invoice.issued?
-        flash[:error] = 'You are not authorised to visit this page'
-        redirect_back root_path
+        flash[:danger] = 'You are not authorised to visit this page'
+        redirect_back fallback_location: root_path
       end
     elsif current_user.is_landlord?
       @invoice = Invoice.find(params[:id])
@@ -37,6 +37,6 @@ class InvoicesController < ApplicationController
   def destroy
     @invoice.destroy
 
-    redirect_back root_path
+    redirect_back fallback_location: root_path
   end
 end

@@ -15,8 +15,8 @@ class TenantChecksController < ApplicationController
       @tenant_check = @tenant.tenant_checks.new
       render 'new'
     else
-      flash[:error] = 'You are not authorised to visit this page'
-      redirect_back root_path
+      flash[:danger] = 'You are not authorised to visit this page'
+      redirect_back fallback_location: root_path
     end
   end
 

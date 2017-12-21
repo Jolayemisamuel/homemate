@@ -2,17 +2,26 @@ class UtilityUsagesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @utility = Utility.usage_based.find(params[:utility_id])
+    @utility = Utility
+      .where(property_id: current_properties.collect { |property| property.id })
+      .includes(:utility_usages)
+      .find(params[:utility_id])
     @usages = @utility.utility_usages
   end
 
   def new
-    @utility = Utility.usage_based.find(params[:utility_id])
+    @utility = Utility
+      .where(property_id: current_properties.collect { |property| property.id })
+      .includes(:utility_usages)
+      .find(params[:utility_id])
     @usage = @utility.utility_usages.new
   end
 
   def create
-    @utility = Utility.usage_based.find(params[:utility_id])
+    @utility = Utility
+      .where(property_id: current_properties.collect { |property| property.id })
+      .includes(:utility_usages)
+      .find(params[:utility_id])
     @usage = @utility.utility_usages.new(usage_params)
     @usage.projected = false
 

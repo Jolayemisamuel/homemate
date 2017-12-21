@@ -18,6 +18,10 @@ class PropertiesController < ApplicationController
     end
   end
 
+  def edit
+    @property = current_properties.find(params[:id])
+  end
+
   def new
     @property = current_user.landlord.properties.new
   end

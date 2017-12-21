@@ -3,15 +3,15 @@ class UtilityPricesController < ApplicationController
 
   def new
     @utility = current_user.landlord.utilities.find(params[:utility_id])
-    @utility_charge = @utility.utility_prices.new
+    @utility_price = @utility.utility_prices.new
   end
 
   def create
     @utility = current_user.landlord.utilities.find(params[:utility_id])
-    @utility_charge = @utility.utility_prices.new(charge_params)
+    @utility_price = @utility.utility_prices.new(price_params)
 
-    if @utility_charge.valid?
-      @utility_charge.save
+    if @utility_price.valid?
+      @utility_price.save
 
       redirect property_path(@utility.property)
     else
@@ -21,7 +21,7 @@ class UtilityPricesController < ApplicationController
 
   private
 
-  def charge_params
-    params.require(:utility_charge).permit(:name, :price, :usage_based, :usage_unit, :length_unit)
+  def price_params
+    params.require(:utility_price).permit(:name, :price, :usage_based, :usage_unit, :length_unit)
   end
 end

@@ -3,6 +3,12 @@ class UtilitiesController < ApplicationController
   before_action :require_landlord, except: [:index, :show]
   layout 'application'
 
+  def show
+    @utility = Utility.where(
+        property_id: current_properties.collect { |property| property.id }
+    ).include(:utility_prices, :utility_usages).find(params[:id])
+  end
+
   def new
     @property = current_user.landlord.properties.find(params[:property_id])
     @utility = @property.utilities.new

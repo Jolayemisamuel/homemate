@@ -7,17 +7,35 @@ class ApplicationController < ActionController::Base
     @current_user ||= super && User.includes({user_association: :associable}).find(@current_user.id)
   end
 
+  def current_properties
+    if current_user.is_tenant?
+      unless (rentable = current_user.tenant.active_tenancy&.rentable)
+        nil
+      end
+
+      if rentable.is_a? Room
+        collect(rentable.property)
+      else
+        collect(rentable)
+      end
+    elsif current_user.is_landlord?
+      current_user.landlord.properties
+    else
+      collect(Property.none)
+    end
+  end
+
   def require_tenant
     unless current_user.is_tenant?
-      flash[:error] = 'You are not authorised to visit this page'
-      redirect_back root_path
+      flash[:danger] = 'You are not authorised to visit this page'
+      redirect_back fallback_location: root_path
     end
   end
 
   def require_landlord
     unless current_user.is_landlord?
-      flash[:error] = 'You are not authorised to visit this page'
-      redirect_back root_path
+      flash[:danger] = 'You are not authorised to visit this page'
+      redirect_back fallback_location: root_path
     end
   end
 end

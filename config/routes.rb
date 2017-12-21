@@ -10,10 +10,10 @@ Rails.application.routes.draw do
   end
 
   resources :properties, shallow: true do
-    resources :tenancies, only: [:index, :new, :create]
+    resources :tenancies
 
-    resources :rooms, only: [:index, :new, :create, :destroy] do
-      resources :tenancies, only: [:index, :new, :create]
+    resources :rooms do
+      resources :tenancies
     end
 
     resources :utilities do

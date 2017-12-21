@@ -25,7 +25,7 @@ class TenantsController < ApplicationController
   end
 
   def create
-    @tenant = Tenant.new(tenant_params)
+    @tenant = Tenant.new(tenant_params.except(:user))
     @user = User.new(tenant_params[:user])
 
     @password = SecureRandom::base58(12)

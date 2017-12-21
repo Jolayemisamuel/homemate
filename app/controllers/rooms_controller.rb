@@ -8,11 +8,19 @@ class RoomsController < ApplicationController
     redirect_to property_path(@property)
   end
 
+  def edit
+    @room = Room.where('property_id', current_properties.collect { |p| p.id }).find(params[:id])
+  end
+
+  def update
+    @room = Room.where('property_id', current_properties.collect { |p| p.id }).find(params[:id])
+  end
+
   def new
     @property = current_user.landlord.properties.find(params[:property_id])
 
     if @property.tenancies.active.present? || @property.tenancies.future.present?
-      flash[:error] = 'Rooms cannot be created as active/future tenancy exists'
+      flash[:danger] = 'Rooms cannot be created as active/future tenancy exists'
       redirect_back properties_path
     end
 
@@ -23,7 +31,7 @@ class RoomsController < ApplicationController
     @property = current_user.landlord.properties.find(params[:property_id])
 
     if @property.tenancies.active.present? || @property.tenancies.future.present?
-      flash[:error] = 'Rooms cannot be created as active/future tenancy exists'
+      flash[:danger] = 'Rooms cannot be created as active/future tenancy exists'
       redirect_back properties_path
     end
 

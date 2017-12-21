@@ -7,15 +7,15 @@ class MandatesController < ApplicationController
 
   def new
     if current_user.tenant.mandates.present?
-      flash[:error] = 'You are not authorised to visit this page'
-      redirect_back root_path
+      flash[:danger] = 'You are not authorised to visit this page'
+      redirect_back fallback_location: root_path
     end
   end
 
   def create
     if current_user.tenant.mandates.present?
-      flash[:error] = 'You are not authorised to visit this page'
-      redirect_back root_path
+      flash[:danger] = 'You are not authorised to visit this page'
+      redirect_back fallback_location: root_path
     end
 
     client = gocardless_client
@@ -44,8 +44,8 @@ class MandatesController < ApplicationController
     end
 
     if current_user.tenant.mandates.present?
-      flash[:error] = 'You are not authorised to visit this page'
-      redirect_back root_path
+      flash[:danger] = 'You are not authorised to visit this page'
+      redirect_back fallback_location: root_path
     end
 
     client = self.gocardless_client
