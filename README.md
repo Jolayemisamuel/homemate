@@ -22,24 +22,24 @@ Edit the configuration files at `config/settings.yml` and `config/database.yml`.
  to hand. 
 
 Generate application secret:
-
-    bundle exec rake secret
-
+```
+bundle exec rake secret
+```
 Install dependencies and load database schema:
-
-    bundle install
-    bundle exec rake db:setup
-    bundle exec rake db:migrate
-    
+```
+bundle install
+bundle exec rake db:setup
+bundle exec rake db:migrate
+```
 Import start-up data entries, which also set up the first user so you will be able to login:
-
-    bundle exec rake db:seed
-    
+```
+bundle exec rake db:seed
+```
 Run the development local web server:
-
-    bundle exec rails server
-    
-The system is now available at [http://localhost:3000](http://localhost:3000)! You can login with the username `admin`
+```
+bundle exec rails server
+```    
+The system is now available at <http://localhost:3000>! You can login with the username `admin`
  and the password `homemate`.
 
 ## License
