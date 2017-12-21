@@ -7,10 +7,6 @@ environment.plugins.set(
         $: 'jquery',
         jQuery: 'jquery',
         Popper: ['popper.js', 'default'],
-        fontawesome: '@fortawesome/fontawesome',
-        solid: '@fortawesome/fontawesome-free-solid',
-        regular: '@fortawesome/fontawesome-free-regular',
-        brands: '@fortawesome/fontawesome-free-brands'
     })
 );
 module.exports = environment;
