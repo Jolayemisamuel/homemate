@@ -14,12 +14,9 @@ class InvoicesController < ApplicationController
 
   def show
     if current_user.is_tenant?
-      @invoice = current_user.tenant.invoices.find(params[:id]).include(:transactions)
-
-      unless @invoice.issued?
-        flash[:danger] = 'You are not authorised to visit this page'
-        redirect_back fallback_location: root_path
-      end
+      @invoice = current_user.tenant.invoices
+        .where(issued: true).includes(:transactions)
+        .find(params[:id])
     elsif current_user.is_landlord?
       @invoice = Invoice.find(params[:id])
     else

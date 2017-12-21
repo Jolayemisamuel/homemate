@@ -8,16 +8,8 @@ class ApplicationController < ActionController::Base
   end
 
   def current_properties
-    if current_user.is_tenant?
-      unless (rentable = current_user.tenant.active_tenancy&.rentable)
-        nil
-      end
-
-      if rentable.is_a? Room
-        collect(rentable.property)
-      else
-        collect(rentable)
-      end
+    if current_user.is_tenant? && (rentable = current_user.tenant.active_tenancy&.rentable)
+      collect(rentable.is_a? Room ? rentable.property : rentable)
     elsif current_user.is_landlord?
       current_user.landlord.properties
     else
