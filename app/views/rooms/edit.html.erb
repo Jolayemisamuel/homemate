@@ -1,0 +1,26 @@
+<% @title = 'Edit Room at ' + @property.name %>
+
+<h2>Edit Room at <%= @property.name %></h2>
+
+<%= simple_form_for(@room, url: property_rooms_path(@property), wrapper: :horizontal_form) do |f| %>
+  <%= f.input :name, class: "form-control", placeholder: "Name" %>
+  <div class="form-group row">
+    <div class="col-sm-3 col-form-label">
+      Size
+    </div>
+    <div class="col-sm-9">
+      <div class="input-group">
+        <%= f.number_field :size, class: "form-control", step: 0.1, placeholder: "Size" %>
+        <div class="input-group-addon">m<sup>2</sup></div>
+      </div>
+    </div>
+  </div>
+  <%= f.input :charge_weight, class: "form-control", step: 0.1, placeholder: "1.0", label: 'Utility Charge Weight',
+    hint: 'This would be used to calculate the share of utility share payable by its occupant' %>
+  <div class="form-group row">
+    <div class="col btn-group">
+      <%= f.submit "Update", class: "btn btn-warning" %>
+      <%= link_to("Back", _back_url, class: "btn btn-info") %>
+    </div>
+  </div>
+<% end %>

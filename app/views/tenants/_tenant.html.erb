@@ -8,17 +8,17 @@
   <div class="card-body">
     <div class="row w-100">
       <div class="col-12 col-md-6">
-        <h1 class="card-text display-3">£<%= tenant.balance %></h1>
+        <h1 class="card-text display-3"><%= tenant.readable_balance %></h1>
         <small class="card-text text-muted">
           Pending balance - <%= link_to(
-            '£' + tenant.pending_balance,
+            tenant.pending_balance,
             invoice_path(tenant.invoices.where(issued: false).order(created_at: :desc).first)
           ) %>
         </small>
       </div>
       <div class="col-12 col-md-6">
         <ul class="nav flex-column">
-          <% unless tenant.has_valid_mandate %>
+          <% unless tenant.has_active_mandate? %>
             <li class="nav-item">
               <%= link_to('Set-up mandate', new_mandate_path, class: 'nav-link text-danger font-weight-bold') %>
             </li>

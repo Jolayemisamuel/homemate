@@ -138,7 +138,7 @@ SimpleForm.setup do |config|
     end
   end
 
-  config.wrappers :horizontal_multiselect, tag: 'div', class: 'form-group', error_class: 'is-invalid' do |b|
+  config.wrappers :horizontal_multiselect, tag: 'div', class: 'form-group row', error_class: 'is-invalid' do |b|
     b.use :html5
     b.optional :readonly
     b.use :label, class: 'col-sm-3 col-form-label'
@@ -167,7 +167,7 @@ SimpleForm.setup do |config|
     b.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
   end
 
-  config.wrappers :horizontal_input_group, tag: 'div', class: 'form-group', error_class: 'is-invalid' do |b|
+  config.wrappers :horizontal_input_group, tag: 'div', class: 'form-group row', error_class: 'is-invalid' do |b|
     b.use :html5
     b.use :placeholder
     b.optional :maxlength
@@ -178,7 +178,7 @@ SimpleForm.setup do |config|
     b.use :label, class: 'col-sm-3 col-form-label'
 
     b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
-      ba.wrapper tag: 'div', class: 'input-group col-sm-9' do |g|
+      ba.wrapper tag: 'div', class: 'input-group' do |g|
         g.use :icon, wrap_with: { tag: 'span', class: 'input-group-addon' }
         g.use :input, class: 'form-control'
       end

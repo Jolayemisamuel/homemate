@@ -9,6 +9,10 @@ Rails.application.routes.draw do
     resources :transactions
   end
 
+  resources :landlords do
+    resources :users, shallow: true
+  end
+
   resources :properties, shallow: true do
     resources :tenancies
 
@@ -24,9 +28,12 @@ Rails.application.routes.draw do
 
   resources :tenants do
     resources :checks, controller: 'tenant_checks'
+    resources :users, shallow: true
   end
 
-  resources :tenancies, except: [:new, :create]
+  resources :users do
+    get :unlock, on: :edit
+  end
 
   devise_for :users, controllers: {
       sessions: 'users/sessions'

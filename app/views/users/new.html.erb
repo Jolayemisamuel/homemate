@@ -1,0 +1,17 @@
+<% @title = 'Create Account' %>
+
+<h2>Create Account for <%= @associable.name %></h2>
+
+<%= simple_form_for(@user, wrapper: :input_group_form) do |f| %>
+  <%= f.input :first_name, icon: "fas fa-user-circle", placeholder: "First Name" %>
+  <%= f.input :last_name, icon: "fas fa-user-circle", placeholder: "Last Name" %>
+  <%= f.input :username, icon: "fas fa-user", placeholder: "Username" %>
+  <%= f.input :email, icon: "fas fa-at", placeholder: "Email" %>
+
+  <div class="form-group row">
+    <div class="col btn-group">
+      <%= f.submit "Create", class: "btn btn-primary" %>
+      <%= link_to("Back", _back_url, class: "btn btn-secondary") %>
+    </div>
+  </div>
+<% end %>

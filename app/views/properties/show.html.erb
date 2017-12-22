@@ -4,7 +4,7 @@
 <p>
   <%= @property.address %>
   <% if @property.postcode.present? %>
-    &nbsp;<%= @property.postcode %>
+    <%= @property.postcode %>
   <% end %>
   <% if !@property.rooms.present? && @property.tenancies.active.present? %>
     <br /><%= @property.tenancies.active.tenant.name %>
@@ -16,7 +16,7 @@
 </p>
 
 <% if @property.rooms.present? %>
-  <div class="card">
+  <div class="card mb-3">
     <h4 class="card-header">Rooms</h4>
     <div class="card-body">
       <table class="table">
@@ -37,20 +37,20 @@
               <% elsif room.tenancies.future.present? %>
                 <%= room.tenancies.future.tenant.name %> <small>(future)</small>
               <% else %>
-                Unoccupied - <%= link_to('Add tenancy', new_tenancy_path) %>
+                Unoccupied - <%= link_to('Add tenancy', new_room_tenancy_path(room)) %>
               <% end %>
             </td>
-            <td>
+            <td class="text-right">
               <div class="btn-group btn-group-sm" role="group">
-                <%= link_to(property_room_path(room), class: 'btn btn-info', alt: 'View details') do %>
-                  <i class="fas fa-search"></i>
+                <%= link_to(room_path(room), class: 'btn btn-info', alt: 'View details') do %>
+                  <i class="fas fa-search fa-fw"></i>
                 <% end %>
-                <%= link_to(edit_property_room_path(room), class: 'btn btn-warning', alt: 'Edit') do %>
-                  <i class="fas fa-edit"></i>
+                <%= link_to(edit_room_path(room), class: 'btn btn-warning', alt: 'Edit') do %>
+                  <i class="fas fa-edit fa-fw"></i>
                 <% end %>
-                <%= link_to(property_room_path(room), data: {:confirm => 'Are you sure?'}, method: :delete,
+                <%= link_to(room_path(room), data: {:confirm => 'Are you sure?'}, method: :delete,
                             class: 'btn btn-danger', alt: 'Delete') do %>
-                  <i class="fas fa-trash"></i>
+                  <i class="fas fa-trash fa-fw"></i>
                 <% end %>
               </div>
             </td>
@@ -61,7 +61,7 @@
         <tr>
           <td colspan="4">
             <div class="float-right">
-              <%= link_to('Add room', new_property_room_path, class: 'btn btn-primary') %>
+              <%= link_to('Add room', new_property_room_path(@property), class: 'btn btn-primary') %>
             </div>
           </td>
         </tr>
@@ -71,7 +71,7 @@
   </div>
 <% end %>
 
-<div class="card">
+<div class="card mb-3">
   <h4 class="card-header">Utilities</h4>
   <div class="card-body">
     <table class="table" id="utilities">
@@ -95,10 +95,26 @@
           </th>
           <th><%= utility.name %></th>
           <td><%= utility.provider_name %></td>
-          <td></td>
+          <td class="text-right">
+            <div class="btn-group btn-group-sm" role="group">
+              <%= link_to(new_utility_price_path(utility), class: 'btn btn-primary', alt: 'Add Price') do %>
+                <i class="fas fa-pound-sign fa-fw"></i>
+              <% end %>
+              <%= link_to(new_utility_usage_path(utility), class: 'btn btn-primary', alt: 'Add Reading') do %>
+                <i class="fas fa-tachometer-alt fa-fw"></i>
+              <% end %>
+              <%= link_to(edit_utility_path(utility), class: 'btn btn-warning', alt: 'Edit') do %>
+                <i class="fas fa-edit fa-fw"></i>
+              <% end %>
+              <%= link_to(utility_path(utility), data: {:confirm => 'Are you sure?'}, method: :delete,
+                          class: 'btn btn-danger', alt: 'Delete') do %>
+                <i class="fas fa-trash fa-fw"></i>
+              <% end %>
+            </div>
+          </td>
         </tr>
         <% if utility.utility_prices.present? %>
-          <div class="collapse" id="utility-<%= utility.id %>-prices" data-parent="#utilities">
+          <tbody class="collapse" id="utility-<%= utility.id %>-prices" data-parent="#utilities">
             <% utility.utility_prices.each do |price| %>
               <tr>
                 <td colspan="3"><%= price.name %> - <%= price.readable_price %></td>
@@ -115,7 +131,7 @@
                 </td>
               </tr>
             <% end %>
-          </div>
+          </tbody>
         <% end %>
       <% end %>
       </tbody>

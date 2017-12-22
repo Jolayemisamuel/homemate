@@ -1,0 +1,59 @@
+<% @title = @tenant.name %>
+
+<h2><%= @tenant.name %></h2>
+
+<div class="card mb-3">
+  <h4 class="card-header">Access Accounts</h4>
+  <div class="card-content">
+    <% if @tenant.users.count > 0 %>
+    <table class="table">
+      <thead class="thead-light">
+      <tr>
+        <th>Username</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th colspan="2"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @tenant.users.each do |user| %>
+      <tr>
+        <th><%= user.username %></th>
+        <td><%= user.first_name %></td>
+        <td><%= user.last_name %></td>
+        <td>
+          <% if user.access_locked? %>
+          <span class="badge badge-danger">Locked</span>
+          <% end %>
+        </td>
+        <td class="text-right">
+          <div class="btn-group btn-group-sm" role="group">
+            <% if user.access_locked? %>
+            <%= link_to(unlock_user_path(user), class: 'btn btn-primary', alt: 'Unlock') do %>
+              <i class="fas fa-unlock-alt fa-fw"></i>
+            <% end %>
+            <% end %>
+            <%= link_to(edit_user_path(user), class: 'btn btn-warning', alt: 'Edit') do %>
+              <i class="fas fa-edit fa-fw"></i>
+            <% end %>
+            <%= link_to(user_path(user), data: {:confirm => 'Are you sure?'}, method: :delete,
+              class: 'btn btn-danger', alt: 'Delete') do %>
+              <i class="fas fa-trash fa-fw"></i>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <% else %>
+    <% end %>
+    <tfoot>
+    <tr>
+      <td colspan="5" class="text-right">
+        <%= link_to('Add account', new_tenant_user_path(@tenant), class: 'btn btn-primary') %>
+      </td>
+    </tr>
+    </tfoot>
+  </div>
+</div>

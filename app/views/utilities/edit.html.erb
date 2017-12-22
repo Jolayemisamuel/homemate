@@ -1,6 +1,6 @@
-<% @title = 'Create Utility' %>
+<% @title = 'Edit Utility' %>
 
-<h2>Create Utility for <%= @property.name %></h2>
+<h2>Edit Utility for <%= @property.name %></h2>
 
 <%= simple_form_for(@utility, url: property_utilities_path(@property), wrapper: :horizontal_form) do |f| %>
   <%= f.input :name, label: 'Name' %>
@@ -10,8 +10,8 @@
 
   <div class="form-group row">
     <div class="col btn-group">
-      <%= f.submit "Create", class: "btn btn-primary" %>
-      <%= link_to("Back", property_path(@property), class: "btn btn-secondary") %>
+      <%= f.submit "Update", class: "btn btn-warning" %>
+      <%= link_to("Back", property_path(@property), class: "btn btn-info") %>
     </div>
   </div>
 <% end %>

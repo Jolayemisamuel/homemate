@@ -1,5 +1,6 @@
 class Tenant < ApplicationRecord
   has_many :user_associations, as: :associable, dependent: :restrict_with_exception
+  has_many :users, through: :user_associations
   has_many :contacts, as: :contactable, dependent: :destroy
 
   has_many :tenancies, dependent: :restrict_with_exception

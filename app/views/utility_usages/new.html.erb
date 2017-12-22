@@ -3,7 +3,7 @@
 <h2>Add <%= @utility.name %> Usage Reading</h2>
 
 <%= simple_form_for(@usage, wrapper: :input_group_form) do |f| %>
-  <%= f.input :date, icon: 'far fa-calendar-alt fa-fw', value: Date.now %>
+  <%= f.input :date, label: 'Date of Reading', value: Date, wrapper: :horizontal_multiselect %>
   <%= f.input :reading, icon: 'fas fa-tachometer-alt fa-fw', placeholder: 'Reading' %>
 
   <div class="form-group row">

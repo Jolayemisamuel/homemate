@@ -34,28 +34,28 @@
           Unoccupied - <%= link_to('Add tenancy', new_property_tenancy_path(property)) %>
         <% end %>
       </td>
-      <td>
+      <td class="text-right">
         <div class="btn-group btn-group-sm" role="group">
           <%= link_to(property_path(property), class: 'btn btn-info', alt: 'View details') do %>
-            <i class="fas fa-search"></i>
+            <i class="fas fa-search fa-fw"></i>
           <% end %>
           <% unless property.tenancies.active.present? || property.tenancies.future.present? %>
           <%= link_to(new_property_room_path(property), class: 'btn btn-primary', alt: 'Add Room') do %>
-            <i class="fas fa-add"></i>
+            <i class="fas fa-plus fa-fw"></i>
           <% end %>
           <% end %>
           <%= link_to(edit_property_path(property), class: 'btn btn-warning', alt: 'Edit') do %>
-            <i class="fas fa-edit"></i>
+            <i class="fas fa-edit fa-fw"></i>
           <% end %>
           <%= link_to(property_path(property), data: {:confirm => 'Are you sure?'}, method: :delete,
             class: 'btn btn-danger', alt: 'Delete') do %>
-            <i class="fas fa-trash"></i>
+            <i class="fas fa-trash fa-fw"></i>
           <% end %>
         </div>
       </td>
     </tr>
     <% if property.rooms.present? %>
-      <div class="collapse" id="property-<%= property.id %>-rooms" data-parent="#properties">
+      <tbody class="collapse bg-white" id="property-<%= property.id %>-rooms" data-parent="#properties">
         <% property.rooms.each do |room| %>
           <tr>
             <th scope="row"></th>
@@ -69,23 +69,23 @@
                 Unoccupied - <%= link_to('Add tenancy', new_room_tenancy_path(room)) %>
               <% end %>
             </td>
-            <td>
+            <td class="text-right">
               <div class="btn-group btn-group-sm" role="group">
-                <%= link_to(property_room_path(room), class: 'btn btn-info', alt: 'View details') do %>
-                  <i class="fas fa-search"></i>
+                <%= link_to(room_path(room), class: 'btn btn-info', alt: 'View details') do %>
+                  <i class="fas fa-search fa-fw"></i>
                 <% end %>
-                <%= link_to(edit_property_room_path(room), class: 'btn btn-warning', alt: 'Edit') do %>
-                  <i class="fas fa-edit"></i>
+                <%= link_to(edit_room_path(room), class: 'btn btn-warning', alt: 'Edit') do %>
+                  <i class="fas fa-edit fa-fw"></i>
                 <% end %>
-                <%= link_to(property_room_path(room), data: {:confirm => 'Are you sure?'}, method: :delete,
+                <%= link_to(room_path(room), data: {:confirm => 'Are you sure?'}, method: :delete,
                   class: 'btn btn-danger', alt: 'Delete') do %>
-                  <i class="fas fa-trash"></i>
+                  <i class="fas fa-trash fa-fw"></i>
                 <% end %>
               </div>
             </td>
           </tr>
         <% end %>
-      </div>
+      </tbody>
     <% end %>
   <% end %>
   </tbody>

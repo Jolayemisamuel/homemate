@@ -9,7 +9,7 @@ class Tenancy < ApplicationRecord
 
   validates_associated :tenant
   validates :rent, numericality: { greater_than: 0 }
-  validates :rent_period, in: '%w[w m]'
+  validates :rent_period, inclusion: '%w[w m]'
   validate :validate_rent_payment_day
   validates :start_date, presence: true
 
@@ -33,10 +33,10 @@ class Tenancy < ApplicationRecord
   private
 
   def validate_rent_payment_day
-    if rent_period == 'w'
-      errors.add(:rent_payment_day, 'is not a valid rent payment day') unless rent_payment_day.in?(1..7)
-    elsif rent_period == 'm'
-      errors.add(:rent_payment_day, 'is not a valid rent payment day') unless rent_payment_day.in?(1..28)
+    if rent_period == 'w' && !rent_payment_day.in?(1..7)
+      errors.add(:rent_payment_day, 'is not a valid rent payment day')
+    elsif rent_period == 'm' && !rent_payment_day.in?(1..28)
+      errors.add(:rent_payment_day, 'is not a valid rent payment day')
     end
   end
 end

@@ -1,9 +1,11 @@
 <% @title = 'Create Tenant' %>
 
+<h2>Create Tenant</h2>
+
 <%= simple_form_for(@tenant, wrapper: :horizontal_form) do |f| %>
   <%= f.input :name, placeholder: "Name" %>
 
-  <div class="card">
+  <div class="card mb-3">
     <h4 class="card-header">Account</h4>
     <div class="card-body">
       <%= f.simple_fields_for(@user, wrapper: :input_group_form) do |user| %>
