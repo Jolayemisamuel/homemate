@@ -1,0 +1,24 @@
+@import "variables";
+
+//
+// Match email theme with site theme
+//
+
+$primary-color: $primary;
+$secondary-color: $secondary;
+$success-color: $success;
+$warning-color: $warning;
+$light-gray: $light;
+$dark-gray: $dark;
+
+@import "foundation-emails";
+
+.body {
+  padding-top: $spacer;
+  padding-bottom: $spacer;
+}
+
+.container {
+  margin-top: $spacer;
+  margin-bottom: $spacer;
+}
