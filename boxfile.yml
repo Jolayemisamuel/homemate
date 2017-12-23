@@ -1,0 +1,21 @@
+run.config:
+  engine: ruby
+
+  extra_packages:
+    - nodejs
+    - pkgconf
+    - libxml2
+    - libxslt
+    - nginx
+
+  cache_dirs:
+    - node_modules
+
+  extra_steps:
+    - yarn install
+
+data.db:
+  image: nanobox/postgresql:9.5
+
+data.db:
+  image: nanobox/redis:3.2

@@ -7,7 +7,6 @@ end
 
 
 gem 'rails', '~> 5.1.4'
-gem 'sqlite3'
 gem 'puma', '~> 3.7'
 gem 'webpacker', '~> 3.0'
 gem 'jbuilder', '~> 2.5'
@@ -23,8 +22,15 @@ gem 'paperclip', '~> 5.0.0'
 gem 'pdfkit', '~> 0.8'
 gem 'gocardless', '~> 1.13'
 
+group :production do
+  gem 'pg'
+  gem 'redis-rails'
+  gem 'resque'
+end
+
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'sqlite3'
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
   gem 'yard'

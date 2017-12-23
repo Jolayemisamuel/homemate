@@ -1,0 +1,12 @@
+cache:
+  host: <%= ENV['DATA_REDIS_HOST'] %>
+  port: 6379
+  db: 0
+  password: <%= ENV.fetch('DATA_REDIS_PASSWORD') { null } %>
+  namespace: cache
+
+resque:
+  host: <%= ENV['DATA_REDIS_HOST'] %>
+  port: 6379
+  db: 1
+  password: <%= ENV.fetch('DATA_REDIS_PASSWORD') { null } %>
