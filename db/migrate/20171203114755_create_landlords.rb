@@ -4,10 +4,5 @@ class CreateLandlords < ActiveRecord::Migration[5.1]
       t.string        :name
       t.timestamps
     end
-
-    create_join_table :landlords, :contacts do |t|
-      t.index         :landlord_id
-      t.index         :contact_id
-    end
   end
 end

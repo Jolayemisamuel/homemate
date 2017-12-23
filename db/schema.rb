@@ -13,27 +13,19 @@
 ActiveRecord::Schema.define(version: 20171217011914) do
 
   create_table "contacts", force: :cascade do |t|
-    t.string "name"
+    t.string "contactable_type"
+    t.integer "contactable_id"
+    t.string "title"
+    t.string "first_name"
+    t.string "last_name"
     t.string "role"
     t.string "email"
     t.string "phone"
     t.string "address"
+    t.boolean "primary", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "contacts_landlords", id: false, force: :cascade do |t|
-    t.integer "landlord_id", null: false
-    t.integer "contact_id", null: false
-    t.index ["contact_id"], name: "index_contacts_landlords_on_contact_id"
-    t.index ["landlord_id"], name: "index_contacts_landlords_on_landlord_id"
-  end
-
-  create_table "contacts_tenants", id: false, force: :cascade do |t|
-    t.integer "tenant_id", null: false
-    t.integer "contact_id", null: false
-    t.index ["contact_id"], name: "index_contacts_tenants_on_contact_id"
-    t.index ["tenant_id"], name: "index_contacts_tenants_on_tenant_id"
+    t.index ["contactable_type", "contactable_id"], name: "index_contacts_on_contactable_type_and_contactable_id"
   end
 
   create_table "deposits", force: :cascade do |t|
@@ -173,11 +165,11 @@ ActiveRecord::Schema.define(version: 20171217011914) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "first_name"
-    t.string "last_name"
     t.string "username"
     t.string "email"
     t.string "encrypted_password", default: "", null: false
+    t.boolean "is_admin", default: false, null: false
+    t.integer "contact_id"
     t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
@@ -188,8 +180,9 @@ ActiveRecord::Schema.define(version: 20171217011914) do
     t.datetime "locked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["username"], name: "index_users_on_username", unique: true
+    t.index ["contact_id"], name: "index_users_on_contact_id"
+    t.index ["email"], name: "index_users_on_email"
+    t.index ["username"], name: "index_users_on_username"
   end
 
   create_table "utilities", force: :cascade do |t|

@@ -30,4 +30,11 @@ class ApplicationController < ActionController::Base
       redirect_back fallback_location: root_path
     end
   end
+
+  def require_admin
+    unless current_user.is_admin?
+      flash[:danger] = 'You are not authorised to visit this page'
+      redirect_back fallback_location: root_path
+    end
+  end
 end
