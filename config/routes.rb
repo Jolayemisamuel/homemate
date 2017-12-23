@@ -21,8 +21,10 @@ Rails.application.routes.draw do
     end
 
     resources :utilities do
-      resources :prices, only: [:new, :create, :destroy], controller: 'utility_prices'
-      resources :usages, only: [:index, :new, :create, :destroy], controller: 'utility_usages'
+      scope module: :utilities do
+        resources :prices, only: [:new, :create, :destroy]
+        resources :usages, only: [:index, :new, :create, :destroy]
+      end
     end
   end
 
@@ -32,10 +34,10 @@ Rails.application.routes.draw do
   end
 
   resources :users do
-    get :unlock, on: :edit
+    post :unlock, on: :member
   end
 
   devise_for :users, controllers: {
-      sessions: 'users/sessions'
+    sessions: 'users/sessions'
   }
 end

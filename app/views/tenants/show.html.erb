@@ -2,6 +2,13 @@
 
 <h2><%= @tenant.name %></h2>
 
+<% unless @tenant.tenant_checks.present? %>
+  <div class="alert alert-danger">
+    <strong>Tenant check required</strong>: please ensure that one is carried out prior to any tenancies.
+    You can record a completed check <%= link_to('here', new_tenant_check_path(@tenant)) %>.
+  </div>
+<% end %>
+
 <div class="card mb-3">
   <h4 class="card-header">Access Accounts</h4>
   <div class="card-content">
@@ -29,7 +36,7 @@
         <td class="text-right">
           <div class="btn-group btn-group-sm" role="group">
             <% if user.access_locked? %>
-            <%= link_to(unlock_user_path(user), class: 'btn btn-primary', alt: 'Unlock') do %>
+            <%= link_to(unlock_user_path(user), method: :post, class: 'btn btn-primary', alt: 'Unlock') do %>
               <i class="fas fa-unlock-alt fa-fw"></i>
             <% end %>
             <% end %>
