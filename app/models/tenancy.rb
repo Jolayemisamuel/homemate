@@ -25,12 +25,12 @@ class Tenancy < ApplicationRecord
   belongs_to :rentable, polymorphic: true
   belongs_to :tenant
   has_many :documents, as: :attachable
-  has_many :transactions, as: :transactionable
+  has_many :transactions
   has_one :deposit
 
   validates_associated :tenant
   validates :rent, numericality: { greater_than: 0 }
-  validates :rent_period, inclusion: {in: '%w[w m]', message:"%{value} is not a valid rent period"}
+  validates :rent_period, inclusion: {in: %w[w m], message:"%{value} is not a valid rent period"}
   validate :validate_rent_payment_day
   validates :start_date, presence: true
 
@@ -44,8 +44,8 @@ class Tenancy < ApplicationRecord
   end
 
   def self.belongs_to_property(property)
-    where(rentable_type: Property).where(rentable_id: property.id)
-      .or(where(rentable_type: Room).where(rentable_id: property.rooms.each.pluck(&:id)))
+    where(rentable_type: 'Property').where(rentable_id: property.id)
+      .or(where(rentable_type: 'Room').where(rentable_id: property.rooms.each.pluck(&:id)))
   end
 
   def is_active?

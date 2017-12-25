@@ -27,7 +27,7 @@ class PropertiesController < ApplicationController
   end
 
   def show
-    @property = current_user.landlord.properties.include(:rooms).find(params[:id])
+    @property = current_user.landlord.properties.includes(:rooms).find(params[:id])
     @tenancies = Tenancy.belongs_to_property(@property).order(start_date: :asc)
   end
 
@@ -39,7 +39,7 @@ class PropertiesController < ApplicationController
     @property = current_properties.find(params[:id])
 
     if @property.update(property_params)
-      redirect_back fallback_location: properties_path
+      redirect_to property_path(@property)
     else
       render 'edit'
     end
@@ -62,7 +62,7 @@ class PropertiesController < ApplicationController
   def destroy
     @property.destroy!
 
-    redirect_back properties_path
+    redirect_to properties_path
   end
 
   private

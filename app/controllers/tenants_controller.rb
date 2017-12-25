@@ -29,7 +29,7 @@ class TenantsController < ApplicationController
   end
 
   def show
-    @tenant = Tenant.include(:contacts, :tenant_checks, :tenancies).find(params[:id])
+    @tenant = Tenant.includes(:contacts, :tenant_checks, :tenancies).find(params[:id])
   end
 
   def edit

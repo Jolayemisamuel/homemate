@@ -21,7 +21,7 @@
 
 module Tenants
   class UsersController < ApplicationController
-    include ControllerConcerns::UserCrud
+    include UserCrud
     before_action :authenticate_user!, :require_landlord
 
     def edit

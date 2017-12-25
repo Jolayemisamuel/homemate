@@ -84,22 +84,22 @@
           <div class="btn-group btn-group-sm" role="group">
             <% if c.has_user? %>
             <% if c.user.access_locked? %>
-            <%= link_to(unlock_tenant_user_path(c.user), method: :post, class: 'btn btn-primary', alt: 'Unlock') do %>
+            <%= link_to(unlock_tenant_user_path(@tenant, c.user), method: :post, class: 'btn btn-primary', alt: 'Unlock') do %>
               <i class="fas fa-unlock-alt fa-fw"></i>
             <% end %>
             <% end %>
-            <%= link_to(edit_tenant_user_path(c.user), class: 'btn btn-warning', alt: 'Edit') do %>
+            <%= link_to(edit_tenant_user_path(@tenant, c.user), class: 'btn btn-warning', alt: 'Edit') do %>
               <i class="fas fa-edit fa-fw"></i>
             <% end %>
-            <%= link_to(tenant_user_path(c.user), data: {:confirm => 'Are you sure?'}, method: :delete,
+            <%= link_to(tenant_user_path(@tenant, c.user), data: {:confirm => 'Are you sure?'}, method: :delete,
               class: 'btn btn-danger', alt: 'Delete') do %>
               <i class="fas fa-trash fa-fw"></i>
             <% end %>
             <% else %>
-            <%= link_to(edit_tenant_contact_path(c), class: 'btn btn-warning', alt: 'Edit') do %>
+            <%= link_to(edit_tenant_contact_path(@tenant, c), class: 'btn btn-warning', alt: 'Edit') do %>
               <i class="fas fa-edit fa-fw"></i>
             <% end %>
-            <%= link_to(tenant_contact_path(c), data: {:confirm => 'Are you sure?'}, method: :delete,
+            <%= link_to(tenant_contact_path(@tenant, c), data: {:confirm => 'Are you sure?'}, method: :delete,
               class: 'btn btn-danger', alt: 'Delete') do %>
               <i class="fas fa-trash fa-fw"></i>
             <% end %>
@@ -112,8 +112,8 @@
       <tfoot>
       <tr>
         <td colspan="5" class="text-right">
-          <div class="btn-group btn-group-sm">
-            <%= link_to('Add contact', new_tenant_contact_path(@tenant), class: 'btn btn-danger') %>
+          <div class="btn-group">
+            <%= link_to('Add contact', new_tenant_contact_path(@tenant), class: 'btn btn-warning') %>
             <%= link_to('Add account', new_tenant_user_path(@tenant), class: 'btn btn-primary') %>
           </div>
         </td>

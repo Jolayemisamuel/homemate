@@ -142,8 +142,7 @@ ActiveRecord::Schema.define(version: 20171217011914) do
     t.decimal "amount"
     t.string "description"
     t.string "external_reference"
-    t.string "transactionable_type"
-    t.integer "transactionable_id"
+    t.integer "tenancy_id"
     t.boolean "payment", default: false, null: false
     t.boolean "processed", default: true, null: false
     t.date "credit_date"
@@ -152,8 +151,8 @@ ActiveRecord::Schema.define(version: 20171217011914) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["invoice_id"], name: "index_transactions_on_invoice_id"
+    t.index ["tenancy_id"], name: "index_transactions_on_tenancy_id"
     t.index ["tenant_id"], name: "index_transactions_on_tenant_id"
-    t.index ["transactionable_type", "transactionable_id"], name: "index_transactions_on_transactionable"
   end
 
   create_table "user_associations", force: :cascade do |t|

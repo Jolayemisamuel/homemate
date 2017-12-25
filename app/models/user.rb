@@ -30,7 +30,7 @@ class User < ApplicationRecord
   validates_associated :contact
   validates :username, uniqueness: true, if: :username_changed?
   validates :email, uniqueness: true, if: :email_changed?
-  validates :password, confirmation: true, if: :password_required?
+  validates :password, confirmation: true, allow_nil: true
 
   def is_tenant?
     user_association.associable.is_a? Tenant

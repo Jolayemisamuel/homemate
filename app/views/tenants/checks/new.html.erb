@@ -1,18 +1,20 @@
-<% @title = 'Create Tenant Check' %>
+<% @title = 'Add Tenant Check' %>
 
-<h2>Create Tenant Check for <%= @tenant.name %></h2>
+<h2>Add Tenant Check for <%= @tenant.name %></h2>
 
 <%= simple_form_for(@tenant_check, url: tenant_checks_path(@tenant), wrapper: :horizontal_form) do |f| %>
   <%= f.input :document_type, class: "form-control", placeholder: "Document Type" %>
   <div class="form-group row">
-    <div class="col">
-      <label class="custom-file">
+    <div class="col-sm-3"><%= f.label "Document", required: true %></div>
+    <div class="col-sm-9">
+      <label class="custom-file" lang="en">
         <%= f.file_field :document_to_attach, class: "custom-file-input" %>
         <span class="custom-file-control"></span>
       </label>
     </div>
   </div>
-  <%= f.date :expires, class: "form-control", start_year: Date.today.year, include_blank: true, hint: 'Optional' %>
+  <%= f.input :expires, class: "form-control", start_year: Date.today.year, include_blank: true, hint: 'Optional',
+    wrapper: :horizontal_multiselect %>
   <div class="form-group row">
     <div class="col btn-group">
       <%= f.submit "Create", class: "btn btn-primary" %>

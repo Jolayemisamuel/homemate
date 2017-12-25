@@ -27,32 +27,30 @@ class ContactsController < ApplicationController
   end
 
   def new
-    @contact = current_user.user_association.associable.contact.new
-    render 'new', associable: nil
+    @contact = current_user.user_association.associable.contacts.new
   end
 
   def create
-    @contact = current_user.user_association.associable.contact.new(contact_params)
+    @contact = current_user.user_association.associable.contacts.new(contact_params)
 
     if @contact.save
       redirect_to contacts_path
     else
-      render 'new', associable: nil
+      render 'new'
     end
   end
 
   def edit
-    @contact = current_user.user_association.associable.contact.find(params[:id])
-    render 'edit', associable: nil
+    @contact = current_user.user_association.associable.contacts.find(params[:id])
   end
 
   def update
-    @contact = current_user.user_association.associable.contact.find(params[:id])
+    @contact = current_user.user_association.associable.contacts.find(params[:id])
 
     if @contact.update(contact_params)
       redirect_to contacts_path
     else
-      render 'edit', associable: nil
+      render 'edit'
     end
   end
 

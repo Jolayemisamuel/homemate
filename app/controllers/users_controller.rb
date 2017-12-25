@@ -20,15 +20,13 @@
 ##
 
 class UsersController < ApplicationController
-  include ControllerConcerns::UserCrud
+  include UserCrud
   before_action :authenticate_user!, :require_tenant_or_landlord
 
   def new
-    @contact = current_user.user_association.associable.contact.new
+    @contact = current_user.user_association.associable.contacts.new
     @user = User.new
     @user.contact = @contact
-
-    render 'new', associable: nil
   end
 
   def create
@@ -38,7 +36,7 @@ class UsersController < ApplicationController
       end
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique
       flash[:danger] = 'Failed to create new user. This is normally because one of the attributes is invalid.'
-      render 'new', associable: nil && return
+      render 'new' && return
     end
 
     redirect_to contacts_path
@@ -47,18 +45,19 @@ class UsersController < ApplicationController
   def edit
     @user = current_user.user_association.associable.users.find(params[:id])
     @contact = @user.contact
-
-    render 'edit', associable: nil
   end
 
   def update
+    @user = current_user.user_association.associable.users.find(params[:id])
+    @contact = @user.contact
+
     begin
       ActiveRecord::Base.transaction do
-        update_record(@user)
+        update_record(@user, regenerate_password: false)
       end
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique
       flash[:danger] = 'Failed to update user. This is normally because one of the attributes is invalid.'
-      render 'edit', associable: nil && return
+      render 'edit' && return
     end
   end
 end

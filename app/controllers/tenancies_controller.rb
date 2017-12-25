@@ -82,6 +82,6 @@ class TenanciesController < ApplicationController
   end
 
   def tenancy_params
-    params.require(:tenancy).permit(:tenant, :rent, :rent_period, :rent_payment_day, :start_date, :end_date)
+    params.require(:tenancy).permit(:tenant_id, :rent, :rent_period, :rent_payment_day, :start_date, :end_date)
   end
 end

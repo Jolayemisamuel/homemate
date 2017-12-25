@@ -6,8 +6,7 @@ class CreateTransactions < ActiveRecord::Migration[5.1]
       t.numeric     :amount
       t.string      :description
       t.string      :external_reference, nullable: true
-      t.belongs_to  :transactionable, polymorphic: true, index: {:name => 'index_transactions_on_transactionable'},
-                    nullable: true
+      t.belongs_to  :tenancy, nullable: true
       t.boolean     :payment, null: false, default: false
       t.boolean     :processed, null: false, default: true
       t.date        :credit_date, nullable: true

@@ -18,14 +18,14 @@ module SimpleForm
 
     module RadioLabels
       def radio_label(wrapper_options = nil)
-        indicator + label unless options[:radio_label].nil?
+        indicator + span_label unless options[:radio_label].nil?
       end
 
       def indicator
-        template.content_tag(:span, '', class: 'custom-control-input')
+        template.content_tag(:span, '', class: 'custom-control-indicator')
       end
 
-      def label
+      def span_label
         template.content_tag(:span, options[:radio_label], class: 'custom-control-description')
       end
     end

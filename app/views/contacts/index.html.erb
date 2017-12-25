@@ -11,7 +11,7 @@
     <th colspan="2"></th>
   </tr>
   </thead>
-  <tbody>
+  <tbody class="bg-white">
   <% @contacts.each do |c| %>
     <tr>
       <th><%= c.title + ' ' + c.first_name + ' ' + c.last_name %></th>
@@ -55,9 +55,9 @@
   <tfoot>
   <tr>
     <td colspan="5" class="text-right">
-      <div class="btn-group btn-group-sm">
-        <%= link_to('Add contact', new_contact_path, class: 'btn btn-danger') %>
-        <%= link_to('Add account', new_tenant_user_path, class: 'btn btn-primary') %>
+      <div class="btn-group">
+        <%= link_to('Add contact', new_contact_path, class: 'btn btn-warning') %>
+        <%= link_to('Add account', new_user_path, class: 'btn btn-primary') %>
       </div>
     </td>
   </tr>

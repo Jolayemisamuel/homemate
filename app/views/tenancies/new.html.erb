@@ -2,11 +2,13 @@
 
 <h2>Create New Tenancy for <%= @rentable.name %></h2>
 
-<%= simple_form_for(@tenancy, wrapper: :horizontal_form) do |f| %>
-  <%= f.association :tenant, label: 'Tenant' %>
-  <%= f.input :rent, icon: 'fas fa-pound-sign fa-fw', label: 'Rent', wrapper: :horizontal_input_group %>
-  <%= f.input :rent_period, label: 'Rent Period', collection: [['Weekly', 'w'], ['Monthly', 'm']] %>
-  <%= f.input :rent_payment_day, collection: 1..28, label: 'Day for Rent Payment' %>
+<%= simple_form_for(@tenancy, url: url_for([@rentable, @tenancy]), wrapper: :horizontal_form) do |f| %>
+  <%= f.association :tenant, label: 'Tenant', wrapper: :horizontal_multiselect %>
+  <%= f.input :rent, input_html: {min: 0, step: 0.01}, icon: 'fas fa-pound-sign fa-fw', label: 'Rent',
+    wrapper: :horizontal_input_group, required: true %>
+  <%= f.input :rent_period, label: 'Rent Period', collection: [['Weekly', 'w'], ['Monthly', 'm']], required: true,
+    wrapper: :horizontal_multiselect %>
+  <%= f.input :rent_payment_day, collection: 1..28, label: 'Day for Rent Payment', wrapper: :horizontal_multiselect %>
   <%= f.input :start_date, label: 'Start Date', start_year: Date.today.year, wrapper: :horizontal_multiselect %>
   <%= f.input :end_date, label: 'End Date', include_blank: true, wrapper: :horizontal_multiselect,
     hint: 'Leave empty to create an open-ended tenancy' %>

@@ -5,7 +5,7 @@
 <%= simple_form_for(@property, wrapper: :horizontal_form) do |f| %>
   <%= f.input :name, class: "form-control", label: "Name" %>
   <%= f.input :address, class: "form-control", label: "Address" %>
-  <%= f.input :postcode, class: "form-control", label: "AB1 2CD" %>
+  <%= f.input :postcode, class: "form-control", label: "Postcode" %>
   <%= f.input :size, class: "form-control", step: 0.1, label: "Size", unit: 'm<sup>2</sup>'.html_safe,
     wrapper: :horizontal_input_group %>
   <div class="form-group row">

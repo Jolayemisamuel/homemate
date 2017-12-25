@@ -23,6 +23,9 @@
     </td>
     <td class="text-right">
       <div class="btn-group btn-group-sm" role="group">
+        <%= link_to(tenant_path(tenant), class: 'btn btn-primary', alt: 'View') do %>
+          <i class="fas fa-search fa-fw"></i>
+        <% end %>
         <%= link_to(edit_tenant_path(tenant), class: 'btn btn-warning', alt: 'Edit') do %>
           <i class="fas fa-edit fa-fw"></i>
         <% end %>
