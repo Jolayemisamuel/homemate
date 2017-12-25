@@ -40,15 +40,15 @@ class Tenant < ApplicationRecord
     tenancies.active.first
   end
 
-  def future_tenancy
-    tenancies.future.first
+  def future_tenancies
+    tenancies.future
   end
 
   def current_tenancy
     if active_tenancy.present?
       active_tenancy
     else
-      future_tenancy
+      future_tenancies.first
     end
   end
 

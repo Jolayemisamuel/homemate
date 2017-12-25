@@ -20,12 +20,17 @@
 ##
 
 class User < ApplicationRecord
-  devise :database_authenticatable, :rememberable, :trackable, :lockable, :validatable
+  devise :database_authenticatable, :rememberable, :trackable, :lockable
 
   belongs_to    :contact
   has_one :user_association
   has_one :landlord, through: :user_association, source: :associable, source_type: 'Landlord'
   has_one :tenant, through: :user_association, source: :associable, source_type: 'Tenant'
+
+  validates_associated :contact
+  validates :username, uniqueness: true, if: :username_changed?
+  validates :email, uniqueness: true, if: :email_changed?
+  validates :password, confirmation: true, if: :password_required?
 
   def is_tenant?
     user_association.associable.is_a? Tenant

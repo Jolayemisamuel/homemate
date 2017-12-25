@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20171217011914) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_landlords_on_name", unique: true
   end
 
   create_table "mandates", force: :cascade do |t|
@@ -90,6 +91,7 @@ ActiveRecord::Schema.define(version: 20171217011914) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["landlord_id"], name: "index_properties_on_landlord_id"
+    t.index ["name"], name: "index_properties_on_name", unique: true
   end
 
   create_table "rooms", force: :cascade do |t|
@@ -181,8 +183,8 @@ ActiveRecord::Schema.define(version: 20171217011914) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["contact_id"], name: "index_users_on_contact_id"
-    t.index ["email"], name: "index_users_on_email"
-    t.index ["username"], name: "index_users_on_username"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   create_table "utilities", force: :cascade do |t|
