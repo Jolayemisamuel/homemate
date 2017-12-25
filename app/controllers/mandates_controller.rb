@@ -3,7 +3,7 @@ require 'gocardless_pro'
 
 class MandatesController < ApplicationController
   before_action :authenticate_user!
-  before_action :require_tenant, except: [:index, :show]
+  before_action :require_tenant
 
   def new
     if current_user.tenant.mandates.present?
@@ -63,7 +63,7 @@ class MandatesController < ApplicationController
 
     current_user.user_association.associable.mandates.create(
       method: @flow.scheme,
-      reference: @flow.links[:mandate],
+      reference: @flow.id,
       active: true
     )
   end

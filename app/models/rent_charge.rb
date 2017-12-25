@@ -19,10 +19,10 @@
 # along with HomeMate.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-class Deposit < ApplicationRecord
-  belongs_to :tenant
-  belongs_to :tenancy
-  has_one :transaction, as: :transactionable, required: false
+require 'active_support/core_ext/date'
 
-  default_scope {where(refunded: false)}
+class RentCharge < ApplicationRecord
+  belongs_to :tenancy
+  belongs_to :rentable, polymorphic: true
+  belongs_to :transaction, as: :transactionable, required: false
 end

@@ -9,7 +9,7 @@
   <li class="nav-item"><small class="nav-link font-weight-bold text-secondary">My Account</small></li>
   <li class="nav-item"><%= link_to 'Contacts', contacts_path, class: 'nav-link' %></li>
     <% if current_user.is_tenant? %>
-    <li class="nav-item"><%= link_to 'Invoices', invoices_path, class: 'nav-link' %></li>
+    <li class="nav-item"><%= link_to 'Bills & Transactions', transactions_path, class: 'nav-link' %></li>
     <% end %>
     <% if current_user.is_landlord? %>
     <li class="nav-item"><%= link_to 'Properties', properties_path, class: 'nav-link' %></li>

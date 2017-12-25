@@ -19,10 +19,15 @@
 # along with HomeMate.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-class Deposit < ApplicationRecord
-  belongs_to :tenant
-  belongs_to :tenancy
-  has_one :transaction, as: :transactionable, required: false
-
-  default_scope {where(refunded: false)}
+class CreateRentCharges < ActiveRecord::Migration[5.1]
+  def change
+    create_table      :rent_charges do |t|
+      t.numeric       :amount
+      t.belongs_to    :tenancy, index: true
+      t.belongs_to    :rentable, polymoprhic: true, index: true
+      t.date          :from_date
+      t.date          :to_date
+      t.timestamps
+    end
+  end
 end

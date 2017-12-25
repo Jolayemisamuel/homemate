@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171217011914) do
+ActiveRecord::Schema.define(version: 20171225133252) do
 
   create_table "contacts", force: :cascade do |t|
     t.string "contactable_type"
@@ -73,8 +73,9 @@ ActiveRecord::Schema.define(version: 20171217011914) do
     t.integer "tenant_id"
     t.string "method"
     t.string "reference"
-    t.boolean "active", default: true, null: false
-    t.string "last_message"
+    t.boolean "active", default: false, null: false
+    t.boolean "cancelled", default: false, null: false
+    t.string "failure_message"
     t.date "last_success"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -92,6 +93,18 @@ ActiveRecord::Schema.define(version: 20171217011914) do
     t.datetime "updated_at", null: false
     t.index ["landlord_id"], name: "index_properties_on_landlord_id"
     t.index ["name"], name: "index_properties_on_name", unique: true
+  end
+
+  create_table "rent_charges", force: :cascade do |t|
+    t.decimal "amount"
+    t.integer "tenancy_id"
+    t.integer "rentable_id"
+    t.date "from_date"
+    t.date "to_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rentable_id"], name: "index_rent_charges_on_rentable_id"
+    t.index ["tenancy_id"], name: "index_rent_charges_on_tenancy_id"
   end
 
   create_table "rooms", force: :cascade do |t|
@@ -143,6 +156,8 @@ ActiveRecord::Schema.define(version: 20171217011914) do
     t.string "description"
     t.string "external_reference"
     t.integer "tenancy_id"
+    t.string "transactionable_type"
+    t.integer "transactionable_id"
     t.boolean "payment", default: false, null: false
     t.boolean "processed", default: true, null: false
     t.date "credit_date"
@@ -153,6 +168,7 @@ ActiveRecord::Schema.define(version: 20171217011914) do
     t.index ["invoice_id"], name: "index_transactions_on_invoice_id"
     t.index ["tenancy_id"], name: "index_transactions_on_tenancy_id"
     t.index ["tenant_id"], name: "index_transactions_on_tenant_id"
+    t.index ["transactionable_type", "transactionable_id"], name: "index_transactions_on_transactionable"
   end
 
   create_table "user_associations", force: :cascade do |t|
