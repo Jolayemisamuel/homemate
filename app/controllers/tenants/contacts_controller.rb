@@ -21,7 +21,7 @@
 
 module Tenants
   class ContactsController < ApplicationController
-    before_action :require_admin
+    before_action :require_landlord
 
     def edit
       tenant = Tenant.find(params[:tenant_id])

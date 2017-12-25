@@ -1,6 +1,6 @@
 <% @title = 'Update Contact' %>
 
-<h2>Update Contact for <%= associable.name %></h2>
+<h2>Update Contact</h2>
 
 <%= simple_form_for(@contact, url: url_for([associable, @contact]), wrapper: :horizontal_form) do |f| %>
   <%= f.input :title, label: "Title" %>

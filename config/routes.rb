@@ -18,6 +18,11 @@ Rails.application.routes.draw do
     end
   end
 
+  scope '/profile' do
+    resources :contacts
+    resources :users, except: [:index]
+  end
+
   resources :properties, shallow: true do
     resources :tenancies
 
@@ -44,8 +49,6 @@ Rails.application.routes.draw do
       resources :usages, only: [:index, :new, :create, :destroy]
     end
   end
-
-  resources :users, only: [:edit, :update]
 
   devise_for :users, controllers: {
     sessions: 'users/sessions'

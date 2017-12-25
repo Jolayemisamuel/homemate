@@ -1,0 +1,65 @@
+<% @title = 'My Contacts' %>
+
+<h2>My Contacts</h2>
+
+<table class="table">
+  <thead class="thead-light">
+  <tr>
+    <th>Name</th>
+    <th>Role</th>
+    <th>Primary</th>
+    <th colspan="2"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @contacts.each do |c| %>
+    <tr>
+      <th><%= c.title + ' ' + c.first_name + ' ' + c.last_name %></th>
+      <td><%= c.role %></td>
+      <td>
+        <% if c.primary? %>
+          <i class="fas fa-check text-success" aria-label="Yes"></i>
+        <% else %>
+          <i class="fas fa-times text-danger" aria-label="No"></i>
+        <% end %>
+      </td>
+      <td>
+        <% unless c.has_user? %>
+          <span class="badge badge-warning">No Account</span>
+        <% end %>
+      </td>
+      <td class="text-right">
+        <div class="btn-group btn-group-sm" role="group">
+          <% if c.has_user? %>
+            <%= link_to(edit_user_path(c.user), class: 'btn btn-warning', alt: 'Edit') do %>
+              <i class="fas fa-edit fa-fw"></i>
+            <% end %>
+            <%= link_to(user_path(c.user), data: {:confirm => 'Are you sure?'}, method: :delete,
+                        class: 'btn btn-danger', alt: 'Delete') do %>
+              <i class="fas fa-trash fa-fw"></i>
+            <% end %>
+          <% else %>
+            <%= link_to(edit_contact_path(c), class: 'btn btn-warning', alt: 'Edit') do %>
+              <i class="fas fa-edit fa-fw"></i>
+            <% end %>
+            <%= link_to(contact_path(c), data: {:confirm => 'Are you sure?'}, method: :delete,
+                        class: 'btn btn-danger', alt: 'Delete') do %>
+              <i class="fas fa-trash fa-fw"></i>
+            <% end %>
+          <% end %>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td colspan="5" class="text-right">
+      <div class="btn-group btn-group-sm">
+        <%= link_to('Add contact', new_contact_path, class: 'btn btn-danger') %>
+        <%= link_to('Add account', new_tenant_user_path, class: 'btn btn-primary') %>
+      </div>
+    </td>
+  </tr>
+  </tfoot>
+</table>

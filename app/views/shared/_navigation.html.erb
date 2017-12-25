@@ -5,11 +5,17 @@
     </a>
   </li>
   <div class="dropdown-divider"></div>
+  <% if current_user.is_tenant? || current_user.is_landlord? %>
+  <h6 class="dropdown-header">My Account</h6>
+  <li class="nav-item"><%= link_to 'Contacts', contacts_path, class: 'nav-link' %></li>
   <% if current_user.is_landlord? %>
   <li class="nav-item"><%= link_to 'Properties', properties_path, class: 'nav-link' %></li>
   <li class="nav-item"><%= link_to 'Tenants', tenants_path, class: 'nav-link' %></li>
   <% end %>
+  <div class="dropdown-divider"></div>
+  <% end %>
   <% if current_user.is_admin? %>
+  <h6 class="dropdown-header">Admin</h6>
   <li class="nav-item"><%= link_to 'Landlords', landlords_path, class: 'nav-link' %></li>
   <% end %>
 </ul>

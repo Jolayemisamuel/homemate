@@ -1,6 +1,6 @@
 <% @title = 'Create Contact' %>
 
-<h2>Create Contact for <%= associable.name %></h2>
+<h2>Create Contact<% unless associable.nil? %> for <%= associable.name %><% end %></h2>
 
 <%= simple_form_for(@contact, url: url_for([:create, associable, @contact]), wrapper: :horizontal_form) do |f| %>
   <%= f.input :title, label: "Title" %>

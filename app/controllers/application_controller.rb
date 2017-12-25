@@ -17,6 +17,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def require_tenant_or_landlord
+    unless current_user.is_tenant? || current_user.is_landlord?
+      flash[:danger] = 'You are not authorised to visit this page'
+      redirect_back fallback_location: root_path
+    end
+  end
+
   def require_tenant
     unless current_user.is_tenant?
       flash[:danger] = 'You are not authorised to visit this page'

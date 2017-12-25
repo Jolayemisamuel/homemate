@@ -4,7 +4,9 @@ class UtilitiesController < ApplicationController
   layout 'application'
 
   def index
-
+    @utilities = Utility.where(
+        property_id: current_properties.collect { |property| property.id }
+    ).include(:utility_prices, :utility_usages)
   end
 
   def show
