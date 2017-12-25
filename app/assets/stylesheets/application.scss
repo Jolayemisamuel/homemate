@@ -41,3 +41,21 @@
     }
   }
 }
+
+// Temporary and dirty fix for Devise alerts
+.alert-notice {
+  @extend .alert-info
+}
+
+.alert-alert {
+  @extend .alert-warning
+}
+
+// Bootstrap hack for compatibility with Simple Form
+input[aria-invalid="false"], select[aria-invalid="false"], textarea[aria-invalid="false"] {
+  @extend .is-valid
+}
+
+input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="true"] {
+  @extend .is-invalid
+}

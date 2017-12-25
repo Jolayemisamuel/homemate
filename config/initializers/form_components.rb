@@ -15,7 +15,26 @@ module SimpleForm
         options[:unit] unless options[:unit].nil?
       end
     end
+
+    module RadioLabels
+      def radio_label(wrapper_options = nil)
+        indicator + label unless options[:radio_label].nil?
+      end
+
+      def indicator
+        template.content_tag(:span, '', class: 'custom-control-input')
+      end
+
+      def label
+        template.content_tag(:span, options[:radio_label], class: 'custom-control-description')
+      end
+    end
   end
 end
 
-SimpleForm::Inputs::Base.send(:include, SimpleForm::Components::Icons, SimpleForm::Components::Units)
+SimpleForm::Inputs::Base.send(
+    :include,
+    SimpleForm::Components::Icons,
+    SimpleForm::Components::Units,
+    SimpleForm::Components::RadioLabels
+)

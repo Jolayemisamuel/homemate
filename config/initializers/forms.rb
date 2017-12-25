@@ -90,11 +90,12 @@ SimpleForm.setup do |config|
     b.optional :readonly
 
     b.wrapper tag: 'div', class: 'col-sm-offset-3 col-sm-9' do |wr|
-      wr.wrapper tag: 'div', class: 'checkbox' do |ba|
-        ba.use :label_input
+      wr.wrapper tag: 'label', class: 'custom-control custom-checkbox' do |ba|
+        ba.use :input, class: 'custom-control-input'
+        ba.use :radio_label
       end
 
-      wr.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback' }
+      wr.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback d-block' }
       wr.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
     end
   end
