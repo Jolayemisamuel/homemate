@@ -15,7 +15,7 @@ SimpleForm.setup do |config|
     b.use :label, class: 'col-form-label'
 
     b.use :input, class: 'form-control'
-    b.use :error, wrap_with: { tag: 'small', class: 'form-text text-danger text-muted' }
+    b.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback' }
     b.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
   end
 
@@ -28,7 +28,7 @@ SimpleForm.setup do |config|
     b.use :label, class: 'col-form-label'
 
     b.use :input
-    b.use :error, wrap_with: { tag: 'small', class: 'form-text text-danger text-muted' }
+    b.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback' }
     b.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
   end
 
@@ -40,7 +40,7 @@ SimpleForm.setup do |config|
       ba.use :label_input
     end
 
-    b.use :error, wrap_with: { tag: 'small', class: 'form-text text-danger text-muted' }
+    b.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback' }
     b.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
   end
 
@@ -65,7 +65,7 @@ SimpleForm.setup do |config|
 
     b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
       ba.use :input, class: 'form-control'
-      ba.use :error, wrap_with: { tag: 'small', class: 'form-text text-danger text-muted' }
+      ba.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback' }
       ba.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
     end
   end
@@ -80,7 +80,7 @@ SimpleForm.setup do |config|
 
     b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
       ba.use :input
-      ba.use :error, wrap_with: { tag: 'small', class: 'form-text text-danger text-muted' }
+      ba.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback' }
       ba.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
     end
   end
@@ -94,7 +94,7 @@ SimpleForm.setup do |config|
         ba.use :label_input
       end
 
-      wr.use :error, wrap_with: { tag: 'small', class: 'form-text text-danger text-muted' }
+      wr.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback' }
       wr.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
     end
   end
@@ -107,7 +107,7 @@ SimpleForm.setup do |config|
 
     b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
       ba.use :input
-      ba.use :error, wrap_with: { tag: 'small', class: 'form-text text-danger text-muted' }
+      ba.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback' }
       ba.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
     end
   end
@@ -123,7 +123,7 @@ SimpleForm.setup do |config|
     b.use :label, class: 'sr-only'
 
     b.use :input, class: 'form-control'
-    b.use :error, wrap_with: { tag: 'small', class: 'form-text text-danger text-muted' }
+    b.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback' }
     b.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
   end
 
@@ -133,7 +133,7 @@ SimpleForm.setup do |config|
     b.use :label
     b.wrapper tag: 'div', class: 'form-inline' do |ba|
       ba.use :input, class: 'custom-select'
-      ba.use :error, wrap_with: { tag: 'small', class: 'form-text text-danger text-muted' }
+      ba.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback' }
       ba.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
     end
   end
@@ -144,7 +144,7 @@ SimpleForm.setup do |config|
     b.use :label, class: 'col-sm-3 col-form-label'
     b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
       ba.use :input, class: 'custom-select'
-      ba.use :error, wrap_with: { tag: 'small', class: 'form-text text-danger text-muted' }
+      ba.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback' }
       ba.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
     end
   end
@@ -163,7 +163,7 @@ SimpleForm.setup do |config|
       ba.use :input, class: 'form-control'
     end
 
-    b.use :error, wrap_with: { tag: 'small', class: 'form-text text-danger text-muted' }
+    b.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback d-block' }
     b.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
   end
 
@@ -179,11 +179,12 @@ SimpleForm.setup do |config|
 
     b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
       ba.wrapper tag: 'div', class: 'input-group' do |g|
-        g.use :icon, wrap_with: { tag: 'span', class: 'input-group-addon' }
+        g.optional :icon, wrap_with: { tag: 'span', class: 'input-group-addon' }
         g.use :input, class: 'form-control'
+        g.optional :unit, wrap_with: { tag: 'span', class: 'input-group-addon' }
       end
 
-      ba.use :error, wrap_with: { tag: 'small', class: 'form-text text-danger text-muted' }
+      ba.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback d-block' }
       ba.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
     end
   end

@@ -2,21 +2,12 @@
 
 <h2>Edit Property</h2>
 
-<%= simple_form_for(@property, url: properties_path, wrapper: :horizontal_form) do |f| %>
+<%= simple_form_for(@property, wrapper: :horizontal_form) do |f| %>
   <%= f.input :name, class: "form-control", placeholder: "Name" %>
   <%= f.input :address, class: "form-control", placeholder: "Address" %>
   <%= f.input :postcode, class: "form-control", placeholder: "AB1 2CD" %>
-  <div class="form-group row">
-    <div class="col-sm-3 col-form-label">
-      Size
-    </div>
-    <div class="col-sm-9">
-      <div class="input-group">
-        <%= f.number_field :size, class: "form-control", step: 0.1, placeholder: "Size" %>
-        <div class="input-group-addon">m<sup>2</sup></div>
-      </div>
-    </div>
-  </div>
+  <%= f.input :size, class: "form-control", step: 0.1, label: "Size", unit: 'm<sup>2</sup>'.html_safe,
+      wrapper: :horizontal_input_group %>
   <div class="form-group row">
     <div class="col btn-group">
       <%= f.submit "Update", class: "btn btn-warning" %>

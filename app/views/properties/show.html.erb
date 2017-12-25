@@ -1,6 +1,11 @@
 <% @title = @property.name %>
 
 <h2><small class="text-muted">Property: </small><%= @property.name %></h2>
+<div class="btn-group float-right">
+  <%= link_to('Edit', edit_property_path(@property), class: 'btn btn-warning') %>
+  <%= link_to('Create Tenancy', new_property_tenancy_path(@property), class: 'btn btn-primary') %>
+</div>
+
 <p>
   <%= @property.address %>
   <% if @property.postcode.present? %>
@@ -33,17 +38,17 @@
             <td><%= room.name %></td>
             <td>
               <% if room.tenancies.active.present? %>
-                <%= room.tenancies.active.tenant.name %>
+                <%= room.tenancies.active.first.tenant.name %>
               <% elsif room.tenancies.future.present? %>
-                <%= room.tenancies.future.tenant.name %> <small>(future)</small>
+                <%= room.tenancies.future.first.tenant.name %> <small>(future)</small>
               <% else %>
                 Unoccupied - <%= link_to('Add tenancy', new_room_tenancy_path(room)) %>
               <% end %>
             </td>
             <td class="text-right">
               <div class="btn-group btn-group-sm" role="group">
-                <%= link_to(room_path(room), class: 'btn btn-info', alt: 'View details') do %>
-                  <i class="fas fa-search fa-fw"></i>
+                <%= link_to(add_room_tenancy_path(room), class: 'btn btn-info', alt: 'View details') do %>
+                  <i class="fas fa-plus fa-fw"></i>
                 <% end %>
                 <%= link_to(edit_room_path(room), class: 'btn btn-warning', alt: 'Edit') do %>
                   <i class="fas fa-edit fa-fw"></i>
@@ -137,13 +142,49 @@
       </tbody>
       <tfoot>
       <tr>
-        <td colspan="4">
-          <div class="float-right">
-            <%= link_to('Add utility', new_property_utility_path(@property), class: 'btn btn-primary') %>
-          </div>
+        <td colspan="4" class="text-right">
+          <%= link_to('Add utility', new_property_utility_path(@property), class: 'btn btn-primary') %>
         </td>
       </tr>
       </tfoot>
+    </table>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <h4 class="card-header">Tenancies</h4>
+  <div class="card-content">
+    <table class="table">
+      <thead class="thead-light">
+      <tr>
+        <th>Tenant</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Room</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @tenancies.each do |tenancy| %>
+        <tr>
+          <th><%= tenancy.tenant.name %></th>
+          <td><%= tenancy.start_date.to_s(:rfc822) %></td>
+          <td><%= tenancy.end_date.empty? ? 'Open-ended' : tenancy.end_date.to_s(:rfc822) %></td>
+          <td><%= tenancy.belongs_to_room? ? tenancy.rentable.name : '' %></td>
+          <td>
+            <% if tenancy.is_active? %>
+              <span class="badge badge-success">Active</span>
+            <% elsif tenancy.is_future? %>
+              <span class="badge badge-info">Future</span>
+            <% else %>
+              <span class="badge badge-secondary">Past</span>
+            <% end %>
+          </td>
+          <td></td>
+        </tr>
+      <% end %>
+      </tbody>
     </table>
   </div>
 </div>

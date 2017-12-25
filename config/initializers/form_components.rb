@@ -9,7 +9,13 @@ module SimpleForm
         template.content_tag(:i, '', class: options[:icon])
       end
     end
+
+    module Units
+      def unit(wrapper_options = nil)
+        options[:unit] unless options[:unit].nil?
+      end
+    end
   end
 end
 
-SimpleForm::Inputs::Base.send(:include, SimpleForm::Components::Icons)
+SimpleForm::Inputs::Base.send(:include, SimpleForm::Components::Icons, SimpleForm::Components::Units)

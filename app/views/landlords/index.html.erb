@@ -1,0 +1,37 @@
+<% @title = 'Landlords' %>
+
+<h2>Landlords</h2>
+
+<table class="table">
+  <thead class="thead-light">
+  <tr>
+    <th>Name</th>
+    <th colspan="1"></th>
+  </tr>
+  </thead>
+  <tbody class="bg-white">
+  <% @landlords.each do |landlord| %>
+  <tr>
+    <th><%= landlord.name %></th>
+    <td class="text-right">
+      <div class="btn-group btn-group-sm" role="group">
+        <%= link_to(edit_landlord_path(landlord), class: 'btn btn-warning', alt: 'Edit') do %>
+          <i class="fas fa-edit fa-fw"></i>
+        <% end %>
+        <%= link_to(landlord_path(landlord), data: {:confirm => 'Are you sure?'}, method: :delete,
+          class: 'btn btn-danger', alt: 'Delete') do %>
+          <i class="fas fa-trash fa-fw"></i>
+        <% end %>
+      </div>
+    </td>
+  </tr>
+  <% end %>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td colspan="2" class="text-right">
+      <%= link_to('Create Landlord', new_landlord_path, class: 'btn btn-primary') %>
+    </td>
+  </tr>
+  </tfoot>
+</table>

@@ -22,56 +22,76 @@
 require 'active_support/core_ext/securerandom'
 
 class TenantsController < ApplicationController
-  before_action :authenticate_user!
-  before_action :require_landlord, except: [:show]
+  before_action :authenticate_user!, :require_landlord
 
   def index
     @tenants = Tenant.all
   end
 
   def show
-    if current_user.is_landlord?
-      @tenant = Tenant.find(params[:id])
-    elsif current_user.is_tenant?
-      @tenant = current_user.tenant
-      redirect_to tenant_path(@tenant) if @tenant.id != params[:id]
+    @tenant = Tenant.find(params[:id])
+  end
+
+  def edit
+    @tenant = Tenant.find(params[:id])
+  end
+
+  def update
+    @tenant = Tenant.find(params[:id])
+
+    if @tenant.update(tenant_params)
+      redirect_to tenant_path(@tenant)
     else
-      abort
+      render 'edit'
     end
   end
 
   def new
     @tenant = Tenant.new
+
+    @contact = Contact.new
+    @contact.contactable = @tenant
+
     @user = User.new
   end
 
   def create
-    @tenant = Tenant.new(tenant_params.except(:user))
-    @user = User.new(tenant_params[:user])
+    begin
+      ActiveRecord::Base.transaction do
+        @tenant = Tenant.new(tenant_params.except(:user, :contact))
+        @tenant.save!
 
-    @password = SecureRandom::base58(12)
-    @user.password = @password
-    @user.password_confirmation = @password
+        @contact = @tenant.contacts.new(tenant_params[:contact])
+        @contact.primary = true
+        @contact.role = "Tenant"
 
-    if @tenant.valid? && @user.valid?
-      @tenant.save
+        @user = User.new(tenant_params[:user])
+        @user.contact = @contact
+        @user.email = tenant_params[:contact][:email]
+        @password = SecureRandom::base58(12)
+        @user.password = @password
+        @user.password_confirmation = @password
+        @user.save!
 
-      @user.save
-
-      association = UserAssociation.new
-      association.user = @user
-      association.associable = @tenant
-      association.save
-
-      redirect_to tenants_path
-    else
-      render 'new'
+        association = @tenant.user_associations.new
+        association.user = @user
+        association.save!
+      end
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique
+      flash[:danger] = 'Failed to create new tenant. This is normally because one of the attributes is invalid.'
+      render 'new' && return
     end
+
+    redirect_to tenants_path
   end
 
   private
 
   def tenant_params
-    params.require(:tenant).permit(:name, user: [:username, :email])
+    params.require(:tenant).permit(
+      :name,
+      user: [:username],
+      contact: [:title, :first_name, :last_name, :phone, :address, :email]
+    )
   end
 end

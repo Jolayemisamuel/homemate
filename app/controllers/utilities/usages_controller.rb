@@ -26,9 +26,7 @@ module Utilities
       @usage = @utility.utility_usages.new(usage_params)
       @usage.projected = false
 
-      if @usage.valid?
-        @usage.save
-
+      if @usage.save
         redirect_to property_path(@utility.property)
       else
         render 'new'

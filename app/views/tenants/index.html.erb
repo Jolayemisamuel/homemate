@@ -6,23 +6,39 @@
   <thead class="thead-light">
   <tr>
     <th>Name</th>
-    <th></th>
+    <th colspan="2"></th>
   </tr>
   </thead>
   <tbody class="bg-white">
   <% @tenants.each do |tenant| %>
   <tr>
     <th><%= tenant.name %></th>
-    <td></td>
+    <td>
+      <% if tenant.tenant_checks.empty? %>
+      <span class="badge badge-danger">Tenant Check Required</span>
+      <% end %>
+      <% unless tenant.has_active_mandate? %>
+      <span class="badge badge-warning">Mandate Required</span>
+      <% end %>
+    </td>
+    <td class="text-right">
+      <div class="btn-group btn-group-sm" role="group">
+        <%= link_to(edit_tenant_path(tenant), class: 'btn btn-warning', alt: 'Edit') do %>
+          <i class="fas fa-edit fa-fw"></i>
+        <% end %>
+        <%= link_to(tenant_path(tenant), data: {:confirm => 'Are you sure?'}, method: :delete,
+          class: 'btn btn-danger', alt: 'Delete') do %>
+          <i class="fas fa-trash fa-fw"></i>
+        <% end %>
+      </div>
+    </td>
   </tr>
   <% end %>
   </tbody>
   <tfoot>
   <tr>
-    <td colspan="4">
-      <div class="float-right">
-        <%= link_to('Add tenant', new_tenant_path, class: 'btn btn-primary') %>
-      </div>
+    <td colspan="3" class="text-right">
+      <%= link_to('Create tenant', new_tenant_path, class: 'btn btn-primary') %>
     </td>
   </tr>
   </tfoot>

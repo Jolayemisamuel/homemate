@@ -1,8 +1,8 @@
-<% @title = 'Create Account' %>
+<% @title = 'Update Account' %>
 
-<h2>Create Account for <%= associable.name %></h2>
+<h2>Update Account for <%= associable.name %></h2>
 
-<%= simple_form_for(@user, url: url_for([:create, associable, @user]), wrapper: :horizontal_form) do |f| %>
+<%= simple_form_for(@user, url: url_for([associable, @user]), wrapper: :horizontal_form) do |f| %>
   <%= f.simple_fields_for(@contact, wrapper: :horizontal_form) do |contact| %>
     <%= contact.input :title, label: "Title" %>
     <%= contact.input :first_name, label: "First Name" %>
@@ -15,8 +15,8 @@
 
   <div class="form-group row">
     <div class="col btn-group">
-      <%= f.submit "Create", class: "btn btn-primary" %>
-      <%= link_to("Back", _back_url, class: "btn btn-secondary") %>
+      <%= f.submit "Update", class: "btn btn-warning" %>
+      <%= link_to("Back", _back_url, class: "btn btn-info") %>
     </div>
   </div>
 <% end %>

@@ -1,0 +1,14 @@
+<% @title = 'Eit Tenant' %>
+
+<h2>Edit Tenant</h2>
+
+<%= simple_form_for(@tenant, wrapper: :horizontal_form) do |f| %>
+  <%= f.input :name, label: "Name" %>
+
+  <div class="form-group row">
+    <div class="col btn-group">
+      <%= f.submit "Update", class: "btn btn-warning" %>
+      <%= link_to("Back", _back_url, class: "btn btn-info") %>
+    </div>
+  </div>
+<% end %>

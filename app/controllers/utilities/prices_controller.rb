@@ -2,6 +2,22 @@ module Utilities
   class PricesController < ApplicationController
     before_action :authenticate_user!, :require_landlord
 
+    def edit
+      @utility = current_user.landlord.utilities.find(params[:utility_id])
+      @utility_price = @utility.utility_prices.find(params[:id])
+    end
+
+    def update
+      @utility = current_user.landlord.utilities.find(params[:utility_id])
+      @utility_price = @utility.utility_prices.find(params[:id])
+
+      if @utility_price.update(price_params)
+        redirect_to utility_path(@utility)
+      else
+        render 'edit'
+      end
+    end
+
     def new
       @utility = current_user.landlord.utilities.find(params[:utility_id])
       @utility_price = @utility.utility_prices.new
@@ -11,9 +27,7 @@ module Utilities
       @utility = current_user.landlord.utilities.find(params[:utility_id])
       @utility_price = @utility.utility_prices.new(price_params)
 
-      if @utility_price.valid?
-        @utility_price.save
-
+      if @utility_price.save
         redirect property_path(@utility.property)
       else
         render 'new'

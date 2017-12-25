@@ -1,8 +1,8 @@
-<% @title = 'Create Tenant' %>
+<% @title = 'Create Landlord' %>
 
-<h2>Create Tenant</h2>
+<h2>Create Landlord</h2>
 
-<%= simple_form_for(@tenant, wrapper: :horizontal_form) do |f| %>
+<%= simple_form_for(@landlord, wrapper: :horizontal_form) do |f| %>
   <%= f.input :name, placeholder: "Name" %>
 
   <div class="card mb-3">
@@ -12,12 +12,12 @@
         <%= contact.input :title, label: "Title" %>
         <%= contact.input :first_name, label: "First Name" %>
         <%= contact.input :last_name, label: "Last Name" %>
-        <%= contact.input :email, label: "Email", required: true %>
+        <%= contact.input :email, label: "Email" %>
         <%= contact.input :phone, label: "Phone" %>
         <%= contact.input :address, label: "Address" %>
       <% end %>
       <%= f.simple_fields_for(@user, wrapper: :horizontal_form) do |user| %>
-        <%= user.input :username, label: "Username", required: true %>
+        <%= user.input :username, label: "Username" %>
       <% end %>
     </div>
   </div>

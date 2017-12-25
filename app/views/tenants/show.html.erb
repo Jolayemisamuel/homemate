@@ -1,66 +1,132 @@
 <% @title = @tenant.name %>
 
 <h2><%= @tenant.name %></h2>
+<%= link_to('Edit', edit_tenant_path(@tenant), class: 'btn btn-warning float-right') %>
 
-<% unless @tenant.tenant_checks.present? %>
+<% if @tenant.tenant_checks.empty? %>
   <div class="alert alert-danger">
     <strong>Tenant check required</strong>: please ensure that one is carried out prior to any tenancies.
     You can record a completed check <%= link_to('here', new_tenant_check_path(@tenant)) %>.
   </div>
+<% else %>
+  <div class="card mb-3">
+    <h4 class="card-header">Tenant Check</h4>
+    <div class="card-content">
+
+    </div>
+  </div>
 <% end %>
 
 <div class="card mb-3">
-  <h4 class="card-header">Access Accounts</h4>
+  <h4 class="card-header">Contacts</h4>
   <div class="card-content">
-    <% if @tenant.users.count > 0 %>
     <table class="table">
       <thead class="thead-light">
       <tr>
-        <th>Username</th>
-        <th>First Name</th>
-        <th>Last Name</th>
+        <th>Name</th>
+        <th>Role</th>
+        <th>Primary</th>
         <th colspan="2"></th>
       </tr>
       </thead>
       <tbody>
-      <% @tenant.users.each do |user| %>
+      <% @tenant.contacts.each do |c| %>
       <tr>
-        <th><%= user.username %></th>
-        <td><%= user.first_name %></td>
-        <td><%= user.last_name %></td>
+        <th><%= c.title + ' ' + c.first_name + ' ' + c.last_name %></th>
+        <td><%= c.role %></td>
         <td>
-          <% if user.access_locked? %>
-          <span class="badge badge-danger">Locked</span>
+          <% if c.primary? %>
+          <i class="fas fa-check text-success" aria-label="Yes"></i>
+          <% else %>
+          <i class="fas fa-times text-danger" aria-label="No"></i>
+          <% end %>
+        </td>
+        <td>
+          <% if c.has_user? %>
+          <% if c.user.access_locked? %>
+            <span class="badge badge-danger">Locked</span>
+          <% end %>
+          <% else %>
+          <span class="badge badge-warning">No Account</span>
           <% end %>
         </td>
         <td class="text-right">
           <div class="btn-group btn-group-sm" role="group">
-            <% if user.access_locked? %>
-            <%= link_to(unlock_user_path(user), method: :post, class: 'btn btn-primary', alt: 'Unlock') do %>
+            <% if c.has_user? %>
+            <% if c.user.access_locked? %>
+            <%= link_to(unlock_user_path(c.user), method: :post, class: 'btn btn-primary', alt: 'Unlock') do %>
               <i class="fas fa-unlock-alt fa-fw"></i>
             <% end %>
             <% end %>
-            <%= link_to(edit_user_path(user), class: 'btn btn-warning', alt: 'Edit') do %>
+            <%= link_to(edit_landlord_user_path(c.user), class: 'btn btn-warning', alt: 'Edit') do %>
               <i class="fas fa-edit fa-fw"></i>
             <% end %>
-            <%= link_to(user_path(user), data: {:confirm => 'Are you sure?'}, method: :delete,
+            <%= link_to(landlord_user_path(c.user), data: {:confirm => 'Are you sure?'}, method: :delete,
               class: 'btn btn-danger', alt: 'Delete') do %>
               <i class="fas fa-trash fa-fw"></i>
+            <% end %>
+            <% else %>
+            <%= link_to(edit_landlord_contact_path(c), class: 'btn btn-warning', alt: 'Edit') do %>
+              <i class="fas fa-edit fa-fw"></i>
+            <% end %>
+            <%= link_to(landlord_contact_path(c), data: {:confirm => 'Are you sure?'}, method: :delete,
+              class: 'btn btn-danger', alt: 'Delete') do %>
+              <i class="fas fa-trash fa-fw"></i>
+            <% end %>
             <% end %>
           </div>
         </td>
       </tr>
       <% end %>
       </tbody>
+      <tfoot>
+      <tr>
+        <td colspan="5" class="text-right">
+          <div class="btn-group btn-group-sm">
+            <%= link_to('Add contact', new_tenant_contact_path(@tenant), class: 'btn btn-danger') %>
+            <%= link_to('Add account', new_tenant_user_path(@tenant), class: 'btn btn-primary') %>
+          </div>
+        </td>
+      </tr>
+      </tfoot>
     </table>
-    <% else %>
-    <% end %>
-    <tfoot>
-    <tr>
-      <td colspan="5" class="text-right">
-        <%= link_to('Add account', new_tenant_user_path(@tenant), class: 'btn btn-primary') %>
-      </td>
-    </tr>
-    </tfoot>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <h4 class="card-header">Tenancies</h4>
+  <div class="card-content">
+    <table class="table">
+      <thead class="thead-light">
+      <tr>
+        <th>Property</th>
+        <th>Room</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @tenant.tenancies.order(start_date: :asc).each do |tenancy| %>
+      <tr>
+        <th><%= tenancy.property.name %></th>
+        <td><%= tenancy.belongs_to_room? ? tenancy.rentable.name : '' %></td>
+        <td><%= tenancy.start_date.to_s(:rfc822) %></td>
+        <td><%= tenancy.end_date.empty? ? 'Open-ended' : tenancy.end_date.to_s(:rfc822) %></td>
+        <td>
+          <% if tenancy.is_active? %>
+          <span class="badge badge-success">Active</span>
+          <% elsif tenancy.is_future? %>
+          <span class="badge badge-info">Future</span>
+          <% else %>
+          <span class="badge badge-secondary">Past</span>
+          <% end %>
+        </td>
+        <td></td>
+      </tr>
+      <% end %>
+      </tbody>
+    </table>
   </div>
 </div>

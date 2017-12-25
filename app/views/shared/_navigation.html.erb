@@ -1,12 +1,15 @@
 <ul class="nav flex-column">
   <li class="nav-item">
     <a class="nav-link d-flex justify-content-center" href="<%= root_path %>">
-      <img class="sidebar-logo" src="<%= asset_pack_path 'logo.png' %>" />
+      <img class="sidebar-logo" src="<%= asset_pack_path 'images/logo.png' %>" />
     </a>
   </li>
   <div class="dropdown-divider"></div>
   <% if current_user.is_landlord? %>
   <li class="nav-item"><%= link_to 'Properties', properties_path, class: 'nav-link' %></li>
   <li class="nav-item"><%= link_to 'Tenants', tenants_path, class: 'nav-link' %></li>
+  <% end %>
+  <% if current_user.is_admin? %>
+  <li class="nav-item"><%= link_to 'Landlords', landlords_path, class: 'nav-link' %></li>
   <% end %>
 </ul>
