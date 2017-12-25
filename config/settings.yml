@@ -1,0 +1,15 @@
+##
+# Billing Preferences
+##
+
+payment:
+  # A human readable description of the payment
+  description: HomeMate Payment
+  # Number of days in advance for which an invoice should be generated
+  invoice_generation: 7
+
+gocardless:
+  # GoCardless API token. See https://developer.gocardless.com/getting-started/api/making-your-first-request/
+  token: token
+  webhook_secret: <%= ENV['DATA.GOCARDLESS.SECRET'] %>
+  environment: sandbox

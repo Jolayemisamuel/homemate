@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     end
     resources :invoices
     resources :transactions
+    post 'webhook', to: 'billing#webhook'
   end
 
   resources :landlords do
