@@ -2,23 +2,23 @@
 # yarn lockfile v1
 
 
-"@fortawesome/fontawesome-free-brands@^5.0.2":
+"@fortawesome/fontawesome-free-brands@5.x":
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free-brands/-/fontawesome-free-brands-5.0.2.tgz#a1cc602eec40a379a3dd8a44c78b31110dd3d3d3"
 
-"@fortawesome/fontawesome-free-regular@^5.0.2":
+"@fortawesome/fontawesome-free-regular@5.x":
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free-regular/-/fontawesome-free-regular-5.0.2.tgz#429af86bed14689f87648e6322983c65c782c017"
 
-"@fortawesome/fontawesome-free-solid@^5.0.2":
+"@fortawesome/fontawesome-free-solid@5.x":
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free-solid/-/fontawesome-free-solid-5.0.2.tgz#090ce2c59dd5ec76983f3da8a43e1ab0321b42d5"
 
-"@fortawesome/fontawesome@^1.1.0":
+"@fortawesome/fontawesome@1.x":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome/-/fontawesome-1.1.0.tgz#2a949fa46d96e41092e67218b42579f8e54c7b7f"
 
-"@rails/webpacker@^3.0.2":
+"@rails/webpacker@3.x":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@rails/webpacker/-/webpacker-3.2.0.tgz#e9e98a4da4a3e09441c71d2cbd66461659971055"
   dependencies:
@@ -2761,13 +2761,13 @@ isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
 
-jquery-ujs@^1.2.2:
+jquery-ujs@1.x:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/jquery-ujs/-/jquery-ujs-1.2.2.tgz#6a8ef1020e6b6dda385b90a4bddc128c21c56397"
   dependencies:
     jquery ">=1.8.0"
 
-jquery@>=1.8.0, jquery@^3.2.1:
+jquery@3.x, jquery@>=1.8.0:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
 
@@ -3582,9 +3582,9 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-pdfjs-dist@^2.0.220:
-  version "2.0.224"
-  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-2.0.224.tgz#f70707f779bbb57877db6357f8ffe176fb9f6c71"
+pdfjs-dist@2.x:
+  version "2.0.226"
+  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-2.0.226.tgz#8e6cfaf0fc9016335b9e713d070a3ecef7773209"
   dependencies:
     node-ensure "^0.0.0"
     worker-loader "^1.1.0"
@@ -3636,7 +3636,7 @@ pleeease-filters@^4.0.0:
     onecolor "^3.0.4"
     postcss "^6.0.1"
 
-popper.js@^1.12.9:
+popper.js@1.x:
   version "1.12.9"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.12.9.tgz#0dfbc2dff96c451bb332edcfcfaaf566d331d5b3"
 
@@ -5122,7 +5122,7 @@ tunnel-agent@~0.4.1:
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/tunnel-agent/-/tunnel-agent-0.4.3.tgz#6373db76909fe570e08d73583365ed828a74eeeb"
 
-turbolinks@^5.0.3:
+turbolinks@5.x:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/turbolinks/-/turbolinks-5.0.3.tgz#c8ce128cfc9be1d691a1e41ffa858a5a5ee86a02"
 
@@ -5303,7 +5303,7 @@ webpack-dev-middleware@^1.11.0:
     range-parser "^1.0.3"
     time-stamp "^2.0.0"
 
-webpack-dev-server@^2.9.6:
+webpack-dev-server@2.x:
   version "2.9.7"
   resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-2.9.7.tgz#100ad6a14775478924d417ca6dcfb9d52a98faed"
   dependencies:

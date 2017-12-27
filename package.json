@@ -2,19 +2,19 @@
   "name": "homemate",
   "private": true,
   "dependencies": {
-    "@fortawesome/fontawesome": "^1.1.0",
-    "@fortawesome/fontawesome-free-brands": "^5.0.2",
-    "@fortawesome/fontawesome-free-regular": "^5.0.2",
-    "@fortawesome/fontawesome-free-solid": "^5.0.2",
-    "@rails/webpacker": "^3.2.0",
+    "@fortawesome/fontawesome": "1.x",
+    "@fortawesome/fontawesome-free-brands": "5.x",
+    "@fortawesome/fontawesome-free-regular": "5.x",
+    "@fortawesome/fontawesome-free-solid": "5.x",
+    "@rails/webpacker": "3.x",
     "bootstrap": "4.0.0-beta.2",
-    "jquery": "^3.2.1",
-    "jquery-ujs": "^1.2.2",
-    "pdfjs-dist": "^2.0.220",
-    "popper.js": "^1.12.9",
-    "turbolinks": "^5.0.3"
+    "jquery": "3.x",
+    "jquery-ujs": "1.x",
+    "pdfjs-dist": "2.x",
+    "popper.js": "1.x",
+    "turbolinks": "5.x"
   },
   "devDependencies": {
-    "webpack-dev-server": "^2.9.6"
+    "webpack-dev-server": "2.x"
   }
 }

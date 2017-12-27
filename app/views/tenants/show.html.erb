@@ -21,7 +21,7 @@
           <th>View</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody class="bg-white">
           <% @tenant.tenant_checks.unscoped.each do |check| %>
           <tr>
             <th><%= check.created_at.to_s(:rfc822) %></th>
@@ -42,6 +42,42 @@
           </td>
         </tr>
         </tfoot>
+      </table>
+    </div>
+  </div>
+<% end %>
+
+<% unless @tenant.mandates.empty? %>
+  <div class="card mb-3">
+    <h4 class="card-header">Billing Mandate</h4>
+    <div class="card-content">
+      <table class="table">
+        <thead class="thead-light">
+        <tr>
+          <th>#</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Last Payment</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @tenant.mandates.unscoped.each do |m| %>
+          <tr>
+            <th><%= m.reference %></th>
+            <td><%= m.method %></td>
+            <td>
+              <% if m.active? %>
+              <span class="badge badge-success">Active</span>
+              <% elsif m.cancelled? %>
+              <span class="badge badge-danger">Cancelled</span>
+              <% else %>
+              <span class="badge badge-secondary">Pending</span>
+              <% end %>
+            </td>
+            <td><%= m.last_success.nil? ? '' : m.last_success.to_s(:rfc822) %></td>
+          </tr>
+        <% end %>
+        </tbody>
       </table>
     </div>
   </div>

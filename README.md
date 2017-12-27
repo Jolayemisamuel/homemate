@@ -13,8 +13,11 @@ Rails](http://rubyonrails.org/) framework.
 
 ## Getting started
 
-HomeMate requires Ruby version 2.4.2 and a compatible database server such as [PostgreSQL](https://www.postgresql.org/),
- [SQLite](https://www.sqlite.org/) or [MySQL](https://www.mysql.com/).
+HomeMate requires:
+- Ruby version **2.5 or above**
+- a compatible database server such as [PostgreSQL](https://www.postgresql.org/),
+ [SQLite](https://www.sqlite.org/) or [MySQL](https://www.mysql.com/)
+- [Redis](https://redis.io/) server for caches and queued jobs
 
 Edit the configuration files at `config/settings.yml` and `config/database.yml`. You will need your database credentials
  to hand. 
