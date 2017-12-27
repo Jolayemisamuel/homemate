@@ -35,7 +35,7 @@ class GenerateInvoicesJob < ApplicationJob
       tenancies = Tenancy.active.where(rent_payment_period: 'm').where(rent_payment_day: payment_day)
 
       tenancies.each do |t|
-        GenerateInvoiceJob.perform_later(t, payment_date, true)
+        GenerateInvoiceJob.perform_later(t, payment_date)
       end
     end
   end
@@ -47,7 +47,7 @@ class GenerateInvoicesJob < ApplicationJob
     tenancies = Tenancy.active.where(rent_payment_period: 'w').where(rent_payment_day: payment_day)
 
     tenancies.each do |t|
-      GenerateInvoiceJob.perform_later(t, payment_date, false)
+      GenerateInvoiceJob.perform_later(t, payment_date)
     end
   end
 end

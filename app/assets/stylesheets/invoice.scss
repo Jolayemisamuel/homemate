@@ -1,0 +1,27 @@
+@import "variables";
+@import "~bootstrap/scss/bootstrap";
+
+html, body, .invoice {
+  height: 100%;
+}
+
+th, td {
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+}
+
+footer {
+  margin-top: 3rem;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  footer {
+    page-break-inside: avoid;
+    page-break-after: always;
+  }
+}

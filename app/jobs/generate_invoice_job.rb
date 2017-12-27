@@ -18,23 +18,55 @@
 # along with HomeMate.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'active_support/core_ext/date'
+require 'pdfkit'
 
 class GenerateInvoiceJob < ApplicationJob
-  def perform(tenancy, payment_date, monthly)
+  def perform(tenancy, payment_date)
     tenant = tenancy.tenant
-    invoice = tenant.invoices.new
+    invoice = tenant.invoices.new(
+      issued: true,
+      issued_on: Date.current,
+      due_on: payment_date,
+      paid: false
+    )
 
-    pending_transactions = tenant.transactions.where('invoice_id IS NULL AND processed = true AND failed = false')
-
-    pending_transactions.each do |t|
+    # Associate pending transactions
+    tenant.transactions.where('invoice_id IS NULL AND processed = true AND failed = false').each do |t|
       t.invoice = invoice
     end
 
     # Add rent to invoice
-    from = tenancy.rent_charges.order(to_date: desc).first.to_date.tomorrow
-    to = payment_date.yesterday
+    associate_rent_charges(invoice, tenancy, tenancy.rent_charges.order(to_date: desc).first.to_date.tomorrow,
+                           payment_date.yesterday)
 
-    if monthly
+    # Check whether new utilities charges have been added since the last invoice
+    last_invoice = tenant.invoices.order(issued_at: :desc).first
+    associate_utility_charges(invoice, tenancy, last_invoice.empty? ? nil : last_invoice.issued_at)
+
+    starting_balance = last_invoice.balance
+    invoice.balance = starting_balance + invoice.transactions.sum('amount')
+    invoice.save!
+
+    pdf = PDFKit.new(
+        render_to_string 'layouts/invoice', invoice: invoice, starting_balance: starting_balance
+    )
+    invoice.documents.create!(
+      name: Date.current.strftime('Invoice-%d-%m-%Y.pdf'),
+      file: pdf.to_pdf,
+      encrypted: false
+    )
+  end
+
+  # Create and associate rent charges to the invoice.
+  #
+  # @param [Invoice] invoice the invoice for the transactions to be associated to
+  # @param [Tenancy] tenancy the tenancy for which rent charges need to be created
+  # @param [Date] from the date from which rent need to be calculated
+  # @param [Date] to the date to which rent to be calculated
+  #
+  # @return void
+  def associate_rent_charges(invoice, tenancy, from, to)
+    if tenancy.rent_payment_period == 'm'
       # If a full month of rent is due
       while to >= from.next_month.yesterday do
         rent_charge = tenancy.rent_charges.create!(
@@ -86,18 +118,24 @@ class GenerateInvoiceJob < ApplicationJob
           transactionable: rent_charge
       )
     end
+  end
 
-    # Check whether new utilities charges have been added since the last invoice
-    last_invoice = tenant.invoices.order(issued_at: :desc).first
-
+  # Associate utility charges billed from the `from` date
+  #
+  # @param [Invoice] invoice the invoice for the transactions to be associated to
+  # @param [Tenancy] tenancy the tenancy concerned
+  # @param [Date] from utility charges created after this date would be searched for:
+  #   if nil utility charges created after the start of the tenancy would be searched
+  #   for instead.
+  def associate_utility_charges(invoice, tenancy, *from)
     tenancy.property.utilities.each do |utility|
-      if last_invoice.empty
+      if @from.nil?
         # Look for charges for usages after the start of tenancy
         charges = utility.utility_charges.where('usage_to_date =< ? AND usage_from_date >= ?', Date.current,
-          tenancy.start_date)
+                                                tenancy.start_date)
       else
         charges = utility.utility_charges.where('usage_to_date =< ? AND usage_to_date > ?', Date.current,
-          last_invoice.issued_at)
+                                                from)
       end
 
       charges.each do |charge|
@@ -111,20 +149,5 @@ class GenerateInvoiceJob < ApplicationJob
         )
       end
     end
-
-    starting_balance = last_invoice.balance
-    invoice.balance = starting_balance + invoice.transactions.sum('amount')
-    invoice.issued = true
-    invoice.issued_on = Date.current
-    invoice.due_on = payment_date
-    invoice.paid = false
-    invoice.save!
-
-    pdf = PDFKit.new(render_to_string 'layouts/invoice', invoice, starting_balance)
-    invoice.documents.create!(
-      name: Date.current.strftime('Invoice%d-%m-%Y.pdf'),
-      file: pdf.to_pdf,
-      encrypted: false
-    )
   end
 end
