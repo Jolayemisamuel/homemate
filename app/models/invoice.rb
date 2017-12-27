@@ -1,6 +1,8 @@
 require 'active_support/core_ext/date'
 
 class Invoice < ApplicationRecord
+  include Hashid::Rails
+
   belongs_to :tenant
   has_many :transactions
   has_many :documents, as: :attachable

@@ -33,4 +33,16 @@ class Contact < ApplicationRecord
   def has_user?
     User.where('contact_id', id).present?
   end
+
+  def name
+    first_name + last_name
+  end
+
+  def readable_address(separator)
+    if address.nil? || address.blank?
+      nil
+    else
+      address.gsub(/,[[:blank:]]*/, separator)
+    end
+  end
 end

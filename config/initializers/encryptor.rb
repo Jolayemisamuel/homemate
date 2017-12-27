@@ -14,3 +14,17 @@ ApplicationHelper::Encryptor.initialize do |config|
   # Supported algorithms include SHA, SHA1, SHA224, SHA256, SHA384 and SHA512; MD2, MD4, MDC2 and MD5; and RIPEMD160
   # config.digest = OpenSSL::Digest::SHA256
 end
+
+Hashid::Rails.configure do |config|
+  # The salt to use for generating hashid. Prepended with table name.
+  # config.salt = ''
+
+  # The minimum length of generated hashids
+  config.min_hash_length = 6
+
+  # The alphabet to use for generating hashids
+  config.alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+
+  # Whether to override the `find` method
+  config.override_find = false
+end

@@ -7,9 +7,10 @@
   <tr>
     <th>Date</th>
     <th>Description</th>
+    <th></th>
   </tr>
   </thead>
-  <tbody>
+  <tbody class="bg-white">
   <% unless @transactions.where(invoice_id: nil).empty? %>
   <tr>
     <td colspan="2">Transactions to be included in the next invoice</td>
@@ -39,4 +40,11 @@
   <% end %>
   <% end %>
   </tbody>
+  <tfoot>
+  <tr>
+    <td colspan="3" class="text-right">
+      <%= link_to('View Invoices', invoices_path, class: 'btn btn-primary') %>
+    </td>
+  </tr>
+  </tfoot>
 </table>
