@@ -14,14 +14,14 @@ gem 'redis', '~> 4.0'
 gem 'bcrypt', '~> 3.1.7'
 
 gem 'config'
-gem 'devise'
-gem 'hashid'
+gem 'devise', '~> 4.4.0'
+gem 'hashid-rails', '~> 1.0'
 gem 'inky-rb', require: 'inky'
 gem 'premailer-rails'
 gem 'simple_form'
+gem 'pdfkit'
 gem 'paperclip', '~> 5.1.0'
-gem 'hashid-rails', '~> 1.0'
-gem 'gocardless', '~> 1.13'
+gem 'gocardless_pro'
 
 group :production do
   gem 'pg'
