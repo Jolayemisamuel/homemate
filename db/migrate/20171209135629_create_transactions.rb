@@ -31,10 +31,11 @@ class CreateTransactions < ActiveRecord::Migration[5.1]
       t.belongs_to  :transactionable, polymorphic: true, index: {:name => 'index_transactions_on_transactionable'},
         nullable: true
       t.boolean     :payment, null: false, default: false
+      t.boolean     :queued, null: false, default: true
       t.boolean     :processed, null: false, default: true
       t.date        :credit_date, nullable: true
       t.boolean     :failed, null: false, default: false
-      t.string      :failure_message, nullable: true
+      t.string      :message, nullable: true
       t.timestamps
     end
   end

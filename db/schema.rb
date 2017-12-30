@@ -75,7 +75,8 @@ ActiveRecord::Schema.define(version: 20171225133252) do
     t.string "reference"
     t.boolean "active", default: false, null: false
     t.boolean "cancelled", default: false, null: false
-    t.string "failure_message"
+    t.string "status_message"
+    t.string "status_details"
     t.date "last_success"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -159,10 +160,11 @@ ActiveRecord::Schema.define(version: 20171225133252) do
     t.string "transactionable_type"
     t.integer "transactionable_id"
     t.boolean "payment", default: false, null: false
+    t.boolean "queued", default: true, null: false
     t.boolean "processed", default: true, null: false
     t.date "credit_date"
     t.boolean "failed", default: false, null: false
-    t.string "failure_message"
+    t.string "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["invoice_id"], name: "index_transactions_on_invoice_id"

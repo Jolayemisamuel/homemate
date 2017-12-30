@@ -27,7 +27,8 @@ class CreateMandates < ActiveRecord::Migration[5.1]
       t.string      :reference
       t.boolean     :active, null: false, default: false
       t.boolean     :cancelled, null: false, default: false
-      t.string      :failure_message, nullable: true
+      t.string      :status_message, nullable: true
+      t.string      :status_details, nullable: true
       t.date        :last_success, nullable: true
       t.timestamps
     end

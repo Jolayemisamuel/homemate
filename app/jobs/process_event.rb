@@ -19,29 +19,21 @@
 # along with HomeMate.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-require 'openssl'
-require 'gocardless_pro'
+require 'active_support/core_ext/string'
+require 'homemate/exception'
 
-class BillingController < ActionController::API
-  def create
-    secret = Setting.gocardless.webhook_secret
-
-    computed_signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, request.raw_post)
-    provided_signature = request.headers['Webhook-Signature']
-
-    unless Rack::Utils.secure_compare(provided_signature, computed_signature)
-      render status: 498
+class ProcessEvent < ApplicationJob
+  def process(event)
+    unless event['resource_type'] == resource_type
+      raise HomeMate::InvalidUsage 'Invalid event resource type. ' + resource_type.titleize + ' expected.'
     end
 
-    params['events'].each do |event|
-      case event['resource_type']
-        when 'mandates'
-          ProcessMandateEvent.perform_later(event)
-        when 'payments'
-          ProcessPaymentEvent.perform_later(event)
-        else
-          logger.info 'Unable to handle resource type ' + event['resource_type']
-      end
-    end
+    logger.notice 'Event received from GoCardless'
+  end
+
+  private
+
+  def resource_type
+    'type'
   end
 end
