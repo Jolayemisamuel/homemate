@@ -6,23 +6,23 @@ module SimpleForm
       end
 
       def icon_class
-        template.content_tag(:i, '', class: options[:icon])
+        template.content_tag(
+            :span,
+            template.content_tag(:i, '', class: options[:icon]).html_safe,
+            class: 'input-group-text'
+        )
       end
     end
 
     module Units
       def unit(wrapper_options = nil)
-        options[:unit] unless options[:unit].nil?
+        template.content_tag(:span, options[:unit], class: 'input-group-text') unless options[:unit].nil?
       end
     end
 
     module RadioLabels
       def radio_label(wrapper_options = nil)
-        indicator + span_label unless options[:radio_label].nil?
-      end
-
-      def indicator
-        template.content_tag(:span, '', class: 'custom-control-indicator')
+        span_label unless options[:radio_label].nil?
       end
 
       def span_label

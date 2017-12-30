@@ -79,8 +79,11 @@ SimpleForm.setup do |config|
     b.use :label, class: 'col-sm-3 col-form-label'
 
     b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
-      ba.use :input
-      ba.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback' }
+      ba.wrapper tag: 'div', class: 'custom-file' do |file|
+        file.use :input, class: 'custom-file-input'
+      end
+
+      ba.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback d-block' }
       ba.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
     end
   end
@@ -160,7 +163,7 @@ SimpleForm.setup do |config|
     b.optional :readonly
 
     b.wrapper tag: 'div', class: 'input-group' do |ba|
-      ba.use :icon, wrap_with: { tag: 'span', class: 'input-group-addon' }
+      ba.use :icon, wrap_with: { tag: 'div', class: 'input-group-prepend' }
       ba.use :input, class: 'form-control'
     end
 
@@ -180,9 +183,9 @@ SimpleForm.setup do |config|
 
     b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
       ba.wrapper tag: 'div', class: 'input-group' do |g|
-        g.optional :icon, wrap_with: { tag: 'span', class: 'input-group-addon' }
+        g.optional :icon, wrap_with: { tag: 'div', class: 'input-group-prepend' }
         g.use :input, class: 'form-control'
-        g.optional :unit, wrap_with: { tag: 'span', class: 'input-group-addon' }
+        g.optional :unit, wrap_with: { tag: 'div', class: 'input-group-append' }
       end
 
       ba.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback d-block' }

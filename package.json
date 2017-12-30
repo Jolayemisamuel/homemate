@@ -7,7 +7,7 @@
     "@fortawesome/fontawesome-free-regular": "5.x",
     "@fortawesome/fontawesome-free-solid": "5.x",
     "@rails/webpacker": "3.x",
-    "bootstrap": "4.0.0-beta.2",
+    "bootstrap": "4.0.0-beta.3",
     "jquery": "3.x",
     "jquery-ujs": "1.x",
     "pdfjs-dist": "2.x",
