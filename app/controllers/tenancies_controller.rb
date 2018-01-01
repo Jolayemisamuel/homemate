@@ -30,7 +30,7 @@ class TenanciesController < ApplicationController
 
   def show
     if current_user.is_landlord?
-      @tenancy = current_user.landlord.tenancies.include(:rentable).find(params[:id])
+      @tenancy = Tenancy.include(:rentable).find(params[:id])
     elsif current_user.is_tenant?
       @tenancy = current_user.tenant.tenancies.include(:rentable).find(params[:id])
     else
@@ -62,7 +62,7 @@ class TenanciesController < ApplicationController
   end
 
   def destroy
-    @tenancy = current_user.landlord.tenancies.find(params[:id])
+    @tenancy = Tenancy.find(params[:id])
     @tenancy.destroy
 
     redirect_back tenancies_path
@@ -72,9 +72,9 @@ class TenanciesController < ApplicationController
 
   def find_rentable(params)
     if params.has_key? :property_id
-      current_user.landlord.properties.find(params[:property_id])
+      Property.find(params[:property_id])
     elsif params.has_key? :room_id
-      current_user.landlord.rooms.find(params[:room_id])
+      Room.find(params[:room_id])
     else
       flash[:danger] = 'A rentable unit must be selected.'
       redirect_back fallback_location: root_path

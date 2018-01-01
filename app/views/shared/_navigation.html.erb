@@ -16,8 +16,4 @@
     <li class="nav-item"><%= link_to 'Tenants', tenants_path, class: 'nav-link' %></li>
     <% end %>
   <% end %>
-  <% if current_user.is_admin? %>
-  <li class="nav-item"><small class="nav-link font-weight-bold text-secondary">Admin</small></li>
-  <li class="nav-item"><%= link_to 'Landlords', landlords_path, class: 'nav-link' %></li>
-  <% end %>
 </ul>

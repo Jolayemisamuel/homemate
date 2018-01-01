@@ -24,10 +24,6 @@ require 'active_support/core_ext/securerandom'
 class LandlordsController < ApplicationController
   before_action :require_admin
 
-  def index
-    @landlords = Landlord.all
-  end
-
   def edit
     @landlord = Landlord.find(params[:id])
   end
@@ -40,45 +36,6 @@ class LandlordsController < ApplicationController
     else
       render 'update'
     end
-  end
-
-  def new
-    @landlord = Landlord.new
-
-    @contact = Contact.new
-    @contact.contactable = @landlord
-
-    @user = User.new
-  end
-
-  def create
-    begin
-      ActiveRecord::Base.transaction do
-        @landlord = Landlord.new(landlord_params.except(:user, :contact))
-        @landlord.save!
-
-        @contact = @landlord.contacts.new(landlord_params[:contact])
-        @contact.primary = true
-        @contact.role = "Landlord"
-
-        @user = User.new(landlord_params[:user])
-        @user.contact = @contact
-        @user.email = @contact.email
-        @password = SecureRandom::base58(12)
-        @user.password = @password
-        @user.password_confirmation = @password
-        @user.save!
-
-        association = @landlord.user_associations.new
-        association.user = @user
-        association.save!
-      end
-    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique
-      flash[:danger] = 'Failed to create new landlord. This is normally because one of the attributes is invalid.'
-      render 'new' && return
-    end
-
-    redirect_to landlords_path
   end
 
   private

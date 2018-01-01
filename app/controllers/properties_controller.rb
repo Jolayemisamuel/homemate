@@ -23,20 +23,20 @@ class PropertiesController < ApplicationController
   before_action :authenticate_user!, :require_landlord
 
   def index
-    @properties = current_user.landlord.properties.all
+    @properties = Property.all
   end
 
   def show
-    @property = current_user.landlord.properties.includes(:rooms).find(params[:id])
+    @property = Property.includes(:rooms).find(params[:id])
     @tenancies = Tenancy.belongs_to_property(@property).order(start_date: :asc)
   end
 
   def edit
-    @property = current_properties.find(params[:id])
+    @property = Property.find(params[:id])
   end
 
   def update
-    @property = current_properties.find(params[:id])
+    @property = Property.find(params[:id])
 
     if @property.update(property_params)
       redirect_to property_path(@property)
