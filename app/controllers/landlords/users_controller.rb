@@ -1,5 +1,5 @@
 ##
-# Copyright (c) Andrew Ying 2017.
+# Copyright (c) Andrew Ying 2017-18.
 #
 # This file is part of HomeMate.
 #
@@ -65,6 +65,7 @@ module Landlords
         render 'users/new', associable: landlord && return
       end
 
+      UserMailer.account_created(@user, @password).deliver_later
       redirect_to landlord_path(landlord)
     end
 

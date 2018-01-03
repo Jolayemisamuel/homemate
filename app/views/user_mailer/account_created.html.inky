@@ -1,0 +1,23 @@
+<row>
+    <columns><center><h2>Your Account</h2></center></columns>
+</row>
+<row>
+    <columns>
+        <p>Dear <%= @user.contact.first_name %>,</p>
+        <p>An account has been created for you at HomeMate.</p>
+    </columns>
+</row>
+<row>
+    <columns small="4"><b>Username:</b></columns>
+    <columns small="8"><%= @user.username %></columns>
+</row>
+<row>
+    <columns small="4"><b>Password:</b></columns>
+    <columns small="8"><%= @password %></columns>
+</row>
+<row>
+    <columns>
+        <p>For the security of your account, please login and change your password as soon as possible.</p>
+        <center><button href="<%= root_url %>" class="small-expanded">Login</button></center>
+    </columns>
+</row>

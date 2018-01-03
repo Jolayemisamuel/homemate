@@ -1,5 +1,5 @@
 ##
-# Copyright (c) Andrew Ying 2017.
+# Copyright (c) Andrew Ying 2017-18.
 #
 # This file is part of HomeMate.
 #
@@ -82,6 +82,7 @@ class TenantsController < ApplicationController
       render 'new' && return
     end
 
+    UserMailer.account_created(@user, @password).deliver_later
     redirect_to tenants_path
   end
 
