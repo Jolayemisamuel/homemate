@@ -72,57 +72,46 @@ class GenerateInvoiceJob < ApplicationJob
   # @return void
   def associate_rent_charges(invoice, tenancy, from, to)
     if tenancy.rent_payment_period == 'm'
+      # Calculate the end date assuming a full month of rent period
+      current_to = from.next_month.yesterday
+
       # If a full month of rent is due
-      while to >= from.next_month.yesterday do
-        rent_charge = tenancy.rent_charges.create!(
-            from_date: from,
-            to_date: from.next_month.yesterday,
-            amount: tenancy.rent
-        )
-        invoice.transactions.build(
-            credit_date: Date.current,
-            description: 'Rent from ' + from.to_s(:rfc822) + 'to' + from.next_month.yesterday.to_s(:rfc822),
-            amount: tenancy.rent,
-            tenancy: tenancy,
-            transactionable: rent_charge
-        )
+      while to >= current_to do
+        associate_rent_charge(invoice, tenancy, from, current_to, tenancy.rent)
 
         from = from.next_month
+        current_to = from.next_month.yesterday
       end
 
       # If a partial month remains
-      if to > from
-        amount = tenancy.rent * (to - from).days / 30
-
-        rent_charge = tenancy.rent_charges.create!(
-            from_date: from,
-            to_date: to,
-            amount: amount
-        )
-        invoice.transactions.build(
-            credit_date: Date.current,
-            description: 'Rent from ' + from.to_s(:rfc822) + ' to ' + to.to_s(:rfc822),
-            amount: amount,
-            tenancy: tenancy,
-            transactionable: rent_charge
-        )
-      end
+      associate_rent_charge(invoice, tenancy, from, current_to, tenancy.rent * (to - from).days / 30) if to > from
     else
-      amount = tenancy.rent * (to - from + 1.day).days / 7
-
-      rent_charge = tenancy.rent_charges.create!(
-          from_date: from,
-          to_date: to,
-          amount: amount
-      )
-      invoice.transactions.build(
-          credit_date: Date.current,
-          description: 'Rent from ' + from.to_s(:rfc822) + 'to' + to.to_s(:rfc822),
-          amount: amount,
-          tenancy: tenancy,
-          transactionable: rent_charge
-      )
+      associate_rent_charge(invoice, tenancy, from, to, tenancy.rent * (to - from).days / 7)
     end
+  end
+
+  # Create and associate a single rent charge to the invoice.
+  #
+  # @param [Invoice] invoice the invoice for the transactions to be associated to
+  # @param [Tenancy] tenancy the tenancy for which rent charge concerns
+  # @param [Date] from the date from which rent charge concerns
+  # @param [Date] to the date to which rent charge concerns
+  # @param [Integer|Float] amount amount of rent charge
+  #
+  # @return void
+  def associate_rent_charge(invoice, tenancy, from, to, amount)
+    rent_charge = tenancy.rent_charges.create!(
+        from_date: from,
+        to_date: to,
+        amount: amount
+    )
+    invoice.transactions.build(
+        credit_date: Date.current,
+        description: 'Rent from ' + from.to_s(:rfc822) + 'to' + to.to_s(:rfc822),
+        amount: amount,
+        tenancy: tenancy,
+        transactionable: rent_charge
+    )
   end
 
   # Associate utility charges billed from the `from` date
