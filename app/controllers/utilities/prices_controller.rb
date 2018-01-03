@@ -3,12 +3,12 @@ module Utilities
     before_action :authenticate_user!, :require_landlord
 
     def edit
-      @utility = current_user.landlord.utilities.find(params[:utility_id])
+      @utility = Utility.find(params[:utility_id])
       @utility_price = @utility.utility_prices.find(params[:id])
     end
 
     def update
-      @utility = current_user.landlord.utilities.find(params[:utility_id])
+      @utility = Utility.find(params[:utility_id])
       @utility_price = @utility.utility_prices.find(params[:id])
 
       if @utility_price.update(price_params)
@@ -19,12 +19,12 @@ module Utilities
     end
 
     def new
-      @utility = current_user.landlord.utilities.find(params[:utility_id])
+      @utility = Utility.find(params[:utility_id])
       @utility_price = @utility.utility_prices.new
     end
 
     def create
-      @utility = current_user.landlord.utilities.find(params[:utility_id])
+      @utility = Utility.find(params[:utility_id])
       @utility_price = @utility.utility_prices.new(price_params)
 
       if @utility_price.save
