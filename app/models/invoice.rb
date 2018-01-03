@@ -57,7 +57,7 @@ class Invoice < ApplicationRecord
   end
 
   def readable_balance
-    Settings.currency + balance.abs
+    Settings.payment.currency + balance.abs
   end
 
   private

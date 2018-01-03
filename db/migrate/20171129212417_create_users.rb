@@ -4,7 +4,6 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.string      :username
       t.string      :email
       t.string      :encrypted_password, null: false, default: ""
-      t.boolean     :is_admin, null: false, default: false
       t.belongs_to  :contact, index: true
       t.datetime    :remember_created_at
       t.integer     :sign_in_count, null: false, default: 0

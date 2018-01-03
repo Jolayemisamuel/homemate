@@ -3,16 +3,21 @@
   <small class="text-muted font-weight-light">Your tenancies, documents and bills</small>
 </h2>
 
-<div class="card w-100">
+<div class="card w-100 mb-3">
   <h4 class="card-header">Balance</h4>
   <div class="card-body">
     <div class="row w-100">
       <div class="col-12 col-md-6">
-        <h1 class="card-text display-3"><%= tenant.readable_balance %></h1>
+        <h1 class="card-text display-3">
+          <%= link_to(
+             tenant.balance_in_credit? ? tenant.readable_balance + ' <small>credit</small>'.html_safe
+                : tenant.readable_balance, transactions_path
+          ) %>
+        </h1>
         <small class="card-text text-muted">
-          Pending balance - <%= link_to(
-            tenant.pending_balance,
-            invoice_path(tenant.invoices.where(issued: false).order(created_at: :desc).first)
+          <b>Last Invoice</b> - <%= link_to(
+            tenant.last_invoice.balance_in_credit? ? tenant.last_invoice.readable_balance + ' credit'
+               : tenant.last_invoice.readable_balance, invoice_path(tenant.last_invoice)
           ) %>
         </small>
       </div>
@@ -28,14 +33,68 @@
               <%= link_to('Right to Rent check', new_tenant_check_path, class: 'nav-link text-danger font-weight-bold') %>
             </li>
           <% end %>
+          <% unless tenant.current_tenancy.empty? %>
           <li class="nav-item">
             <%= link_to('View tenancy details', tenancy_path(tenant.current_tenancy), class: 'nav-link') %>
           </li>
+          <% end %>
           <li class="nav-item">
-            <%= link_to('View invoices', invoices_path, class: 'nav-link') %>
+            <%= link_to('View transactions', transactions_path, class: 'nav-link') %>
           </li>
         </ul>
       </div>
     </div>
   </div>
 </div>
+
+<% unless tenant.current_tenancy.empty? %>
+<div class="card w-100 p-2 mb-3">
+  <h4 class="card-header">Tenancy at <%= tenant.current_tenancy.property.name %></h4>
+  <div class="card-body">
+    <div class="w-100 border border-dark mb-3">
+      <div class="row p-2">
+        <div class="col-12"><h4>Landlord's contact(s)</h4></div>
+      </div>
+      <% tenant.current_tenancy.contacts.each do |c| %>
+      <div class="row p-2 border border-light">
+        <div class="col-9 col-md-4"><%= c.full_name %></div>
+        <div class="col-3 col-md-2">
+          <%= c.role %>
+          <% if c.primary? %>
+          &nbsp;<span class="badge badge-success">Primary</span>
+          <% end %>
+        </div>
+        <div class="col-12 col-md-6">
+          <a href="mailto:<%= c.email %>"><%= c.email %></a>
+          <% if c.phone.present? %>
+          <br /><a href="tel:<%= c.phone.delete(' ').delete('-').delete('(').delete(')') %>"><%= c.phone %></a>
+          <% end %>
+        </div>
+      </div>
+      <% end %>
+    </div>
+
+    <div class="w-100 border border-dark mb-3">
+      <div class="row">
+        <div class="col-12"><h4>Utilities at the Property</h4></div>
+      </div>
+      <% tenant.current_tenancy.property.utilities.each do |u| %>
+      <div class="row border border-light">
+        <div class="col-12 col-md-4">
+          <strong><%= u.name %></strong><br />
+          (<%= u.provider_name %>)
+          <% if u.included_in_rent? %>
+          <br /><span class="badge badge-sm badge-success">Included in rent</span>
+          <% end %>
+        </div>
+        <div class="col-12 col-md-8">
+          <% u.utility_prices.each do |prices| %>
+          <%= price.name %> - <i><%= price.readable_price %></i><br />
+          <% end %>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% end %>

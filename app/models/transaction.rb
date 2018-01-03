@@ -36,6 +36,6 @@ class Transaction < ApplicationRecord
   end
 
   def readable_amount
-    Settings.currency + amount.abs
+    Settings.payment.currency + amount.abs
   end
 end

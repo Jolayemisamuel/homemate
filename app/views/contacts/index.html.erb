@@ -31,12 +31,14 @@
       <td class="text-right">
         <div class="btn-group btn-group-sm" role="group">
           <% if c.has_user? %>
+            <% unless c.user == current_user %>
             <%= link_to(edit_user_path(c.user), class: 'btn btn-warning', alt: 'Edit') do %>
               <i class="fas fa-edit fa-fw"></i>
             <% end %>
             <%= link_to(user_path(c.user), data: {:confirm => 'Are you sure?'}, method: :delete,
                         class: 'btn btn-danger', alt: 'Delete') do %>
               <i class="fas fa-trash fa-fw"></i>
+            <% end %>
             <% end %>
           <% else %>
             <%= link_to(edit_contact_path(c), class: 'btn btn-warning', alt: 'Edit') do %>

@@ -187,7 +187,6 @@ ActiveRecord::Schema.define(version: 20171225133252) do
     t.string "username"
     t.string "email"
     t.string "encrypted_password", default: "", null: false
-    t.boolean "is_admin", default: false, null: false
     t.integer "contact_id"
     t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0, null: false

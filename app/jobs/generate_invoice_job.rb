@@ -1,4 +1,5 @@
-# Copyright (c) Andrew Ying 2017.
+##
+# Copyright (c) Andrew Ying 2017-18.
 #
 # This file is part of HomeMate.
 #
@@ -16,11 +17,18 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with HomeMate.  If not, see <http://www.gnu.org/licenses/>.
+##
 
 require 'active_support/core_ext/date'
 require 'pdfkit'
 
 class GenerateInvoiceJob < ApplicationJob
+  # Generate an invoice for the fee derived from a tenancy
+  #
+  # @param [Tenancy] tenancy The tenancy instance
+  # @param [Date] payment_date The payment date
+  #
+  # @return void
   def perform(tenancy, payment_date)
     tenant = tenancy.tenant
     invoice = tenant.invoices.new(
@@ -47,14 +55,11 @@ class GenerateInvoiceJob < ApplicationJob
     invoice.balance = starting_balance + invoice.transactions.sum('amount')
     invoice.save!
 
-    pdf = PDFKit.new(
-        render_to_string 'layouts/invoice', invoice: invoice, starting_balance: starting_balance
-    )
-    invoice.documents.create!(
-      name: Date.current.strftime('Invoice-%d-%m-%Y.pdf'),
-      file: pdf.to_pdf,
-      encrypted: false
-    )
+    file = generate_pdf_invoice(invoice, starting_balance)
+    InvoiceMailer.invoice_created(tenant, invoice, {
+        filename: Date.current.strftime('Invoice-%d-%m-%Y.pdf'),
+        content: file
+    }).deliver_later
   end
 
   # Create and associate rent charges to the invoice.
@@ -149,5 +154,24 @@ class GenerateInvoiceJob < ApplicationJob
         )
       end
     end
+  end
+
+  # Generate PDF version of the invoice
+  #
+  # @param [Invoice] invoice The invoice instance
+  # @param [Integer|Float] starting_balance The balance carried forward
+  #
+  # @return String
+  def generate_pdf_invoice(invoice, starting_balance)
+    pdf = PDFKit.new(
+        render_to_string 'layouts/invoice', invoice: invoice, starting_balance: starting_balance
+    )
+    invoice.documents.create!(
+        name: Date.current.strftime('Invoice-%d-%m-%Y.pdf'),
+        file: pdf.to_pdf,
+        encrypted: false
+    )
+
+    pdf.to_pdf
   end
 end

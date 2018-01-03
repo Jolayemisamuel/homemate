@@ -35,9 +35,10 @@
               <div class="dropdown">
                 <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
-                  <%= current_user.user_association.associable.name %>
+                  <%= current_user.contact.name %>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right text-right">
+                  <%= link_to('Profile', edit_profile_path, class: 'dropdown-item') %>
                   <%= link_to('Logout', destroy_user_session_path, method: :delete, class: 'dropdown-item') %>
                 </div>
               </div>

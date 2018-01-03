@@ -21,7 +21,7 @@
 
 class UsersController < ApplicationController
   include UserCrud
-  before_action :authenticate_user!, :require_tenant_or_landlord
+  before_action :authenticate_user!
 
   def new
     @contact = current_user.user_association.associable.contacts.new
@@ -60,5 +60,18 @@ class UsersController < ApplicationController
       flash[:danger] = 'Failed to update user. This is normally because one of the attributes is invalid.'
       render 'edit' && return
     end
+  end
+
+  def destroy
+    @user = current_user.user_association.associable.users.find(params[:id])
+
+    if @user == current_user
+      flash[:danger] = 'You cannot delete yourself as a contact.'
+      redirect_to contacts_path
+    end
+
+    @user.destroy!
+
+    redirect_to contacts_path
   end
 end

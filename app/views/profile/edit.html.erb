@@ -1,0 +1,26 @@
+<% @title = 'Update Profile' %>
+
+<h2>Update Profile</h2>
+
+<%= simple_form_for(@current_user, url: profile_path, wrapper: :horizontal_form) do |f| %>
+  <%= f.simple_fields_for(@current_user.contact, wrapper: :horizontal_form) do |contact| %>
+    <%= contact.input :title, label: "Title" %>
+    <%= contact.input :first_name, label: "First Name" %>
+    <%= contact.input :last_name, label: "Last Name" %>
+    <%= contact.input :email, label: "Email" %>
+    <%= contact.input :phone, label: "Phone" %>
+    <%= contact.input :address, label: "Address" %>
+  <% end %>
+  <%= f.input :username, label: "Username" %>
+  <%= f.input :current_password, as: :password, label: "Current Password",
+    hint: 'Required only if you want to change your password' %>
+  <%= f.input :password, as: :password, label: "New Password" %>
+  <%= f.input :password_confirmation, as: :password, label: "Confirm Password" %>
+
+  <div class="form-group row">
+    <div class="col btn-group">
+      <%= f.submit "Update", class: "btn btn-warning" %>
+      <%= link_to("Back", _back_url, class: "btn btn-info") %>
+    </div>
+  </div>
+<% end %>

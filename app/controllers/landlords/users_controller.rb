@@ -22,7 +22,7 @@
 module Landlords
   class UsersController < ApplicationController
     include UserCrud
-    before_action :authenticate_user!, :require_admin
+    before_action :authenticate_user!, :require_landlord, :can_edit_associable
 
     def new
       landlord = Landlord.find(params[:landlord_id])

@@ -1,5 +1,5 @@
 ##
-# Copyright (c) Andrew Ying 2017.
+# Copyright (c) Andrew Ying 2017-18.
 #
 # This file is part of HomeMate.
 #
@@ -19,28 +19,12 @@
 # along with HomeMate.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-class User < ApplicationRecord
-  devise :database_authenticatable, :rememberable, :trackable, :lockable
-
-  belongs_to    :contact
-  has_one :user_association
-  has_one :landlord, through: :user_association, source: :associable, source_type: 'Landlord'
-  has_one :tenant, through: :user_association, source: :associable, source_type: 'Tenant'
-
-  validates_associated :contact
-  validates :username, uniqueness: true, if: :username_changed?
-  validates :email, uniqueness: true, if: :email_changed?
-  validates :password, confirmation: true, allow_nil: true
-
-  def is_tenant?
-    user_association.associable.is_a? Tenant
+class ProfileController < ApplicationController
+  def edit
+    @current_user = current_user
   end
 
-  def is_landlord?
-    user_association.associable.is_a? Landlord
-  end
-
-  def can_edit_associable?
-    contact.primary?
+  def update
+    @current_user = current_user
   end
 end

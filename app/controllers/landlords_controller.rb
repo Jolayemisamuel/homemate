@@ -22,7 +22,7 @@
 require 'active_support/core_ext/securerandom'
 
 class LandlordsController < ApplicationController
-  before_action :require_admin
+  before_action :require_landlord, :can_edit_associable
 
   def edit
     @landlord = Landlord.find(params[:id])

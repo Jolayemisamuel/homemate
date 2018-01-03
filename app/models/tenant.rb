@@ -13,14 +13,18 @@ class Tenant < ApplicationRecord
   validates :name, presence: true
 
   def balance
-    transactions.where(processed: true).sum(:amount)
+    transactions.where(processed: true).where(failed: false).sum(:amount)
+  end
+
+  def last_invoice
+    invoices.where(issued: true).order(issued_on: :desc).first
   end
 
   def readable_balance
-    Settings.currency + balance.abs
+    Settings.payment.currency + balance.abs
   end
 
-  def balance_is_credit?
+  def balance_in_credit?
     balance < 0
   end
 
