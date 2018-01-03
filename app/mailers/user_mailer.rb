@@ -22,12 +22,18 @@
 class UserMailer < ApplicationMailer
   layout 'mailer'
 
+  # Send the initial password upon account creation.
+  #
+  # @param [User] user The newly created user
+  # @param [string] password Automatically generated password
+  #
+  # @return void
   def account_created(user, password)
     @user = user
     @password = password
 
     mail(
-        to: %("#{@user.contact.first_name} #{@user.contact.last_name}" <#{@user.email}>),
+        to: %("#{@user.contact.name}" <#{@user.email}>),
         subject: 'Welcome to HomeMate'
     )
   end

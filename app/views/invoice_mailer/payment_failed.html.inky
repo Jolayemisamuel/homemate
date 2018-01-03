@@ -1,0 +1,23 @@
+<callout class="danger">
+  <row>
+    <columns><center><h2>Payment Failed</h2></center></columns>
+  </row>
+</callout>
+<row>
+  <columns>
+    <p>Dear <%= @contact.first_name %>,</p>
+    <p>
+      An invoice has previous been created for your tenancy at <%= @tenant.active_tenancy.property.name%>.
+      We have recently attempted to collect the balance from your account by Direct Debit. However, the payment
+      have been unsuccessful.
+    </p>
+    <p>
+      Please urgently contact your landlord to arrange for alternative means of payment. You can find the contact
+      details for your landlord <%= link_to('here', url_for(@tenant.active_tenancy)) %>.
+    </p>
+    <p>
+      Please note that in accordance to the terms of the tenancy, interests may been charged on outstanding balances
+      which remained unpaid.
+    </p>
+  </columns>
+</row>

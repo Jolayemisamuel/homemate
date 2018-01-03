@@ -1,0 +1,28 @@
+<row>
+  <columns><center><h2>Invoice Created</h2></center></columns>
+</row>
+<row>
+  <columns>
+    <p>Dear <%= @contact.first_name %>,</p>
+    <p>
+      An invoice has recently been created for your tenancy at <%= @tenant.active_tenancy.property.name%>.
+      The balance is <b><%= @invoice.readable_balance %><%= @invoice.in_credit? ? ' in credit' : '' %>.</b>
+    </p>
+    <center><button href="<%= invoice_url(@invoice) %>"></button></center>
+  </columns>
+</row>
+<row>
+  <columns>
+    <% if @tenant.mandate.empty? %>
+    <p>
+      Please settle the balance <b>on or before <%= @invoice.due_on.to_str(:rfc822) %></b>. Interests are payable
+      on overdue balances.
+    </p>
+    <% else %>
+    <p>
+      The balance will be taken from your account by Direct Debit on <b><%= @invoice.due_on.to_str(:rfc822) %></b>, or
+      the working day following. Please ensure that sufficient balance are available in your account then.
+    </p>
+    <% end %>
+  </columns>
+</row>
