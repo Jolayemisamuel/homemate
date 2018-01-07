@@ -1,5 +1,5 @@
 ##
-# Copyright (c) Andrew Ying 2017.
+# Copyright (c) Andrew Ying 2017-18.
 #
 # This file is part of HomeMate.
 #
@@ -25,7 +25,7 @@ class Transaction < ApplicationRecord
   belongs_to :tenancy, required: false
   belongs_to :transactionable, polymorphic: true, required: false
 
-  default_scope { where(processed: true) }
+  default_scope { where(processed: true).order(created_at: :desc) }
 
   validates :amount, numericality: true
   validates :description, presence: true

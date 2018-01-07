@@ -22,16 +22,25 @@
 require 'homemate/exception'
 
 class ProcessMandateEvent < ProcessEvent
+  # The actions which indicate that the mandate is active
+  ACTIVE_ACTIONS = %w[created customer_approval_granted submitted active reinstated transferred]
+
+  # The actions which indicate that the mandate is inactive
+  INACTIVE_ACTIONS = %w[cancelled failed expired resubmission_requested]
+
+  # The action which indicate that the mandate needs to be replaced
+  REPLACED_ACTION = 'replaced'
+
   def update(mandate, event)
     mandate.status_message = event['action']
     mandate.status_details = json_encode(event['details'])
 
-    if event['action'].in? %w[created customer_approval_granted submitted active reinstated transferred]
-      mandate.active = true unless mandate.active?
-    elsif event['action'].in? %w[cancelled failed expired resubmission_requested]
-      mandate.active = false if mandate.active?
-    elsif event['action'] == 'replaced'
-      mandate.active = true unless mandate.active?
+    if event['action'].in? ACTIVE_ACTIONS
+      mandate.active = true
+    elsif event['action'].in? INACTIVE_ACTIONS
+      mandate.active = false
+    elsif event['action'].in? REPLACED_ACTION
+      mandate.active = true
       mandate.reference = event['links']['new_mandate']
     else
       raise HomeMate::InvalidUsage 'Action unknown for the specified resource type.'

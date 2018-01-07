@@ -21,8 +21,10 @@
 
 class ContactsController < ApplicationController
   before_action :authenticate_user!
+  before_action :can_edit_associable, except: [:index]
 
   def index
+    @current_user = current_user
     @contacts = current_user.user_association.associable.contacts
   end
 

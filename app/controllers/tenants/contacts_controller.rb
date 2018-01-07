@@ -1,5 +1,5 @@
 ##
-# Copyright (c) Andrew Ying 2017.
+# Copyright (c) Andrew Ying 2017-18.
 #
 # This file is part of HomeMate.
 #
@@ -21,7 +21,7 @@
 
 module Tenants
   class ContactsController < ApplicationController
-    before_action :require_landlord
+    before_action :authenticate_user!, :require_landlord
 
     def edit
       tenant = Tenant.find(params[:tenant_id])

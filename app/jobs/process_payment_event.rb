@@ -25,7 +25,7 @@ class ProcessPaymentEvent < ProcessEvent
       when 'created', 'customer_approval_granted'
         return
       when 'resubmission_requested'
-        transaction.queued = false if transaction.queued?
+        transaction.queued = false
         transaction.failed = false
       when 'customer_approval_denied', 'cancelled'
         transaction.failed = true
@@ -33,11 +33,11 @@ class ProcessPaymentEvent < ProcessEvent
       when 'submitted'
         transaction.queued = true
       when 'confirmed', 'chargeback_cancelled', 'paid_out'
-        transaction.processed = true unless transaction.processed?
-        transaction.failed = false if transaction.failed?
+        transaction.processed = true
+        transaction.failed = false
       when 'failed', 'charged_back', 'late_failure_settled', 'chargeback_settled'
-        transaction.processed = true unless transaction.processed?
-        transaction.failed = true unless transaction.failed?
+        transaction.processed = true
+        transaction.failed = true
         transaction.message = json_encode(event['details'])
       else
         raise HomeMate::InvalidUsage 'Action unknown for the specified resource type.'

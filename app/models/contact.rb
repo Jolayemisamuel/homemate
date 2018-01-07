@@ -1,5 +1,5 @@
 ##
-# Copyright (c) Andrew Ying 2017.
+# Copyright (c) Andrew Ying 2017-18.
 #
 # This file is part of HomeMate.
 #
@@ -35,7 +35,7 @@ class Contact < ApplicationRecord
   end
 
   def name
-    first_name + last_name
+    first_name + ' ' + last_name
   end
 
   def readable_address(separator)

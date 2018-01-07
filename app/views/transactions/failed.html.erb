@@ -1,0 +1,26 @@
+<% @title = 'Failed Transactions' %>
+
+<h2>Failed Transactions</h2>
+
+<table class="table">
+  <thead class="thead-light">
+  <tr>
+    <th>Tenant</th>
+    <th>Last Updated</th>
+    <th>Description</th>
+    <th>Message</th>
+    <th>Balance</th>
+  </tr>
+  </thead>
+  <tbody class="bg-white">
+  <% @transactions.each do |t| %>
+  <tr>
+    <td><%= link_to t.tenant.name, tenant_path(t.tenant) %></td>
+    <th><%= t.updated_at.to_s(:rfc822) %></th>
+    <td><%= t.description %></td>
+    <td><%= t.message %></td>
+    <td><%= t.readable_amount %></td>
+  </tr>
+  <% end %>
+  </tbody>
+</table>

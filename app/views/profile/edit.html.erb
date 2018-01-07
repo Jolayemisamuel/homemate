@@ -12,6 +12,9 @@
     <%= contact.input :address, label: "Address" %>
   <% end %>
   <%= f.input :username, label: "Username" %>
+
+  <hr />
+
   <%= f.input :current_password, as: :password, label: "Current Password",
     hint: 'Required only if you want to change your password' %>
   <%= f.input :password, as: :password, label: "New Password" %>
