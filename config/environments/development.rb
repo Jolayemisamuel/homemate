@@ -33,6 +33,17 @@ Rails.application.configure do
   
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
+  config.action_mailer.delivery_method = :smtp
+
+  config.action_mailer.smtp_settings = {
+      :user_name => Settings.smtp.username,
+      :password => Settings.smtp.password,
+      :address => Settings.smtp.server,
+      :domain => 'homemate.local',
+      :port => Settings.smtp.port,
+      :authentication => :login
+  }
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 

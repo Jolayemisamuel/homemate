@@ -14,3 +14,9 @@ gocardless:
   token: token
   webhook_secret: <%= ENV['DATA.GOCARDLESS.SECRET'] %>
   environment: sandbox
+
+smtp:
+  server: server.local
+  port: 465
+  username: username
+  password: <%= ENV['DATA.SMTP.PASSWORD'] %>
