@@ -3,6 +3,25 @@
   <small class="text-muted font-weight-light">Your tenancies, documents and bills</small>
 </h2>
 
+<% unless tenant.tenant_applications.where(completed: false).empty? %>
+  <div class="card w-100 mb-3">
+    <h4 class="card-header">Current Application</h4>
+    <div class="card-body">
+      <nav class="nav nav-multistep flex-column flex-md-row justify-content-center mb-2">
+        <%= render 'shared/multistep', url: edit_profile_path, content: 'Profile',
+          status: tenant.current_application.contact_completed? %>
+        <%= render 'shared/multistep', url: '#', content: 'Application Form',
+          status: tenant.current_application.form_uploaded? %>
+        <%= render 'shared/multistep', url: '#', content: 'Reference',
+          status: tenant.current_application.reference_received? %>
+        <%= render 'shared/multistep', url: mandate_path, content: 'Check & Mandate',
+          status: tenant.current_application.check_completed? && tenant.current_application.mandate_completed? %>
+      </nav>
+      <%= link_to('View Progress', path_for(tenant.tenant_application), class: 'btn btn-primary') %>
+    </div>
+  </div>
+<% end %>
+
 <div class="card w-100 mb-3">
   <h4 class="card-header">Balance</h4>
   <div class="card-body">
@@ -10,14 +29,14 @@
       <div class="col-12 col-md-6">
         <h1 class="card-text display-3">
           <%= link_to(
-             tenant.balance_in_credit? ? tenant.readable_balance + ' <small>credit</small>'.html_safe
-                : tenant.readable_balance, transactions_path
+            tenant.balance_in_credit? ? tenant.readable_balance + ' <small>credit</small>'.html_safe
+            : tenant.readable_balance, transactions_path
           ) %>
         </h1>
         <small class="card-text text-muted">
           <b>Last Invoice</b> - <%= link_to(
             tenant.last_invoice.balance_in_credit? ? tenant.last_invoice.readable_balance + ' credit'
-               : tenant.last_invoice.readable_balance, invoice_path(tenant.last_invoice)
+            : tenant.last_invoice.readable_balance, invoice_path(tenant.last_invoice)
           ) %>
         </small>
       </div>
@@ -34,9 +53,9 @@
             </li>
           <% end %>
           <% unless tenant.current_tenancy.empty? %>
-          <li class="nav-item">
-            <%= link_to('View tenancy details', tenancy_path(tenant.current_tenancy), class: 'nav-link') %>
-          </li>
+            <li class="nav-item">
+              <%= link_to('View tenancy details', tenancy_path(tenant.current_tenancy), class: 'nav-link') %>
+            </li>
           <% end %>
           <li class="nav-item">
             <%= link_to('View transactions', transactions_path, class: 'nav-link') %>
@@ -88,7 +107,7 @@
           <% end %>
         </div>
         <div class="col-12 col-md-8">
-          <% u.utility_prices.each do |prices| %>
+          <% u.utility_prices.each do |price| %>
           <%= price.name %> - <i><%= price.readable_price %></i><br />
           <% end %>
         </div>

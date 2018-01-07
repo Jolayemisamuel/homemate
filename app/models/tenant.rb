@@ -4,6 +4,7 @@ class Tenant < ApplicationRecord
   has_many :contacts, as: :contactable, dependent: :destroy
 
   has_many :tenancies, dependent: :restrict_with_exception
+  has_many :tenant_applications, dependent: :destroy
   has_many :tenant_checks, dependent: :destroy
   has_many :mandates, dependent: :destroy
   has_many :invoices
@@ -38,6 +39,10 @@ class Tenant < ApplicationRecord
 
   def pending_balance_is_credit?
     pending_balance < 0
+  end
+
+  def current_application
+    tenant_applications.where(completed: false).order(updated_at: :desc).first
   end
 
   def active_tenancy

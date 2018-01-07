@@ -22,12 +22,18 @@
 Rails.application.routes.draw do
   root 'pages#home'
 
+  resources :applications, controller: 'tenants/applications' do
+    resources :documents, controller: 'tenants/application_documents', only: [:new, :create]
+  end
+
   scope 'billing' do
     resources :mandates do
       get :complete, on: :new
     end
     resources :invoices
-    resources :transactions
+    resources :transactions do
+      get 'failed', to: 'transactions#failed'
+    end
     post 'webhook', to: 'billing#webhook'
   end
 
@@ -40,7 +46,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :profile, only: [:edit, :update]
+  resource :profile, controller: 'profile', only: [:edit, :update]
 
   scope 'profile' do
     resources :contacts

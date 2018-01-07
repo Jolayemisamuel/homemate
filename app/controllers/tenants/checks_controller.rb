@@ -1,5 +1,5 @@
 ##
-# Copyright (c) Andrew Ying 2017.
+# Copyright (c) Andrew Ying 2017-18.
 #
 # This file is part of HomeMate.
 #
@@ -46,8 +46,7 @@ module Tenants
       @tenant = Tenant.find(params[:tenant_id])
       @tenant_check = @tenant.tenant_checks.new(tenant_check_params)
 
-      if @tenant_check.valid?
-        @tenant_check.save
+      if @tenant_check.save
         @tenant_check.documents.new(
             name: params[:document_to_attach].original_filename,
             file: params[:document_to_attach],

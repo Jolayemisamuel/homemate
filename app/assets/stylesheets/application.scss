@@ -40,6 +40,20 @@
       width: 95%;
     }
   }
+
+  .nav-multistep {
+    .nav-item {
+      border: 1px solid $light-gray;
+    }
+
+    .active {
+      background-color: $success;
+    }
+
+    .nav-item:not(.active) {
+      @extend .bg-warning
+    }
+  }
 }
 
 // Temporary and dirty fix for Devise alerts

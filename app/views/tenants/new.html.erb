@@ -2,6 +2,11 @@
 
 <h2>Create Tenant</h2>
 
+<p>
+  Fill in the perspective tenant's information below to create a new tenant account. Please note that a tenancy
+  application will be automatically created.
+</p>
+
 <%= simple_form_for(@tenant, wrapper: :horizontal_form) do |f| %>
   <%= f.input :name, placeholder: "Name" %>
 
@@ -21,6 +26,9 @@
       <% end %>
     </div>
   </div>
+
+  <%= f.input :no_application, as: :boolean, radio_label: "Do not create tenancy application",
+    wrapper: :horizontal_boolean %>
 
   <div class="form-group row">
     <div class="col btn-group">

@@ -3,6 +3,63 @@
 <h2><%= @tenant.name %></h2>
 <%= link_to('Edit', edit_tenant_path(@tenant), class: 'btn btn-warning float-right') %>
 
+<div class="card mb-3">
+  <h4 class="card-header">Tenancy Applications</h4>
+  <div class="card-content">
+    <table class="table">
+      <thead class="thead-light">
+      <tr>
+        <th>Last Updated</th>
+        <th>Form</th>
+        <th>Reference</th>
+        <th>Check</th>
+        <th>Mandate</th>
+        <th>View</th>
+      </tr>
+      </thead>
+      <tbody class="bg-white">
+      <% @tenant.tenant_applications.each do |app| %>
+        <tr>
+          <th><%= app.updated_at.to_s(:rfc822) %></th>
+          <td>
+            <%= app.form_uploaded? ? '<i class="fas fa-check-circle text-success"></i>'.html_safe
+              : '<i class="fas fa-times-circle text-danger"></i>'.html_safe %>
+          </td>
+          <td>
+            <% if app.reference_received? %>
+            <%= app.reference_passed? ? '<i class="fas fa-check-circle text-success"></i>'.html_safe
+              : '<i class="fas fa-times-circle text-danger"></i>'.html_safe %>
+            <% else %>
+            <span class="badge badge-warning">Pending</span>
+            <% end %>
+          </td>
+          <td>
+            <%= app.check_completed? ? '<i class="fas fa-check-circle text-success"></i>'.html_safe
+              : '<i class="fas fa-times-circle text-danger"></i>'.html_safe %>
+          </td>
+          <td>
+            <%= app.mandate_completed? ? '<i class="fas fa-check-circle text-success"></i>'.html_safe
+                    : '<i class="fas fa-times-circle text-danger"></i>'.html_safe %>
+          </td>
+          <td>
+            <%= link_to(tenant_application_path(app), class: 'btn btm-sm btn-info', alt: 'View') do %>
+              <i class="fas fa-search fa-fw"></i>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+      <tfoot>
+      <tr>
+        <td colspan="2" class="text-right">
+          <%= link_to('Add Application', new_tenant_application_path(@tenant), class: 'btn btn-primary') %>
+        </td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
 <% if @tenant.tenant_checks.empty? %>
   <div class="alert alert-danger">
     <strong>Tenant check required</strong>: please ensure that one is carried out prior to any tenancies.

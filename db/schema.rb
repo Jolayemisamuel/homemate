@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171225133252) do
+ActiveRecord::Schema.define(version: 20180107030525) do
 
   create_table "contacts", force: :cascade do |t|
     t.string "contactable_type"
@@ -133,6 +133,20 @@ ActiveRecord::Schema.define(version: 20171225133252) do
     t.datetime "updated_at", null: false
     t.index ["rentable_type", "rentable_id"], name: "index_tenancies_on_rentable_type_and_rentable_id"
     t.index ["tenant_id"], name: "index_tenancies_on_tenant_id"
+  end
+
+  create_table "tenant_applications", force: :cascade do |t|
+    t.integer "tenant_id"
+    t.boolean "contact_completed", default: false
+    t.boolean "form_uploaded", default: false
+    t.boolean "reference_received", default: false
+    t.boolean "reference_passed"
+    t.boolean "check_completed", default: false
+    t.boolean "mandate_completed", default: false
+    t.boolean "completed", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_tenant_applications_on_tenant_id"
   end
 
   create_table "tenant_checks", force: :cascade do |t|

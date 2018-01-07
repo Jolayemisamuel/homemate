@@ -1,0 +1,82 @@
+<% @title = 'Tenancy Application' %>
+
+<h2>Tenancy Application</h2>
+
+<div class="row mb-3">
+  <div class="col-12 col-md-3">
+    <ul class="list-group">
+      <li class="list-group-item d-flex justify-content-between align-items-center
+        <%= @application.contact_completed? ? ' list-group-item-success' : '' %>">
+        <b>1</b>. Profile
+        <%= @application.contact_completed? ? '<i class="fas fa-check fa-fw"></i>'.html_safe
+          : '<i class="fas fa-times fa-fw text-danger"></i>'.html_safe %>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-center
+        <%= @application.form_uploaded? ? ' list-group-item-success' : '' %>">
+        <b>2</b>. Application Form
+        <%= @application.form_uploaded? ? '<i class="fas fa-check fa-fw"></i>'.html_safe
+          : '<i class="fas fa-times fa-fw text-danger"></i>'.html_safe %>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-center
+        <%= @application.reference_received? && @application.reference_passed? ? ' list-group-item-success' : '' %>">
+        <b>3</b>. Reference
+        <% if @application.reference_received? %>
+        <% if @application.reference_passed? %>
+          <i class="fas fa-check fa-fw"></i>
+        <% else %>
+          <i class="fas fa-times fa-fw text-danger"></i>
+        <% end %>
+        <% else %>
+          <i class="fas fa-spinner fa-fw"></i>
+        <% end %>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-center
+        <%= @application.check_completed? ? ' list-group-item-success' : '' %>">
+        <b>4a</b>. Right to Rent Check
+        <%= @application.check_completed? ? '<i class="fas fa-check fa-fw"></i>'.html_safe
+          : '<i class="fas fa-times fa-fw text-danger"></i>'.html_safe %>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-center
+        <%= @application.mandate_completed? ? ' list-group-item-success' : '' %>">
+        <b>4b</b>. Direct Debit Mandate
+        <%= @application.mandate_completed? ? '<i class="fas fa-check fa-fw"></i>'.html_safe
+          : '<i class="fas fa-times fa-fw text-danger"></i>'.html_safe %>
+      </li>
+    </ul>
+  </div>
+  <div class="col-12 col-md-9">
+    <h3>Outstanding actions</h3>
+    <% if !@application.contact_completed? %>
+    <div class="alert alert-primary">
+      <h4 class="alert-heading">Profile Incomplete</h4>
+      <p>
+        Please complete your details <%= link_to('here', edit_profile_path) %>, and then return to this page to
+        complete your tenancy application.
+      </p>
+    </div>
+    <% elsif !@application.form_uploaded? %>
+    <div class="alert alert-primary">
+      <h4 class="alert-heading">Application Form Required</h4>
+      <p>
+        Please download, print out and complete the tenancy application form.
+      </p>
+      <hr />
+      <%= link_to('Upload Form', new_application_document_path, class: 'btn btn-primary') %>
+    </div>
+    <% elsif !@application.completed %>
+    <div class="alert alert-primary">
+      <h4 class="alert-heading">Processing Application</h4>
+      <p>
+        We're currently processing your tenancy application and will get in touch as soon as possible. At the mean time,
+        please complete your <%= link_to('right to rent check', new_tenant_check_path(@tenant)) %> and
+        <%= link_to('Direct Debit mandate', new_mandate_path) %>
+      </p>
+    </div>
+    <% else %>
+    <div class="alert alert-primary">
+      <h4 class="alert-heading">Application Completed</h4>
+      <p>You should have been informed of the outcome of the application. Please get in touch if it is not the case.</p>
+    </div>
+    <% end %>
+  </div>
+</div>

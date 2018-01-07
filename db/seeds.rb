@@ -17,7 +17,6 @@ user = User.new(
   password_confirmation: 'homemate',
   contact: contact
 )
-user.is_admin = true
 user.save!
 
 UserAssociation.create!(

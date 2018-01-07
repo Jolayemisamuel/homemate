@@ -76,6 +76,11 @@ class TenantsController < ApplicationController
         association = @tenant.user_associations.new
         association.user = @user
         association.save!
+
+        unless tenant_params[:no_application]
+          application = @tenant.tenant_applications.new
+          application.save!
+        end
       end
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique
       flash[:danger] = 'Failed to create new tenant. This is normally because one of the attributes is invalid.'
@@ -90,7 +95,7 @@ class TenantsController < ApplicationController
 
   def tenant_params
     params.require(:tenant).permit(
-      :name,
+      :name, :no_application,
       user: [:username],
       contact: [:title, :first_name, :last_name, :phone, :address, :email]
     )
