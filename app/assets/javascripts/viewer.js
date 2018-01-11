@@ -1,1 +1,1 @@
-import 'pdfjs-dist';
+import 'pdfjs-dist/build/pdf';
