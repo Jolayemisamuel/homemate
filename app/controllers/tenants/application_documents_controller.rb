@@ -25,36 +25,38 @@ module Tenants
 
     def new
       if current_user.is_tenant?
-        @tenant = current_user.user_association.associable.includes(:tenant_applications).find(params[:tenant_id])
+        tenant = current_user.tenant
       else
-        @tenant = Tenant.includes(:tenant_applications).find(params[:tenant_id])
+        tenant = Tenant.all
       end
 
-      application = @tenant.tenant_applications.find(params[:id])
-      @document = application.documents.new
+      @application = tenant.tenant_applications.find(params[:application_id])
+      @document = @application.documents.new
+
+      render 'tenants/documents/new'
     end
 
     def create
       if current_user.is_tenant?
-        @tenant = current_user.user_association.associable.includes(:tenant_applications).find(params[:tenant_id])
+        tenant = current_user.tenant
       else
-        @tenant = Tenant.includes(:tenant_applications).find(params[:tenant_id])
+        tenant = Tenant.all
       end
 
-      application = @tenant.tenant_applications.find(params[:id])
-      @document = application.documents.new(
+      @application = tenant.tenant_applications.find(params[:application_id])
+      @document = @application.documents.new(
         name: params[:document][:document_to_attach].original_filename,
         file: params[:document][:document_to_attach],
         encrypt: true
       )
 
       if @document.save
-        application.form_uploaded = true
-        application.save!
+        @application.form_uploaded = true
+        @application.save!
 
-        redirect_to application_path(application)
+        redirect_to application_path(@application)
       else
-        render 'new'
+        render 'tenants/documents/new'
       end
     end
   end

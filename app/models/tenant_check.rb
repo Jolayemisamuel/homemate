@@ -16,6 +16,6 @@ class TenantCheck < ApplicationRecord
   end
 
   def is_valid?
-    :expires.today? || :expires.future?
+    expires.today? || expires.future?
   end
 end

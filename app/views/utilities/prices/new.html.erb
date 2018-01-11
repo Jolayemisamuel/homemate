@@ -4,8 +4,9 @@
 
 <%= simple_form_for(@utility_price, url: utility_prices_path(@utility), wrapper: :horizontal_form) do |f| %>
   <%= f.input :name, label: 'Name' %>
-  <%= f.input :usage_based, radio_label: 'Usage based?', wrapper: :horizontal_boolean %>
-  <%= f.input :price, min: 0, step: 0.01, label: 'Unit Charge' %>
+  <%= f.input :usage_based, radio_label: 'Usage based?', radio_for: 'utility_price_usage_based', wrapper: :horizontal_boolean %>
+  <%= f.input :price, icon: 'fas fa-pound-sign fa-fw', min: 0, step: 0.01, label: 'Unit Charge',
+    wrapper: :horizontal_input_group, required: true %>
   <%= f.input :usage_unit, label: 'Usage Unit', hint: 'Only if it is a usage-based charge' %>
   <%= f.input :length_unit, collection: [['Day', 'd'], ['Week', 'w'], ['Month', 'm']], label: 'Unit',
     hint: 'Only if it is a standing charge', wrapper: :horizontal_multiselect %>

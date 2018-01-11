@@ -1,6 +1,6 @@
 <% @title = 'Edit Property' %>
 
-<h2>Edit Property</h2>
+<h2>Edit Information of <%= @property.name %></h2>
 
 <%= simple_form_for(@property, wrapper: :horizontal_form) do |f| %>
   <%= f.input :name, class: "form-control", label: "Name" %>

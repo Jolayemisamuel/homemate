@@ -19,23 +19,14 @@
 # along with HomeMate.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-class Transaction < ApplicationRecord
-  belongs_to :tenant
-  belongs_to :invoice, required: false
-  belongs_to :tenancy, required: false
-  belongs_to :transactionable, polymorphic: true, required: false
+class DocumentsController < ApplicationController
+  before_action :authenticate_user!
 
-  default_scope { where(processed: true).order(created_at: :desc) }
+  def show
+    @document = Document.find(params[:id])
 
-  validates :amount, numericality: true
-  validates :description, presence: true
-  validates :processed, inclusion: { in: [true, false] }
-
-  def in_credit?
-    amount < 0
-  end
-
-  def readable_amount
-    Settings.payment.currency + sprintf('%0.02f', amount.abs)
+    send_data @document.file_stream,
+              filename: @document.name,
+              type: @document.file_mime_type
   end
 end

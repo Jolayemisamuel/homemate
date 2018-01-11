@@ -77,7 +77,7 @@ class TenantsController < ApplicationController
         association.user = @user
         association.save!
 
-        unless tenant_params[:no_application]
+        if tenant_params[:no_application] == '0'
           application = @tenant.tenant_applications.new
           application.save!
         end

@@ -1,9 +1,9 @@
 <% @title = @tenant.name %>
 
-<h2><%= @tenant.name %></h2>
 <%= link_to('Edit', edit_tenant_path(@tenant), class: 'btn btn-warning float-right') %>
+<h2><%= @tenant.name %></h2>
 
-<div class="card mb-3">
+<div class="card w-100 mb-3">
   <h4 class="card-header">Tenancy Applications</h4>
   <div class="card-content">
     <table class="table">
@@ -14,35 +14,35 @@
         <th>Reference</th>
         <th>Check</th>
         <th>Mandate</th>
-        <th>View</th>
+        <th></th>
       </tr>
       </thead>
       <tbody class="bg-white">
       <% @tenant.tenant_applications.each do |app| %>
         <tr>
-          <th><%= app.updated_at.to_s(:rfc822) %></th>
+          <th><%= l app.updated_at %></th>
           <td>
-            <%= app.form_uploaded? ? '<i class="fas fa-check-circle text-success"></i>'.html_safe
-              : '<i class="fas fa-times-circle text-danger"></i>'.html_safe %>
+            <%= app.form_uploaded? ? '<i class="fas fa-lg fa-check-circle text-success"></i>'.html_safe
+              : '<i class="fas fa-lg fa-times-circle text-danger"></i>'.html_safe %>
           </td>
           <td>
             <% if app.reference_received? %>
-            <%= app.reference_passed? ? '<i class="fas fa-check-circle text-success"></i>'.html_safe
-              : '<i class="fas fa-times-circle text-danger"></i>'.html_safe %>
+            <%= app.reference_passed? ? '<i class="fas fa-lg fa-check-circle text-success"></i>'.html_safe
+              : '<i class="fas fa-lg fa-times-circle text-danger"></i>'.html_safe %>
             <% else %>
-            <span class="badge badge-warning">Pending</span>
+            <%= link_to('Record', edit_application_path(app), class: 'btn btn-sm btn-warning') %>
             <% end %>
           </td>
           <td>
-            <%= app.check_completed? ? '<i class="fas fa-check-circle text-success"></i>'.html_safe
-              : '<i class="fas fa-times-circle text-danger"></i>'.html_safe %>
+            <%= app.check_completed? ? '<i class="fas fa-lg fa-check-circle text-success"></i>'.html_safe
+              : link_to('Record', new_tenant_check_path(@tenant), class: 'btn btn-sm btn-outline-primary') %>
           </td>
           <td>
-            <%= app.mandate_completed? ? '<i class="fas fa-check-circle text-success"></i>'.html_safe
-                    : '<i class="fas fa-times-circle text-danger"></i>'.html_safe %>
+            <%= app.mandate_completed? ? '<i class="fas fa-lg fa-check-circle text-success"></i>'.html_safe
+              : '<i class="fas fa-lg fa-times-circle text-danger"></i>'.html_safe %>
           </td>
           <td>
-            <%= link_to(tenant_application_path(app), class: 'btn btm-sm btn-info', alt: 'View') do %>
+            <%= link_to(application_path(app), class: 'btn btn-sm btn-info', alt: 'View') do %>
               <i class="fas fa-search fa-fw"></i>
             <% end %>
           </td>
@@ -51,8 +51,11 @@
       </tbody>
       <tfoot>
       <tr>
-        <td colspan="2" class="text-right">
-          <%= link_to('Add Application', new_tenant_application_path(@tenant), class: 'btn btn-primary') %>
+        <td colspan="6" class="text-right">
+          <%= form_for(:tenant_application, url: applications_path) do |f| %>
+            <%= f.hidden_field 'tenant_id', value: @tenant.id %>
+            <%= f.submit "Create Application", class: "btn btn-primary" %>
+          <% end %>
         </td>
       </tr>
       </tfoot>
@@ -60,13 +63,13 @@
   </div>
 </div>
 
-<% if @tenant.tenant_checks.empty? %>
+<% if !@tenant.current_application.present? && @tenant.tenant_checks.empty? %>
   <div class="alert alert-danger">
     <strong>Tenant check required</strong>: please ensure that one is carried out prior to any tenancies.
     You can record a completed check <%= link_to('here', new_tenant_check_path(@tenant)) %>.
   </div>
 <% else %>
-  <div class="card mb-3">
+  <div class="card w-100 mb-3">
     <h4 class="card-header">Tenant Check</h4>
     <div class="card-content">
       <table class="table">
@@ -140,7 +143,7 @@
   </div>
 <% end %>
 
-<div class="card mb-3">
+<div class="card w-100 mb-3">
   <h4 class="card-header">Contacts</h4>
   <div class="card-content">
     <table class="table">
@@ -216,7 +219,7 @@
   </div>
 </div>
 
-<div class="card mb-3">
+<div class="card w-100 mb-3">
   <h4 class="card-header">Tenancies</h4>
   <div class="card-content">
     <table class="table">
@@ -246,7 +249,11 @@
           <span class="badge badge-secondary">Past</span>
           <% end %>
         </td>
-        <td></td>
+        <td>
+          <%= link_to(tenancy_path(tenancy), class: 'btn btn-sm btn-primary', alt: 'View') do %>
+            <i class="fas fa-search fa-fw"></i>
+          <% end %>
+        </td>
       </tr>
       <% end %>
       </tbody>

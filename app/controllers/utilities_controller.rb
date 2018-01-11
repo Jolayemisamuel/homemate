@@ -25,11 +25,11 @@ class UtilitiesController < ApplicationController
   layout 'application'
 
   def index
-    @utilities = Utility.include(:utility_prices, :utility_usages)
+    @utilities = Utility.includes(:utility_prices, :utility_usages)
   end
 
   def show
-    @utility = Utility.include(:utility_prices, :utility_usages).find(params[:id])
+    @utility = Utility.includes(:utility_prices, :utility_usages).find(params[:id])
   end
 
   def edit

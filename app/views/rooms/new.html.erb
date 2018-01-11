@@ -8,6 +8,8 @@
     wrapper: :horizontal_input_group %>
   <%= f.input :charge_weight, class: "form-control", step: 0.1, placeholder: "1.0", label: 'Utility Charge Weight',
     hint: 'This would be used to calculate the share of utility share payable by its occupant' %>
+  <%= f.input :occupied_override, class: "form-control", radio_label: "Occupied", radio_for: "room_occupied_override",
+    hint: 'Override occupation status', wrapper: :horizontal_boolean %>
   <div class="form-group row">
     <div class="col btn-group">
       <%= f.submit "Create", class: "btn btn-primary" %>

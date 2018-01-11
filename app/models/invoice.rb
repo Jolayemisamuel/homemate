@@ -57,7 +57,7 @@ class Invoice < ApplicationRecord
   end
 
   def readable_balance
-    Settings.payment.currency + balance.abs
+    Settings.payment.currency + sprintf('%0.02f', balance.abs)
   end
 
   private

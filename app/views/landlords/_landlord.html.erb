@@ -65,6 +65,8 @@
             <%= room.tenancies.active.tenant.name %>
           <% elsif room.tenancies.future.present? %>
             <%= room.tenancies.future.tenant.name %> <small>(future)</small>
+          <% elsif room.occupied_override? %>
+            Occupied
           <% else %>
             Unoccupied - <%= link_to('Add tenancy', new_room_tenancy_path(room)) %>
           <% end %>

@@ -29,7 +29,7 @@ class UtilityPrice < ApplicationRecord
   validate :validate_length_unit, unless: :usage_based
 
   def readable_price
-    Settings.payment.currency + price + '/' + unit
+    Settings.payment.currency + sprintf('%0.02f', price) + '/' + unit
   end
 
   def unit
@@ -44,7 +44,7 @@ class UtilityPrice < ApplicationRecord
   end
 
   def validate_length_unit
-    errors.add(:length_unit, 'is not a valid length unit') unless length_unit.in?(%w[w m])
+    errors.add(:length_unit, 'is not a valid unit') unless length_unit.in?(%w[d w m])
     errors.add(:usage_unit, 'must be empty') if usage_unit.present?
   end
 end

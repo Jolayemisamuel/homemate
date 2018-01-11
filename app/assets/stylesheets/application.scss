@@ -11,6 +11,10 @@
   .auth-box {
     width: 100%;
     max-width: 380px;
+
+    .logo {
+      width: 45%;
+    }
   }
 }
 
@@ -41,17 +45,25 @@
     }
   }
 
+  .balance {
+    @extend .display-3
+  }
+
   .nav-multistep {
     .nav-item {
-      border: 1px solid $light-gray;
+      border: 1px solid $light;
+      border-radius: 10px;
+      padding: 1.5rem 2rem;
     }
 
     .active {
-      background-color: $success;
+      background-color: mix($green, $light, 90%);
+      color: $black;
     }
 
     .nav-item:not(.active) {
-      @extend .bg-warning
+      background-color: mix($warning, $light, 50%);
+      color: $black;
     }
   }
 }

@@ -22,11 +22,11 @@ module SimpleForm
 
     module RadioLabels
       def radio_label(wrapper_options = nil)
-        span_label unless options[:radio_label].nil?
+        span_label unless options[:radio_label].nil? || options[:radio_for].nil?
       end
 
       def span_label
-        template.content_tag(:span, options[:radio_label], class: 'custom-control-description')
+        template.content_tag(:label, options[:radio_label], class: 'custom-control-label', for: options[:radio_for])
       end
     end
   end

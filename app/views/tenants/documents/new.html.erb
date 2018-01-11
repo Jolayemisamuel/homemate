@@ -1,8 +1,8 @@
 <% @title = 'Upload Application Form' %>
 
-<h2>Upload Application Form for <%= @tenant.name %></h2>
+<h2>Upload Application Form for <%= @application.tenant.name %></h2>
 
-<%= simple_form_for(@document, url: application_documents_path(@tenant), wrapper: :horizontal_form) do |f| %>
+<%= simple_form_for(@document, url: application_documents_path(@application.tenant), wrapper: :horizontal_form) do |f| %>
   <div class="form-group row">
     <div class="col-sm-3"><%= f.label "Document", required: true %></div>
     <div class="col-sm-9">
@@ -16,7 +16,7 @@
   <div class="form-group row">
     <div class="col btn-group">
       <%= f.submit "Upload", class: "btn btn-primary" %>
-      <%= link_to("Back", path_for(@tenant.current_application), class: "btn btn-secondary") %>
+      <%= link_to("Back", application_path(@application), class: "btn btn-secondary") %>
     </div>
   </div>
 <% end %>

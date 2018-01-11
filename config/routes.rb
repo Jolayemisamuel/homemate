@@ -37,6 +37,8 @@ Rails.application.routes.draw do
     post 'webhook', to: 'billing#webhook'
   end
 
+  resources :documents, only: [:show]
+
   resources :landlords, except: [:index, :destroy] do
     scope module: :landlords do
       resources :contacts

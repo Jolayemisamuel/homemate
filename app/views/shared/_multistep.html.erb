@@ -1,14 +1,11 @@
 <% if status %>
   <a href="<%= url %>" class="nav-item text-center nav-link active">
-    <i class="fas fa-check-circle fa-3x fa-fw text-white"></i>
-    <p><%= content %></p>
+    <i class="fas fa-check-circle fa-2x fa-fw text-white my-2"></i>
+    <p class="mb-1"><%= content %></p>
   </a>
 <% else %>
   <a href="<%= url %>" class="nav-item text-center nav-link">
-    <span class="fa-3x fa-layers fa-fw text-white">
-      <i class="fas fa-circle"></i>
-      <i class="fa-inverse fas fa-spinner" data-fa-transform="shrink-6"></i>
-    </span>
-    <p><%= content %></p>
+    <i class="fas fa-spinner fa-2x fa-fw my-2"></i>
+    <p class="mb-1"><%= content %></p>
   </a>
 <% end %>

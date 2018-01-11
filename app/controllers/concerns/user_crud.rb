@@ -39,6 +39,9 @@ module UserCrud
       @user.password = password
       @user.password_confirmation = @password
     end
+
+    yield @user
+
     @user.save!
 
     association = associable.user_associations.new
@@ -46,7 +49,7 @@ module UserCrud
     association.save!
   end
 
-  def update_record(user, regenerate_password = true)
+  def update_record(user, regenerate_password = false)
     contact = user.contact
     contact.update!(user_params[:contact])
 
@@ -59,7 +62,10 @@ module UserCrud
       @user.password = @password
       @user.password_confirmation = @password
     end
-    user.update!
+
+    yield user
+
+    user.save!
   end
 
   private

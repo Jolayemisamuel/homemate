@@ -1,0 +1,17 @@
+<% @title = 'Tenancy Application' %>
+
+<h2>Tenancy Application for <%= @tenant_application.tenant.name %></h2>
+
+<%= simple_form_for(@tenant_application, application_path(@tenant_application), wrapper: :horizontal_form) do |f| %>
+  <%= f.input :reference_received, radio_label: 'Reference Received?', radio_for: 'tenant_application_reference_received',
+    wrapper: :horizontal_boolean %>
+  <%= f.input :reference_passed, as: :multiselect, label: 'Reference Result', options: [['Passed', '1'], ['Failed', '0']],
+    wrapper: :horizontal_multiselect %>
+
+  <div class="form-group row">
+    <div class="col btn-group">
+      <%= f.submit "Update", class: "btn btn-secondary" %>
+      <%= link_to("Back", _back_url, class: "btn btn-info") %>
+    </div>
+  </div>
+<% end %>

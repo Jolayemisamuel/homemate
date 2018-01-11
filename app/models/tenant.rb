@@ -11,6 +11,7 @@ class Tenant < ApplicationRecord
   has_many :transactions
   has_many :deposits
 
+  attr_accessor :no_application
   validates :name, presence: true
 
   def balance
@@ -22,7 +23,7 @@ class Tenant < ApplicationRecord
   end
 
   def readable_balance
-    Settings.payment.currency + balance.abs
+    Settings.payment.currency + sprintf('%0.02f', balance.abs)
   end
 
   def balance_in_credit?
@@ -34,7 +35,7 @@ class Tenant < ApplicationRecord
   end
 
   def readable_pending_balance
-    Settings.currency + pending_balance.abs
+    Settings.payment.currency + sprintf('%0.02f', pending_balance.abs)
   end
 
   def pending_balance_is_credit?

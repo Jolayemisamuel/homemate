@@ -33,7 +33,7 @@ class RoomsController < ApplicationController
   end
 
   def update
-    @room = Room.include(:property).find(params[:id])
+    @room = Room.includes(:property).find(params[:id])
 
     if @room.update(room_params)
       redirect_to property_path(@room.property)
@@ -82,6 +82,6 @@ class RoomsController < ApplicationController
   private
 
   def room_params
-    params.require(:room).permit(:name)
+    params.require(:room).permit(:name, :size, :charge_weight, :occupied_override)
   end
 end

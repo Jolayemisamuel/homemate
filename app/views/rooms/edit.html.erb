@@ -1,6 +1,6 @@
-<% @title = 'Edit Room at ' + @room.name %>
+<% @title = 'Edit Room' %>
 
-<h2>Edit Room at <%= @room.name %></h2>
+<h2>Edit Information of <%= @room.name %></h2>
 
 <%= simple_form_for(@room, wrapper: :horizontal_form) do |f| %>
   <%= f.input :name, class: "form-control", label: "Name" %>
@@ -8,6 +8,8 @@
     wrapper: :horizontal_input_group %>
   <%= f.input :charge_weight, class: "form-control", step: 0.1, placeholder: "1.0", label: 'Utility Charge Weight',
     hint: 'This would be used to calculate the share of utility share payable by its occupant' %>
+  <%= f.input :occupied_override, class: "form-control", radio_label: "Occupied", radio_for: "room_occupied_override",
+    hint: 'Override occupation status', wrapper: :horizontal_boolean %>
   <div class="form-group row">
     <div class="col btn-group">
       <%= f.submit "Update", class: "btn btn-warning" %>
