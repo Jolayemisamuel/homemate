@@ -19,30 +19,28 @@
 # along with HomeMate.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-require 'uri'
+require_relative '../../lib/homemate/exception'
 
-class DocumentsController < ApplicationController
-  before_action :authenticate_user!
+class DocumentAccess < ApplicationRecord
+  belongs_to :document
+  belongs_to :owner, polymorphic: true
 
-  def viewer
-    @document = URI.unescape(params[:document])
-  end
+  attr_writer :secret
+  before_save :encrypt_secret
 
-  def show
-    @document = current_user.documents.find(params[:id])
+  validates_associated :document, :owner
 
-    if @document.encrypted?
-      render status: 401 unless params[:passphrase].present?
+  private
 
-      access = current_user.document_accesses.where(document_id: params[:id]).first
-      associable = current_user.user_association.associable
-      secret = ApplicationHelper::SecretEncryptor.decrypt(associable.private_key, params[:passphrase], access.encrypted_secret)
-    else
-      secret = nil
+  def encrypt_secret
+    unless document.encrypted?
+      return
     end
 
-    send_data @document.file_stream(secret),
-              filename: @document.name,
-              type: @document.file_mime_type
+    if self.secret.empty?
+      raise HomeMate::MissingAttribute 'Secret used to encrypt the file is not set'
+    end
+
+    self.encrypted_secret = ApplicationHelper::SecretEncryptor.encrypt(owner.public_key, self.secret)
   end
 end

@@ -91,9 +91,50 @@
           <tr>
             <td><%= d.name %></td>
             <td class="text-right">
-              <%= link_to(document_path(d), class: 'btn btn-sm btn-primary') do %>
-                <i class="fas fa-cloud-download-alt fa-fw"></i>
-              <% end %>
+              <div data-controller="file" data-file-path="<%= url_for d %>" data-file-name="<%= d.name %>">
+                <%= link_to(document_path(d), class: 'btn btn-sm btn-primary', data: {action: 'file#download'}) do %>
+                  <i class="fas fa-cloud-download-alt fa-fw"></i>
+                <% end %>
+                <div class="modal" tabindex="-1" role="dialog" data-target="file.passphrase-modal">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title"><i class="fas fa-lock fa-fw"></i> Encrypted Document</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p>The document you are accessing is encrypted. Please enter your passphrase.</p>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">Passphrase</span>
+                          </div>
+                          <input type="password" class="form-control" aria-label="Passphrase" data-target="file.passphrase">
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-action="file#decrypt">Continue</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal" tabindex="-1" role="dialog" data-target="file.error-modal">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title"><i class="fas fa-times fa-fw"></i> Unable to download document</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p>Sometime went wrong while we're trying to download the document.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </td>
           </tr>
           <% end %>

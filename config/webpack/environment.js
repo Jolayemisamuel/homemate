@@ -5,6 +5,8 @@ environment.plugins.set(
     'Provide',
     new webpack.ProvidePlugin({
         $: 'jquery',
+        axios: 'axios',
+        StreamSaver: 'streamsaver',
         jQuery: 'jquery',
         Popper: ['popper.js', 'default'],
     })

@@ -62,6 +62,26 @@
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/@std/esm/-/esm-0.19.1.tgz#8bdf8ed0e759eea1c7010d22fb9789e462ec0a9b"
 
+"@stimulus/core@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@stimulus/core/-/core-0.9.0.tgz#b6a0e7836b6e88fe6ea0c2055cc10b47f3a2b2ee"
+  dependencies:
+    "@stimulus/mutation-observers" "^0.9.0"
+
+"@stimulus/multimap@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@stimulus/multimap/-/multimap-0.9.0.tgz#ed63699b3efb273411c118a50955569b2565a6e8"
+
+"@stimulus/mutation-observers@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@stimulus/mutation-observers/-/mutation-observers-0.9.0.tgz#f2249b660d9c3c8a4a43bc2c66dcb8b18d2c8f0c"
+  dependencies:
+    "@stimulus/multimap" "^0.9.0"
+
+"@stimulus/webpack-helpers@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@stimulus/webpack-helpers/-/webpack-helpers-0.9.0.tgz#b655c233015bea0d02b66ec709ef15b4b0060a57"
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -320,6 +340,13 @@ aws-sign2@~0.7.0:
 aws4@^1.2.1, aws4@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.6.0.tgz#83ef5ca860b2b32e4a0deedee8c771b9db57471e"
+
+axios@^0.17.1:
+  version "0.17.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.17.1.tgz#2d8e3e5d0bdbd7327f91bc814f5c57660f81824d"
+  dependencies:
+    follow-redirects "^1.2.5"
+    is-buffer "^1.1.5"
 
 babel-code-frame@^6.26.0:
   version "6.26.0"
@@ -2242,6 +2269,12 @@ flush-write-stream@^1.0.0:
   dependencies:
     inherits "^2.0.1"
     readable-stream "^2.0.4"
+
+follow-redirects@^1.2.5:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.3.0.tgz#f684871fc116d2e329fda55ef67687f4fabc905c"
+  dependencies:
+    debug "^3.1.0"
 
 for-in@^0.1.3:
   version "0.1.8"
@@ -4694,7 +4727,7 @@ quill-delta@^3.6.2:
     extend "^3.0.1"
     fast-diff "1.1.2"
 
-quill@^1.3.4:
+quill@1.x:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/quill/-/quill-1.3.4.tgz#59812332e33f715725e9599aac29413e3543048b"
   dependencies:
@@ -5430,6 +5463,13 @@ stdout-stream@^1.4.0:
   dependencies:
     readable-stream "^2.0.1"
 
+stimulus@0.x:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/stimulus/-/stimulus-0.9.0.tgz#4e9f994fdf6df261913221b149451d6ad1a54b30"
+  dependencies:
+    "@stimulus/core" "^0.9.0"
+    "@stimulus/webpack-helpers" "^0.9.0"
+
 stream-browserify@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/stream-browserify/-/stream-browserify-2.0.1.tgz#66266ee5f9bdb9940a4e4514cafb43bb71e5c9db"
@@ -5457,6 +5497,10 @@ stream-http@^2.7.2:
 stream-shift@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/stream-shift/-/stream-shift-1.0.0.tgz#d5c752825e5367e786f78e18e445ea223a155952"
+
+streamsaver@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/streamsaver/-/streamsaver-1.0.1.tgz#475d404973b5e6926a557f0e4cd8558a3520e07c"
 
 strict-uri-encode@^1.0.0:
   version "1.1.0"

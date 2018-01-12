@@ -20,17 +20,25 @@
 ##
 
 require 'active_support/core_ext/securerandom'
+require_relative '../../lib/homemate/exception'
 
 class Document < ApplicationRecord
   belongs_to :attachable, polymorphic: true
+  has_many :document_accesses
+
   attr_accessor :file
+  attr_writer :password
 
   before_save :file_encryptor
   after_destroy :file_delete
 
-  def file_stream
+  def file_stream(*password)
     if encrypted
-      ApplicationHelper::Encryptor.decrypt(File.read(file_path), iv)
+      if password.empty?
+        raise HomeMate::MissingAttribute 'Password is required to decode the encrypted document'
+      end
+
+      ApplicationHelper::FileEncryptor.decrypt(iv, password[0], File.read(file_path))
     else
       File::read(file_path)
     end
@@ -54,9 +62,13 @@ class Document < ApplicationRecord
 
     content = file.read
     if encrypted
-      encryptor = ApplicationHelper::Encryptor.encrypt(content)
-      self.iv = encryptor[iv]
-      content = encryptor[file]
+      encryptor = ApplicationHelper::FileEncryptor.encrypt(content)
+      self.iv = encryptor.iv
+      content = encryptor.file
+
+      document_accesses.each do |access|
+        access.secret = encryptor.password
+      end
     end
 
     File.open(self.file_path, 'wb') do |f|

@@ -37,7 +37,11 @@ Rails.application.routes.draw do
     post 'webhook', to: 'billing#webhook'
   end
 
-  resources :documents, only: [:show]
+  scope 'documents' do
+    get 'viewer', to: 'documents#viewer'
+    get ':id(/:passphrase)', to: 'documents#show'
+    resources :templates, controller: :document_templates
+  end
 
   resources :landlords, except: [:index, :destroy] do
     scope module: :landlords do
@@ -53,6 +57,8 @@ Rails.application.routes.draw do
   scope 'profile' do
     resources :contacts
     resources :users, except: [:index]
+    get 'passphrase', to: 'profile#passphrase_edit'
+    put 'passphrase', to: 'profile#passphrase_update'
   end
 
   resources :properties, shallow: true do

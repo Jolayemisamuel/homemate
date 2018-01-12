@@ -1,8 +1,11 @@
 <% @title = 'Update Profile' %>
 
+<%= @current_user.contact.primary? ?
+  link_to('Change Passphrase', url_for(controller: 'profile', action: 'passphrase_edit'), class: 'btn btn-primary float-right')
+  : '' %>
 <h2>Update Profile</h2>
 
-<%= simple_form_for(@current_user, url: profile_path, wrapper: :horizontal_form) do |f| %>
+<%= simple_form_for(@current_user, profile_path, wrapper: :horizontal_form) do |f| %>
   <%= f.simple_fields_for(@current_user.contact, wrapper: :horizontal_form) do |contact| %>
     <%= contact.input :title, label: "Title" %>
     <%= contact.input :first_name, label: "First Name" %>

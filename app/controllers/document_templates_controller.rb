@@ -19,30 +19,14 @@
 # along with HomeMate.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-require 'uri'
+class DocumentTemplatesController < ApplicationController
+  before_action :authenticate_user!, :require_landlord
 
-class DocumentsController < ApplicationController
-  before_action :authenticate_user!
-
-  def viewer
-    @document = URI.unescape(params[:document])
+  def index
+    @templates = DocumentTemplate.all
   end
 
   def show
-    @document = current_user.documents.find(params[:id])
-
-    if @document.encrypted?
-      render status: 401 unless params[:passphrase].present?
-
-      access = current_user.document_accesses.where(document_id: params[:id]).first
-      associable = current_user.user_association.associable
-      secret = ApplicationHelper::SecretEncryptor.decrypt(associable.private_key, params[:passphrase], access.encrypted_secret)
-    else
-      secret = nil
-    end
-
-    send_data @document.file_stream(secret),
-              filename: @document.name,
-              type: @document.file_mime_type
+    @template = DocumentTemplate.find(params[:id])
   end
 end

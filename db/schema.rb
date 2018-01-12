@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180107030525) do
+ActiveRecord::Schema.define(version: 20180112092532) do
 
   create_table "contacts", force: :cascade do |t|
     t.string "contactable_type"
@@ -35,6 +35,26 @@ ActiveRecord::Schema.define(version: 20180107030525) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tenancy_id"], name: "index_deposits_on_tenancy_id"
+  end
+
+  create_table "document_accesses", force: :cascade do |t|
+    t.integer "document_id"
+    t.string "owner_type"
+    t.integer "owner_id"
+    t.text "encrypted_secret"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_document_accesses_on_document_id"
+    t.index ["owner_type", "owner_id"], name: "index_document_accesses_on_owner_type_and_owner_id"
+  end
+
+  create_table "document_templates", force: :cascade do |t|
+    t.string "name"
+    t.text "variables"
+    t.string "file_type"
+    t.string "file_path"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "documents", force: :cascade do |t|
@@ -64,6 +84,8 @@ ActiveRecord::Schema.define(version: 20180107030525) do
 
   create_table "landlords", force: :cascade do |t|
     t.string "name"
+    t.text "public_key"
+    t.text "private_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_landlords_on_name", unique: true
@@ -160,6 +182,8 @@ ActiveRecord::Schema.define(version: 20180107030525) do
 
   create_table "tenants", force: :cascade do |t|
     t.string "name"
+    t.text "public_key"
+    t.text "private_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

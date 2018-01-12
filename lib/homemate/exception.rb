@@ -22,4 +22,6 @@
 module HomeMate
   class InvalidUsage < RuntimeError
   end
+  class MissingAttribute < RuntimeError
+  end
 end

@@ -22,6 +22,7 @@
 class ProfileController < ApplicationController
   include UserCrud
   before_action :authenticate_user!
+  before_action :can_edit_associable, only: [:passphrase_edit , :passpharse_update]
 
   def edit
     @current_user = current_user
@@ -55,16 +56,36 @@ class ProfileController < ApplicationController
     redirect_to root_path
   end
 
+  def passphrase_edit
+    @associable = @current_user.user_association.associable
+  end
+
+  def passphrase_update
+    @associable = @current_user.user_association.associable
+
+    if @associable.update(passphrase_params)
+      redirect_to edit_profile_path
+    else
+      render 'passphrase_edit'
+    end
+  end
+
   def profile_completed(user)
     !(user.contact.phone.empty? || user.contact.address.empty?)
   end
 
   private
 
+  def passphrase_params
+    params.require(:associable).permit([:current_passphrase, :passphrase, :passphrase_confirmation])
+  end
+
   def user_params
     params.require(:user).permit(
       :username, :current_password, :password, :password_confirmation,
-      contact: [:title, :first_name, :last_name, :email, :phone, :address]
+      contact: [
+        :title, :first_name, :last_name, :email, :phone, :address
+      ]
     )
   end
 end

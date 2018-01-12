@@ -1,0 +1,24 @@
+<% @title = 'Document Encryption' %>
+
+<h2>Document Encryption</h2>
+
+<div class="alert alert-danger">
+  <p>
+    <strong>Your passphrase is required to view encrypted documents on the system.</strong> Please keep your passphrase
+    at a safe location and note that if you loss the passpharse you will loss access to all the documents.
+  </p>
+</div>
+
+<%= simple_form_for(@associable, url_for(controller: 'profile', action: 'passphrase_update'), as: :associable,
+  wrapper: :horizontal_form) do |f| %>
+  <%= @associable.private_key.present? ? f.input :current_passphrase, as: :password, label: 'Current Passphrase' : '' %>
+  <%= f.input :passphrase, as: :password, label: @associable.private_key.present? ? 'New Passphrase' : 'Passphrase' %>
+  <%= f.input :passphrase_confirmation, as: :password, label: 'Confirm Passphrase' %>
+
+  <div class="form-group row">
+    <div class="col btn-group">
+      <%= f.submit "Update", class: "btn btn-warning" %>
+      <%= link_to("Back", edit_profile_path, class: "btn btn-info") %>
+    </div>
+  </div>
+<% end %>
