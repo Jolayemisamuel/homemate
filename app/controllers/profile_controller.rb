@@ -33,7 +33,7 @@ class ProfileController < ApplicationController
 
     begin
       ActiveRecord::Base.transaction do
-        update_record(@current_user) do |user|
+        update_record(current_user) do |user|
           if user.is_tenant? && user.tenant.current_application.present?
             application = user.tenant.current_application
             application.contact_completed = profile_completed(user)
@@ -41,7 +41,11 @@ class ProfileController < ApplicationController
           end
 
           if user_params[:current_password].present?
-            user.current_password = user_params[:current_password]
+            unless user.valid_password?(user_params[:current_password])
+              user.errors[:current_password] << 'is invalid'
+              raise ActiveRecord::RecordInvalid.new(user)
+            end
+
             user.password = user_params[:password]
             user.password_confirmation = user_params[:password_confirmation]
             bypass_sign_in(user)
@@ -51,17 +55,18 @@ class ProfileController < ApplicationController
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique
       flash[:danger] = 'Failed to update your profile. This is normally because one of the attributes is invalid.'
       render 'edit'
+      return
     end
 
     redirect_to root_path
   end
 
   def passphrase_edit
-    @associable = @current_user.user_association.associable
+    @associable = current_user.user_association.associable
   end
 
   def passphrase_update
-    @associable = @current_user.user_association.associable
+    @associable = current_user.user_association.associable
 
     if @associable.update(passphrase_params)
       redirect_to edit_profile_path

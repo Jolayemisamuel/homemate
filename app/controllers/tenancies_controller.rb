@@ -1,5 +1,5 @@
 ##
-# Copyright (c) Andrew Ying 2017.
+# Copyright (c) Andrew Ying 2017-18.
 #
 # This file is part of HomeMate.
 #
@@ -30,9 +30,9 @@ class TenanciesController < ApplicationController
 
   def show
     if current_user.is_landlord?
-      @tenancy = Tenancy.include(:rentable).find(params[:id])
+      @tenancy = Tenancy.include(:rentable, :tenant).find(params[:id])
     elsif current_user.is_tenant?
-      @tenancy = current_user.tenant.tenancies.include(:rentable).find(params[:id])
+      @tenancy = current_user.tenant.tenancies.include(:rentable, :tenant).find(params[:id])
     else
       abort
     end

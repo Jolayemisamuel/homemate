@@ -47,7 +47,7 @@ module Tenants
       @document = @application.documents.new(
         name: params[:document][:document_to_attach].original_filename,
         file: params[:document][:document_to_attach],
-        encrypt: true
+        encrypted: true
       )
 
       if @document.save

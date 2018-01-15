@@ -26,7 +26,7 @@ class Document < ApplicationRecord
   belongs_to :attachable, polymorphic: true
   has_many :document_accesses
 
-  attr_accessor :file
+  attr_accessor :document_to_attach, :file, :visible
   attr_writer :password
 
   before_save :file_encryptor
@@ -63,11 +63,11 @@ class Document < ApplicationRecord
     content = file.read
     if encrypted
       encryptor = ApplicationHelper::FileEncryptor.encrypt(content)
-      self.iv = encryptor.iv
-      content = encryptor.file
+      self.iv = encryptor.fetch(:iv)
+      content = encryptor.fetch(:file)
 
       document_accesses.each do |access|
-        access.secret = encryptor.password
+        access.secret = encryptor.fetch(:password)
       end
     end
 

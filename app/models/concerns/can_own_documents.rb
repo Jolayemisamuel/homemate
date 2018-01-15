@@ -29,29 +29,33 @@ module CanOwnDocuments
     attr_accessor :current_passphrase, :passphrase, :passphrase_confirmation
     before_save :update_private_key
 
-    with_options :current_passphrase.present? do |p|
-      p.validate :check_current_passphrase
-      p.validates :passphrase, confirmation: true
-      p.validates :passphrase_validation, presence: true
-    end
+    validate :check_current_passphrase, if: Proc.new{ |i| i.current_passphrase_present? }
+    validates :passphrase, confirmation: true, if: Proc.new{ |i| i.current_passphrase_present? }
+    validates :passphrase_validation, presence: true, if: Proc.new{ |i| i.current_passphrase_present? }
+  end
+
+  def current_passphrase_present?
+    current_passphrase.present?
   end
 
   private
 
   def check_current_passphrase
-    unless ApplicationHelper::SecretEncryptor.check_passphrase(private_key, current_passphrase)
+    unless current_passphrase.present? && ApplicationHelper::SecretEncryptor.check_passphrase(private_key, current_passphrase)
       errors.add(:current_passphrase, 'is invalid')
     end
   end
 
   def update_private_key
-    if private_key.present?
-      self.private_key = ApplicationHelper::SecretEncryptor.update_passphrase(private_key, current_passphrase, passphrase)
-    else
-      generator = ApplicationHelper::SecretEncryptor.generate_key(passphrase)
+    if passphrase.present?
+      if private_key.present?
+        self.private_key = ApplicationHelper::SecretEncryptor.update_passphrase(private_key, current_passphrase, passphrase)
+      else
+        generator = ApplicationHelper::SecretEncryptor.generate_key(passphrase)
 
-      self.public_key = generator.public
-      self.private_key = generator.private
+        self.public_key = generator.fetch(:public)
+        self.private_key = generator.fetch(:private)
+      end
     end
   end
 end

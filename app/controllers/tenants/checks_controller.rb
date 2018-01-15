@@ -23,6 +23,7 @@ module Tenants
   class ChecksController < ApplicationController
     before_action :authenticate_user!
     before_action :require_landlord, except: [:new]
+    before_action :have_encryption_key, only: [:new, :create]
 
     def index
       @tenant_checks = TenantCheck.all

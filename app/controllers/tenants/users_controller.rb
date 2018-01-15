@@ -39,7 +39,8 @@ module Tenants
         end
       rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique
         flash[:danger] = 'Failed to update user. This is normally because one of the attributes is invalid.'
-        render 'users/edit', associable: tenant && return
+        render 'users/edit', associable: tenant
+        return
       end
 
       redirect_to tenant_path(tenant)
@@ -64,7 +65,8 @@ module Tenants
         end
       rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique
         flash[:danger] = 'Failed to create new user. This is normally because one of the attributes is invalid.'
-        render 'users/new', associable: tenant && return
+        render 'users/new', associable: tenant
+        return
       end
 
       UserMailer.account_created(@user, @password).deliver_later

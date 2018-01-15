@@ -58,4 +58,12 @@ class ApplicationController < ActionController::Base
       redirect_back fallback_location: root_path
     end
   end
+
+  def have_encryption_key
+    unless current_user.user_association.associable.private_key.present?
+      flash[:danger] = 'A file encryption key is yet to be created. The primary contact will need to create a key '
+        + view_context.link_to('here', controller: '/profile', action: 'passphrase_edit') + '.'
+      redirect_back fallback_location: root_path
+    end
+  end
 end

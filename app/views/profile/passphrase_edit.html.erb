@@ -3,15 +3,15 @@
 <h2>Document Encryption</h2>
 
 <div class="alert alert-danger">
-  <p>
+  <p class="mb-0">
     <strong>Your passphrase is required to view encrypted documents on the system.</strong> Please keep your passphrase
     at a safe location and note that if you loss the passpharse you will loss access to all the documents.
   </p>
 </div>
 
-<%= simple_form_for(@associable, url_for(controller: 'profile', action: 'passphrase_update'), as: :associable,
+<%= simple_form_for(@associable, url: url_for(controller: 'profile', action: 'passphrase_update'), as: :associable,
   wrapper: :horizontal_form) do |f| %>
-  <%= @associable.private_key.present? ? f.input :current_passphrase, as: :password, label: 'Current Passphrase' : '' %>
+  <%= @associable.private_key.present? ? f.input(:current_passphrase, as: :password, label: 'Current Passphrase') : '' %>
   <%= f.input :passphrase, as: :password, label: @associable.private_key.present? ? 'New Passphrase' : 'Passphrase' %>
   <%= f.input :passphrase_confirmation, as: :password, label: 'Confirm Passphrase' %>
 

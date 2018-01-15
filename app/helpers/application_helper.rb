@@ -25,17 +25,15 @@ require_relative '../../lib/homemate/exception'
 
 module ApplicationHelper
   class Encryptor
-    class << self
-      attr_reader :cipher, :iterations, :digest, :pkey, :key_size
-      attr_writer :salt, :password, :cipher, :iterations, :digest, :pkey, :key_size
-    end
+    cattr_accessor :cipher, :iterations, :digest, :pkey, :key_size
+    cattr_writer :salt, :password
 
-    @salt = nil
-    @cipher = 'AES-256-CBC'
-    @iterations = 20000
-    @digest = OpenSSL::Digest::SHA256
-    @pkey = OpenSSL::PKey::RSA
-    @key_size = 2048
+    self.salt = nil
+    self.cipher = 'AES-256-CBC'
+    self.iterations = 20000
+    self.digest = OpenSSL::Digest::SHA256
+    self.pkey = OpenSSL::PKey::RSA
+    self.key_size = 2048
 
     def self.initialize
       yield(self.class)
@@ -43,7 +41,7 @@ module ApplicationHelper
   end
 
   class FileEncryptor < Encryptor
-    def encrypt(data, password = nil)
+    def self.encrypt(data, password = nil)
       password = SecureRandom::base58(20) unless password.present?
 
       cipher = self.cipher.type.new(self.cipher.length, self.cipher.mode).encrypt
@@ -57,7 +55,7 @@ module ApplicationHelper
       }
     end
 
-    def decrypt(iv, password, secret)
+    def self.decrypt(iv, password, secret)
       cipher = OpenSSL::Cipher.new(self.cipher).decrypt
       cipher.iv = iv
       cipher.key = OpenSSL::PKCS5.pbkdf2_hmac(password, self.salt, self.iterations, cipher.key_len, self.digest.new)
@@ -67,7 +65,7 @@ module ApplicationHelper
   end
 
   class SecretEncryptor < Encryptor
-    def generate_key(passphrase)
+    def self.generate_key(passphrase)
       key = self.pkey.new(self.key_size)
 
       {
@@ -76,13 +74,13 @@ module ApplicationHelper
       }
     end
 
-    def check_passphrase(private_key, passphrase)
+    def self.check_passphrase(private_key, passphrase)
       key = self.pkey.new(private_key, passphrase)
 
       key.private?
     end
 
-    def update_passphrase(private_key, current, new)
+    def self.update_passphrase(private_key, current, new)
       key = self.pkey.new(private_key, current)
 
       unless key.private?
@@ -92,7 +90,7 @@ module ApplicationHelper
       key.export(OpenSSL::Cipher.new(self.cipher), new)
     end
 
-    def encrypt(public_key, data)
+    def self.encrypt(public_key, data)
       key = self.pkey.new(public_key)
 
       unless key.public?
@@ -102,7 +100,7 @@ module ApplicationHelper
       key.public_encrypt(data)
     end
 
-    def decrypt(private_key, passphrase, data)
+    def self.decrypt(private_key, passphrase, data)
       key = self.pkey.new(private_key, passphrase)
 
       unless key.private?
