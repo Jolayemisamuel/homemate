@@ -22,7 +22,17 @@ const controllers = require.context('../controllers', true, /\.js$/)
 autoload(controllers, application)
 Turbolinks.start()
 $(document).ready(function() {
-    $(document).on('load', 'i', function(event) {
-        fontawesome.dom.i2svg(this)
+    const callback = function(mutationsList) {
+        for (let mutation of mutationsList) {
+            mutation.addedNodes.forEach(function() {
+                fontawesome.dom.i2svg(this)
+            })
+
+        }
+    }
+
+    let observer = new MutationObserver(callback)
+    observer.observe(document.documentElement, {
+        childList: true
     })
 })

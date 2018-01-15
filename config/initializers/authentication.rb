@@ -9,7 +9,7 @@ Devise.setup do |config|
   # config.secret_key = 'f47960b3766283d32d2d33e0a49ea5f4c0eda3c9a873243bfe52a8f6d6650e561b0e99087adf804dd0f2a526532bca352407f911849e69a324b83a8c834a97f7'
 
   # Configure the class responsible to send e-mails.
-  config.mailer = 'HomeMate::ApplicationMailer'
+  config.mailer = 'ApplicationMailer'
 
   # Configure the parent class responsible to send e-mails.
   # config.parent_mailer = 'ActionMailer::Base'

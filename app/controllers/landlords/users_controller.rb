@@ -24,14 +24,6 @@ module Landlords
     include UserCrud
     before_action :authenticate_user!, :require_landlord, :can_edit_associable
 
-    def new
-      landlord = Landlord.find(params[:landlord_id])
-      @contact = landlord.contacts.new
-      @user = User.new
-
-      render 'users/new', associable: landlord
-    end
-
     def edit
       landlord = Landlord.find(params[:landlord_id])
       @user = landlord.users.find(params[:id])
@@ -47,10 +39,19 @@ module Landlords
         end
       rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique
         flash[:danger] = 'Failed to update user. This is normally because one of the attributes is invalid.'
-        render 'users/edit', associable: landlord && return
+        render 'users/edit', associable: landlord
+        return
       end
 
       redirect_to landlord_path(landlord)
+    end
+
+    def new
+      landlord = Landlord.find(params[:landlord_id])
+      @contact = landlord.contacts.new
+      @user = User.new
+
+      render 'users/new', associable: landlord
     end
 
     def create
@@ -62,7 +63,8 @@ module Landlords
         end
       rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique
         flash[:danger] = 'Failed to create new user. This is normally because one of the attributes is invalid.'
-        render 'users/new', associable: landlord && return
+        render 'users/new', associable: landlord
+        return
       end
 
       UserMailer.account_created(@user, @password).deliver_later

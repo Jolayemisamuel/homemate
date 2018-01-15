@@ -66,6 +66,10 @@ class Tenant < ApplicationRecord
     pending_balance < 0
   end
 
+  def primary_contact
+    contacts.where(primary: true).first
+  end
+
   def current_application
     tenant_applications.where(completed: false).order(updated_at: :desc).first
   end

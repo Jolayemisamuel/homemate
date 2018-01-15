@@ -1,5 +1,9 @@
 @import "variables";
 
+@function strip-units($number) {
+  @return $number / ($number * 0 + 1);
+}
+
 //
 // Match email theme with site theme
 //
@@ -14,8 +18,7 @@ $dark-gray: $dark;
 @import "~foundation-emails/scss/foundation-emails";
 
 .container {
-  margin: $spacer auto;
-  padding: (2 * $spacer) $spacer;
+  -premailer-cellspacing: 2 * strip-units($global-font-size);
   width: 100%;
   max-width: 580px;
 }
@@ -23,6 +26,6 @@ $dark-gray: $dark;
 .copyright {
   width: 100%;
   max-width: 580px;
-  font-size: 80%;
-  color: $dark-gray;
+  font-size: $global-font-size * .8;
+  color: lighten($dark-gray, 15%);
 }

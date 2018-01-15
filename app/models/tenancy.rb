@@ -34,6 +34,11 @@ class Tenancy < ApplicationRecord
   validate :validate_rent_payment_day
   validates :start_date, presence: true
 
+  @rent_period_mapping = {
+      :w => 'week',
+      :m => 'month'
+  }
+
   def self.active
     today = Date.current
     where('start_date <= ? AND (end_date >= ? OR end_date IS NULL)', today, today)
@@ -46,6 +51,10 @@ class Tenancy < ApplicationRecord
   def self.belongs_to_property(property)
     where(rentable_type: 'Property').where(rentable_id: property.id)
       .or(where(rentable_type: 'Room').where(rentable_id: property.rooms.each.pluck(&:id)))
+  end
+
+  def readable_rent
+    Settings.payment.currency + sprintf('%0.02f', rent) + '/' + @rent_period_mapping.fetch(rent_period)
   end
 
   def is_active?
