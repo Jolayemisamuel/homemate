@@ -19,8 +19,10 @@
 # along with HomeMate.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-class UserMailer < ApplicationMailer
+class UserMailer < Devise::Mailer
   layout 'mailer'
+  helper :application
+  include Devise::Controllers::UrlHelpers
 
   # Send the initial password upon account creation.
   #
