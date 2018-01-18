@@ -20,6 +20,12 @@ module SimpleForm
       end
     end
 
+    module FileLabels
+      def file_label(wrapper_options = nil)
+        template.content_tag(:label, options[:file_label], class: 'custom-file-label') unless options[:file_label].nil?
+      end
+    end
+
     module RadioLabels
       def radio_label(wrapper_options = nil)
         span_label unless options[:radio_label].nil? || options[:radio_for].nil?
@@ -36,5 +42,6 @@ SimpleForm::Inputs::Base.send(
     :include,
     SimpleForm::Components::Icons,
     SimpleForm::Components::Units,
+    SimpleForm::Components::FileLabels,
     SimpleForm::Components::RadioLabels
 )

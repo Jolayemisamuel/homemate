@@ -3,15 +3,8 @@
 <h2>Upload Application Form for <%= @application.tenant.name %></h2>
 
 <%= simple_form_for(@document, url: application_documents_path(@application.tenant), wrapper: :horizontal_form) do |f| %>
-  <div class="form-group row">
-    <div class="col-sm-3"><%= f.label "Document", required: true %></div>
-    <div class="col-sm-9">
-      <label class="custom-file" lang="en">
-        <%= f.file_field :document_to_attach, class: "custom-file-input" %>
-        <span class="custom-file-control"></span>
-      </label>
-    </div>
-  </div>
+  <%= f.input :document_to_attach, as: :file, label: 'Document', file_label: 'Choose File', required: true,
+    wrapper: :horizontal_file_input %>
 
   <div class="form-group row">
     <div class="col btn-group">

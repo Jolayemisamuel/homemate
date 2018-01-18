@@ -81,6 +81,7 @@ SimpleForm.setup do |config|
     b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
       ba.wrapper tag: 'div', class: 'custom-file' do |file|
         file.use :input, class: 'custom-file-input'
+        file.use :file_label
       end
 
       ba.use :error, wrap_with: { tag: 'small', class: 'invalid-feedback d-block' }

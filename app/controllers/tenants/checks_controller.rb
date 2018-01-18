@@ -48,10 +48,13 @@ module Tenants
       @tenant_check = @tenant.tenant_checks.new(tenant_check_params)
 
       if @tenant_check.save
-        @tenant_check.documents.new(
+        document = @tenant_check.documents.new(
             name: params[:document_to_attach].original_filename,
             file: params[:document_to_attach],
             encrypted: true
+        )
+        document.document_accesses.new(
+            owner: current_user.landlord
         )
 
         redirect_to tenant_path(@tenant)

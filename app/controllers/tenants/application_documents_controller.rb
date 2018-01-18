@@ -51,6 +51,13 @@ module Tenants
       )
 
       if @document.save
+        @document.document_accesses.new(
+           owner: @application.tenant
+        )
+        @document.document_accesses.new(
+            owner: Landlord.first
+        )
+
         @application.form_uploaded = true
         @application.save!
 

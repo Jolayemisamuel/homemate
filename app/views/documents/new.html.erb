@@ -4,17 +4,10 @@
 
 <%= simple_form_for(@document, url: documents_path(data: { id: @document.attachable_id, type: @document.attachable_type }),
   wrapper: :horizontal_form) do |f| %>
-  <div class="form-group row">
-    <div class="col-sm-3"><%= f.label "Document", required: true %></div>
-    <div class="col-sm-9">
-      <label class="custom-file" lang="en">
-        <%= f.file_field :document_to_attach, class: "custom-file-input" %>
-        <span class="custom-file-control"></span>
-      </label>
-    </div>
-    <%= f.input :encrypted, radio_label: 'Encrypt file?', radio_for: 'document_encrypted', wrapper: :horizontal_boolean %>
-    <%= f.input :visible, radio_label: 'Visible to tenant?', radio_for: 'document_visible', wrapper: :horizontal_boolean %>
-  </div>
+  <%= f.input :document_to_attach, as: :file, label: 'Document', file_label: 'Select File', required: true,
+    wrapper: :horizontal_file_input %>
+  <%= f.input :encrypted, radio_label: 'Encrypt file?', radio_for: 'document_encrypted', wrapper: :horizontal_boolean %>
+  <%= f.input :visible, radio_label: 'Visible to tenant?', radio_for: 'document_visible', wrapper: :horizontal_boolean %>
 
   <div class="form-group row">
     <div class="col btn-group">
