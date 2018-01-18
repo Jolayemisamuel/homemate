@@ -148,12 +148,26 @@ class GenerateInvoiceJob < ApplicationJob
             credit_date: Date.current,
             description: utility.name + ' charges from ' + charge.usage_from_date.to_s(:rfc822) + ' to ' +
                 charge.usage_to_date.to_s(:rfc822),
-            amount: charge.amount,
+            amount: charge.amount * calculate_utility_share,
             tenancy: @tenancy,
             transactionable: charge
         )
       end
     end
+  end
+
+  # Calculate the share of charge payable
+  #
+  # @return Float
+  def calculate_utility_share
+    return 1 if @tenancy.belongs_to_property?
+
+    total = 0
+    @tenancy.property.rooms.where(active: true).each do |room|
+      total += room.charge_weight if room.is_occupied?
+    end
+
+    @tenancy.room.charge_weight / total
   end
 
   # Generate PDF version of the invoice

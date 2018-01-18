@@ -7,7 +7,7 @@
     "@fortawesome/fontawesome-free-regular": "5.x",
     "@fortawesome/fontawesome-free-solid": "5.x",
     "@rails/webpacker": "3.x",
-    "axios": "^0.17.1",
+    "axios": "0.x",
     "bootstrap": "4.0.0-beta.3",
     "foundation-emails": "2.x",
     "jquery": "3.x",
@@ -16,7 +16,7 @@
     "popper.js": "1.x",
     "quill": "1.x",
     "stimulus": "0.x",
-    "streamsaver": "^1.0.1",
+    "streamsaver": "1.x",
     "turbolinks": "5.x"
   },
   "devDependencies": {
