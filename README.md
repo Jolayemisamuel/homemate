@@ -11,6 +11,9 @@
 HomeMate is a tenancy management system designed to reduce the burden of the landlord. It is built with the [Ruby on 
 Rails](http://rubyonrails.org/) framework.
 
+> :warning: **HomeMate is a beta application.** Its features may be be non-functional and there may be a number of bugs.
+> Feature may changes **without prior warning**.
+
 ## Getting started
 
 HomeMate requires:
