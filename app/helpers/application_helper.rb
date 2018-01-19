@@ -19,16 +19,16 @@
 # along with HomeMate.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
+require 'base64'
 require 'openssl'
 require 'active_support/core_ext/securerandom'
 require_relative '../../lib/homemate/exception'
 
 module ApplicationHelper
   class Encryptor
-    cattr_accessor :cipher, :iterations, :digest, :pkey, :key_size
-    cattr_writer :salt, :password
+    cattr_accessor :salt, :cipher, :iterations, :digest, :pkey, :key_size
 
-    self.salt = nil
+    self.salt = Rails.application.secrets.secret_key_base
     self.cipher = 'AES-256-CBC'
     self.iterations = 20000
     self.digest = OpenSSL::Digest::SHA256
@@ -44,12 +44,14 @@ module ApplicationHelper
     def self.encrypt(data, password = nil)
       password = SecureRandom::base58(20) unless password.present?
 
-      cipher = self.cipher.type.new(self.cipher.length, self.cipher.mode).encrypt
+      cipher = OpenSSL::Cipher.new(self.cipher).encrypt
       iv = cipher.random_iv
-      cipher.key = OpenSSL::PKCS5.pbkdf2_hmac(password, self.salt, self.iterations, cipher.key_len, self.digest.new)
+
+      digest = self.digest.new
+      cipher.key = OpenSSL::PKCS5.pbkdf2_hmac(password, self.salt, self.iterations, digest.digest_length, digest)
 
       {
-        :iv => iv,
+        :iv => Base64.encode64(iv),
         :encrypted => cipher.update(data) + cipher.final,
         :password => password
       }
@@ -57,8 +59,10 @@ module ApplicationHelper
 
     def self.decrypt(iv, password, secret)
       cipher = OpenSSL::Cipher.new(self.cipher).decrypt
-      cipher.iv = iv
-      cipher.key = OpenSSL::PKCS5.pbkdf2_hmac(password, self.salt, self.iterations, cipher.key_len, self.digest.new)
+      cipher.iv = Base64.decode64(iv)
+
+      digest = self.digest.new
+      cipher.key = OpenSSL::PKCS5.pbkdf2_hmac(password, self.salt, self.iterations, digest.digest_length, digest)
 
       cipher.update(secret) + cipher.final
     end
@@ -97,7 +101,7 @@ module ApplicationHelper
         raise HomeMate::InvalidUsage 'The key supplied does not have a valid public key'
       end
 
-      key.public_encrypt(data)
+      Base64.encode64(key.public_encrypt(data))
     end
 
     def self.decrypt(private_key, passphrase, data)
@@ -107,7 +111,7 @@ module ApplicationHelper
         raise HomeMate::InvalidUsage 'The key supplied does not have a valid private key'
       end
 
-      key.private_decrypt(data)
+      key.private_decrypt(Base64.decode64(data))
     end
   end
 end

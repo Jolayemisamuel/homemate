@@ -23,6 +23,7 @@ require 'active_support/core_ext/securerandom'
 
 class TenantsController < ApplicationController
   before_action :authenticate_user!, :require_landlord
+  before_action :have_encryption_key, only: [:new, :create]
 
   def index
     @tenants = Tenant.all

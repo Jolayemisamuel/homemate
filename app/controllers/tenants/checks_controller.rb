@@ -45,17 +45,24 @@ module Tenants
 
     def create
       @tenant = Tenant.find(params[:tenant_id])
-      @tenant_check = @tenant.tenant_checks.new(tenant_check_params)
+      @tenant_check = @tenant.tenant_checks.new(tenant_check_params.except(:document_to_attach))
 
       if @tenant_check.save
         document = @tenant_check.documents.new(
-            name: params[:document_to_attach].original_filename,
-            file: params[:document_to_attach],
+            name: tenant_check_params[:document_to_attach].original_filename,
+            file: tenant_check_params[:document_to_attach],
             encrypted: true
         )
         document.document_accesses.new(
             owner: current_user.landlord
         )
+        document.save!
+
+        if @tenant.current_application.present?
+          application = @tenant.current_application
+          application.check_completed = true
+          application.save!
+        end
 
         redirect_to tenant_path(@tenant)
       else
@@ -66,7 +73,7 @@ module Tenants
     private
 
     def tenant_check_params
-      params.require(:tenant_check).permit(:document_type, :expires)
+      params.require(:tenant_check).permit(:document_type, :document_to_attach, :expires)
     end
   end
 end

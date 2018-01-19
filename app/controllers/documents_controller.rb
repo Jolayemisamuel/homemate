@@ -30,13 +30,16 @@ class DocumentsController < ApplicationController
   end
 
   def show
-    @document = current_user.documents.find(params[:id])
+    associable = current_user.user_association.associable
+    @document = associable.documents.find(params[:id])
 
     if @document.encrypted?
-      render status: 401 unless params[:passphrase].present?
+      unless params[:passphrase].present?
+        render status: 401, json: {authorised: false}
+        return
+      end
 
-      access = current_user.document_accesses.where(document_id: params[:id]).first
-      associable = current_user.user_association.associable
+      access = associable.document_accesses.where(document_id: params[:id]).first
       secret = ApplicationHelper::SecretEncryptor.decrypt(associable.private_key, params[:passphrase], access.encrypted_secret)
     else
       secret = nil
@@ -63,7 +66,7 @@ class DocumentsController < ApplicationController
     @document.attachable_type = params[:type]
 
     @document.document_accesses.new(
-        owner: @current_user.landlord
+        owner: current_user.landlord
     )
     @document.document_accesses.new(
         owner: @document.attachable.tenant

@@ -1,27 +1,39 @@
 import { Controller } from 'stimulus'
 
 export default class extends Controller {
-    download() {
-        axios.get(this.path, { responseType: 'stream' })
+    download(event) {
+        event.preventDefault()
+        const parent = this
+
+        axios.get(parent.path, { responseType: 'blob' })
             .then(function (response) {
-                response.data.pipeTo(StreamSaver.createWriteStream(this.name))
+                filesaver.saveAs(response.data, parent.name)
             })
             .catch(function (error) {
                 if (error.response.status === 401) {
-                    this.targets.find('passphrase-modal').modal('toggle')
+                    const modal = parent.targets.find('passphrase-modal')
+                    $(modal).modal('show')
                 } else {
-                    this.targets.find('error-modal').modal('toggle')
+                    const modal = parent.targets.find('error-modal')
+                    $(modal).modal('show')
                 }
             })
     }
 
-    decrypt() {
-        axios.get(this.path + '/' + this.passphrase, { responseType: 'stream' })
+    decrypt(event) {
+        const parent = this
+
+        event.preventDefault()
+        const modal = parent.targets.find('passphrase-modal')
+        $(modal).modal('hide')
+
+        axios.get(parent.path + '/' + this.passphrase, { responseType: 'blob' })
             .then(function (response) {
-                response.data.pipeTo(StreamSaver.createWriteStream(this.name))
+                filesaver.saveAs(response.data, parent.name)
             })
             .catch(function (error) {
-                this.targets.find('error-modal').modal('toggle')
+                const modal = parent.targets.find('error-modal')
+                $(modal).modal('show')
             })
     }
 

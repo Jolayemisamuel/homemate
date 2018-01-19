@@ -25,7 +25,7 @@ class DocumentAccess < ApplicationRecord
   belongs_to :document
   belongs_to :owner, polymorphic: true
 
-  attr_writer :secret
+  attr_accessor :secret
   before_save :encrypt_secret
 
   validates_associated :document, :owner

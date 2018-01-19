@@ -49,15 +49,14 @@ module Tenants
         file: params[:document][:document_to_attach],
         encrypted: true
       )
+      @document.document_accesses.new(
+          owner: @application.tenant
+      )
+      @document.document_accesses.new(
+          owner: Landlord.first
+      )
 
       if @document.save
-        @document.document_accesses.new(
-           owner: @application.tenant
-        )
-        @document.document_accesses.new(
-            owner: Landlord.first
-        )
-
         @application.form_uploaded = true
         @application.save!
 

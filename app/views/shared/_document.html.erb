@@ -1,19 +1,21 @@
 <div data-controller="file" data-file-path="<%= url_for document %>" data-file-name="<%= document.name %>">
-  <%= link_to(document_path(document), class: 'btn btn-sm btn-primary', data: {action: 'file#download'}) do %>
-    <i class="fas fa-cloud-download-alt fa-fw"></i>
-  <% end %>
-  <%= link_to(document_path(document), data: {:confirm => 'Are you sure?'}, method: :delete,
-    class: 'btn btn-danger', alt: 'Delete') do %>
-    <i class="fas fa-trash fa-fw"></i>
-  <% end %>
-  <div class="modal" tabindex="-1" role="dialog" data-target="file.passphrase-modal">
-    <div class="modal-dialog" role="document">
+  <div class="btn-group btn-xs">
+    <%= link_to('#', class: 'btn btn-primary', data: {action: 'file#download'}) do %>
+      <i class="fas fa-cloud-download-alt fa-fw"></i>
+    <% end %>
+    <%= link_to(document_path(document), data: {:confirm => 'Are you sure?'}, method: :delete,
+                class: 'btn btn-warning', alt: 'Delete') do %>
+      <i class="fas fa-trash fa-fw"></i>
+    <% end %>
+  </div>
+  <div class="modal" role="dialog" data-target="file.passphrase-modal">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title"><i class="fas fa-lock fa-fw"></i> Encrypted Document</h5>
         </div>
         <div class="modal-body">
-          <p><strong>The document you are accessing is encrypted.</strong> Please enter your passphrase.</p>
+          <p class="text-left"><strong>The document you are accessing is encrypted.</strong> Please enter your passphrase.</p>
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text">Passphrase</span>
@@ -27,8 +29,8 @@
       </div>
     </div>
   </div>
-  <div class="modal" tabindex="-1" role="dialog" data-target="file.error-modal">
-    <div class="modal-dialog" role="document">
+  <div class="modal" role="dialog" data-target="file.error-modal">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title"><i class="fas fa-exclamation-circle fa-fw"></i> Unable to download document</h5>
@@ -37,7 +39,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>Sometime went wrong while we're trying to download the document. Please try again later</p>
+          <p class="text-left">Sometime went wrong while we're trying to download the document. Please try again later.</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

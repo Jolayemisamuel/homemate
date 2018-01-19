@@ -53,7 +53,7 @@ class Document < ApplicationRecord
   def file_encryptor
     file_delete if file_path.present?
 
-    self.file_type = File.extname(file)
+    self.file_type = File.extname(file.path)
     self.file_path = 'storage/' + SecureRandom.base58(10)
 
     Dir.mkdir(file_path)
@@ -64,7 +64,7 @@ class Document < ApplicationRecord
     if encrypted
       encryptor = ApplicationHelper::FileEncryptor.encrypt(content)
       self.iv = encryptor.fetch(:iv)
-      content = encryptor.fetch(:file)
+      content = encryptor.fetch(:encrypted)
 
       document_accesses.each do |access|
         access.secret = encryptor.fetch(:password)
