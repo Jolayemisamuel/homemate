@@ -67,7 +67,7 @@
       <h4 class="alert-heading">Processing Application</h4>
       <p class="mb-0">
         We're currently processing your tenancy application and will get in touch as soon as possible. At the mean time,
-        please complete your <%= link_to('right to rent check', new_tenant_check_path(@tenant)) %> and
+        please complete your <%= link_to('right to rent check', new_tenant_check_path(@application.tenant)) %> and
         <%= link_to('Direct Debit mandate', new_mandate_path) %>
       </p>
     </div>
@@ -78,9 +78,9 @@
     </div>
     <% end %>
     <% if @current_user.is_landlord? && @application.documents.present? %>
-    <div class="card w-100">
+    <div class="card w-100 mb-3">
       <div class="card-body">
-        <table class="table">
+        <table class="table mb-0">
           <thead class="thead-light">
           <tr>
             <th colspan="2">Documents</th>

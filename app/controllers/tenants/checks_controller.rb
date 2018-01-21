@@ -58,12 +58,6 @@ module Tenants
         )
         document.save!
 
-        if @tenant.current_application.present?
-          application = @tenant.current_application
-          application.check_completed = true
-          application.save!
-        end
-
         redirect_to tenant_path(@tenant)
       else
         render 'new'

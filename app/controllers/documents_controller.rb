@@ -19,14 +19,12 @@
 # along with HomeMate.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-require 'uri'
-
 class DocumentsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:viewer]
   before_action :require_landlord, only: [:new, :create, :destroy]
 
   def viewer
-    @document = URI.unescape(params[:document])
+    render 'viewer', layout: 'viewer'
   end
 
   def show
@@ -35,7 +33,10 @@ class DocumentsController < ApplicationController
 
     if @document.encrypted?
       unless params[:passphrase].present?
-        render status: 401, json: {authorised: false}
+        render status: 401, json: {
+            encrypted: true,
+            type: @document.file_mime_type
+        }
         return
       end
 

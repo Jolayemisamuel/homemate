@@ -27,6 +27,8 @@ class Mandate < ApplicationRecord
 
   default_scope {where(active: true)}
 
+  before_save :tenant_check_hook
+
   # Schedule a GoCardless payment for the future
   #
   # @param [Invoice] invoice the invoice instance
@@ -61,6 +63,14 @@ class Mandate < ApplicationRecord
   end
 
   private
+
+  def tenant_check_hook
+    application = tenant.current_application
+
+    if application.present?
+      application.mandate_completed = true
+    end
+  end
 
   def gocardless_client
     GoCardlessPro::Client.new(

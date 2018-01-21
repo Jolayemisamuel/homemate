@@ -13,7 +13,7 @@ gocardless:
   # GoCardless API token. See https://developer.gocardless.com/getting-started/api/making-your-first-request/
   token: token
   webhook_secret: <%= ENV['DATA.GOCARDLESS.SECRET'] %>
-  environment: sandbox
+  sandbox: false
 
 smtp:
   server: server.local

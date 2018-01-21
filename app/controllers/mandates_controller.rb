@@ -68,7 +68,7 @@ class MandatesController < ApplicationController
       redirect_back fallback_location: root_path
     end
 
-    client = self.gocardless_client
+    client = gocardless_client
 
     begin
       @flow = client.redirect_flows.complete(
@@ -81,9 +81,11 @@ class MandatesController < ApplicationController
       return render 'error'
     end
 
-    current_user.user_association.associable.mandates.create(
-      method: @flow.scheme,
-      reference: @flow.id,
+    associable = current_user.user_association.associable
+    mandate = client.mandates.get(@flow.links[:mandate])
+    associable.mandates.create(
+      method: mandate.scheme,
+      reference: mandate.id,
       active: true
     )
   end
@@ -93,7 +95,7 @@ class MandatesController < ApplicationController
   def gocardless_client
     GoCardlessPro::Client.new(
       access_token: Settings.gocardless.token,
-      environment: Settings.gocardless.env
+      environment: Settings.gocardless.sandbox ? :sandbox : ''
     )
   end
 end
