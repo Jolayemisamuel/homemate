@@ -7,7 +7,11 @@ export default class extends Controller {
 
         axios.get(parent.path, { responseType: 'blob' })
             .then(function (response) {
-                filesaver.saveAs(response.data, parent.name)
+                if (response.data.type === 'application/pdf') {
+                    window.open(encodeURI('/documents/viewer?file=/' + parent.path), '_blank', 'location=0,menubar=0,toolbar=0')
+                } else {
+                    filesaver.saveAs(response.data, parent.name)
+                }
             })
             .catch(function (error) {
                 if (error.response.status === 401) {
@@ -27,9 +31,14 @@ export default class extends Controller {
         const modal = parent.targets.find('passphrase-modal')
         $(modal).modal('hide')
 
-        axios.get(parent.path + '/' + this.passphrase, { responseType: 'blob' })
+        axios.get(parent.path + '/' + parent.passphrase, { responseType: 'blob' })
             .then(function (response) {
-                filesaver.saveAs(response.data, parent.name)
+                if (response.data.type === 'application/pdf') {
+                    window.open(encodeURI('/documents/viewer?file=' + parent.path + '/' + parent.passphrase), '_blank',
+                        'location=0,menubar=0,toolbar=0')
+                } else {
+                    filesaver.saveAs(response.data, parent.name)
+                }
             })
             .catch(function (error) {
                 const modal = parent.targets.find('error-modal')
