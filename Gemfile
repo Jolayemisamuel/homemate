@@ -19,8 +19,8 @@ gem 'hashid-rails', '~> 1.0'
 gem 'inky-rb', require: 'inky'
 gem 'premailer-rails'
 gem 'simple_form'
+gem 'mail_form'
 gem 'pdfkit'
-gem 'paperclip', '~> 5.1.0'
 gem 'gocardless_pro'
 
 group :production do
