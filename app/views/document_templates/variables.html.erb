@@ -1,0 +1,62 @@
+<% @title = 'Variables Available' %>
+
+<h2>Variables Available</h2>
+
+<p>The following variables are available for use in document templates.</p>
+
+<table class="table">
+  <thead class="bg-primary font-weight-bold">
+  <tr>
+    <td colspan="2">Tenant Primary Contact</td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td><code>&#123;&#123;HMTEM contact.first_name&#125;&#125;</code></td>
+    <td>First Name</td>
+  </tr>
+  <tr>
+    <td><code>&#123;&#123;HMTEM contact.last_name&#125;&#125;</code></td>
+    <td>First Name</td>
+  </tr>
+  <tr>
+    <td><code>&#123;&#123;HMTEM contact.name&#125;&#125;</code></td>
+    <td>Full Name</td>
+  </tr>
+  <tr>
+    <td><code>&#123;&#123;HMTEM contact.email&#125;&#125;</code></td>
+    <td>Email Address</td>
+  </tr>
+  <tr>
+    <td><code>&#123;&#123;HMTEM contact.phone&#125;&#125;</code></td>
+    <td>Phone Number</td>
+  </tr>
+  <tr>
+    <td><code>&#123;&#123;HMTEM contact.readable_address <abbr title="Optional: line separator">[,]</abbr>&#125;&#125;</code></td>
+    <td>Address <i>(with optional line separator)</i></td>
+  </tr>
+  </tbody>
+  <thead class="bg-primary font-weight-bold">
+  <tr>
+    <td colspan="2">Tenancy</td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td><code>&#123;&#123;HMTEM tenancy.rent&#125;&#125;</code></td>
+    <td>Rent Per Rent Period</td>
+  </tr>
+  <tr>
+    <td><code>&#123;&#123;HMTEM tenancy.rent_period&#125;&#125;</code></td>
+    <td>Rent Period</td>
+  </tr>
+  <tr>
+    <td><code>&#123;&#123;HMTEM tenancy.start_date&#125;&#125;</code></td>
+    <td>Start Date of Tenancy</td>
+  </tr>
+  <tr>
+    <td><code>&#123;&#123;HMTEM tenancy.end_date&#125;&#125;</code></td>
+    <td>End Date of Tenancy <i>(empty if open-ended)</i></td>
+  </tr>
+  </tbody>
+</table>

@@ -19,35 +19,9 @@
 # along with HomeMate.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-require 'active_support/core_ext/securerandom'
+class Email
+  include ActiveModel::Model
 
-class DocumentTemplate < ApplicationRecord
-  store :variables, coder: :json
-  attr_accessor :file_to_attach, :file
-
-  before_save :save_file
-  after_destroy :destroy_file
-
-  validates :name, presence: true
-
-  def file_stream
-    File::read(file_path)
-  end
-
-  private
-
-  def save_file
-    destroy_file if file_path.present?
-
-    self.file_type = File.extname(file)
-    self.file_path = 'storage/templates/' + SecureRandom.base58(10) + self.file_type
-
-    File.open(file_path, 'wb') do |f|
-      f.write(content)
-    end
-  end
-
-  def destroy_file
-    File.delete(file_path)
-  end
+  attr_accessor :contact_id, :contact, :subject, :message
+  validates_presence_of :contact, :subject, :message
 end

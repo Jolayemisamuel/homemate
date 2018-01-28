@@ -22,7 +22,7 @@
 module Tenants
   class ApplicationsController < ApplicationController
     before_action :authenticate_user!
-    before_action :require_landlord, only: [:create, :edit, :update]
+    before_action :require_landlord, only: [:create, :edit, :update, :complete]
 
     def show
       @current_user = current_user
@@ -60,6 +60,13 @@ module Tenants
       else
         render 'edit'
       end
+    end
+
+    def complete
+      @tenant_application = TenantApplication.find(params[:id])
+      @tenant_application.update(complete: true)
+
+      redirect_to new_email_path
     end
 
     private

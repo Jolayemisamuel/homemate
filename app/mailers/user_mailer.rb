@@ -23,6 +23,7 @@ class UserMailer < Devise::Mailer
   layout 'mailer'
   helper :application
   include Devise::Controllers::UrlHelpers
+
   default template_path: 'user_mailer'
   default from: 'no-reply@homemate.local'
 

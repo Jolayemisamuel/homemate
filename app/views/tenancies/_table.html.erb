@@ -1,0 +1,40 @@
+<table class="table">
+  <thead class="thead-light">
+  <tr>
+    <th>Property</th>
+    <th>Room</th>
+    <th>From</th>
+    <th>To</th>
+    <th>Status</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% if tenancies.each do |tenancy| %>
+    <tr>
+      <th><%= tenancy.property.name %></th>
+      <td><%= tenancy.belongs_to_room? ? tenancy.rentable.name : '' %></td>
+      <td><%= tenancy.start_date.to_s(:rfc822) %></td>
+      <td><%= tenancy.end_date.empty? ? 'Open-ended' : tenancy.end_date.to_s(:rfc822) %></td>
+      <td>
+        <% if tenancy.is_active? %>
+          <span class="badge badge-success">Active</span>
+        <% elsif tenancy.is_future? %>
+          <span class="badge badge-info">Future</span>
+        <% else %>
+          <span class="badge badge-secondary">Past</span>
+        <% end %>
+      </td>
+      <td>
+        <%= link_to(tenancy_path(tenancy), class: 'btn btn-sm btn-primary', alt: 'View') do %>
+          <i class="fas fa-search fa-fw"></i>
+        <% end %>
+      </td>
+    </tr>
+  <% end.empty? %>
+  <tr>
+    <td colspan="6" class="text-center">No tenancies are found on the system.</td>
+  </tr>
+  <% end %>
+  </tbody>
+</table>

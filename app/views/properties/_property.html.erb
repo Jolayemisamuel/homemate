@@ -1,0 +1,73 @@
+<tr>
+  <th scope="row">
+    <% if property.rooms.present? %>
+      <a href="#property-<%= property.id %>-rooms" data-toggle="collapse" aria-expanded="false">
+        <i title="Expand" class="fas fa-plus-circle"></i>
+      </a>
+    <% end %>
+  </th>
+  <td>
+    <%= property.name %><br />
+    <small class="text-muted"><%= property.address %> <%= property.postcode %></small>
+  </td>
+  <td>
+    <% if !property.rooms.present? && property.tenancies.active.present? %>
+      <%= property.tenancies.active.tenant.name %>
+    <% elsif !property.rooms.present? && property.tenancies.future.present? %>
+      <%= property.tenancies.future.tenant.name %> <small>(future)</small>
+    <% elsif !property.rooms.present? %>
+      Unoccupied - <%= link_to('Add tenancy', new_property_tenancy_path(property)) %>
+    <% end %>
+  </td>
+  <td class="text-right">
+    <div class="btn-group btn-group-sm" role="group">
+      <%= link_to(property_path(property), class: 'btn btn-info', alt: 'View details') do %>
+        <i class="fas fa-search fa-fw"></i>
+      <% end %>
+      <% unless property.tenancies.active.present? || property.tenancies.future.present? %>
+        <%= link_to(new_property_room_path(property), class: 'btn btn-primary', alt: 'Add Room') do %>
+          <i class="fas fa-plus fa-fw"></i>
+        <% end %>
+      <% end %>
+      <%= link_to(edit_property_path(property), class: 'btn btn-warning', alt: 'Edit') do %>
+        <i class="fas fa-edit fa-fw"></i>
+      <% end %>
+      <%= link_to(property_path(property), data: {:confirm => 'Are you sure?'}, method: :delete,
+                  class: 'btn btn-danger', alt: 'Delete') do %>
+        <i class="fas fa-trash fa-fw"></i>
+      <% end %>
+    </div>
+  </td>
+</tr>
+<% if property.rooms.present? %>
+  <tbody class="collapse bg-white" id="property-<%= property.id %>-rooms" data-parent="#properties">
+  <% property.rooms.each do |room| %>
+    <tr>
+      <th scope="row"></th>
+      <td><%= room.name %></td>
+      <td>
+        <% if room.tenancies.active.present? %>
+          <%= room.tenancies.active.tenant.name %>
+        <% elsif room.tenancies.future.present? %>
+          <%= room.tenancies.future.tenant.name %> <small>(future)</small>
+        <% elsif room.occupied_override? %>
+          Occupied
+        <% else %>
+          Unoccupied - <%= link_to('Add tenancy', new_room_tenancy_path(room)) %>
+        <% end %>
+      </td>
+      <td class="text-right">
+        <div class="btn-group btn-group-sm" role="group">
+          <%= link_to(edit_room_path(room), class: 'btn btn-warning', alt: 'Edit') do %>
+            <i class="fas fa-edit fa-fw"></i>
+          <% end %>
+          <%= link_to(room_path(room), data: {:confirm => 'Are you sure?'}, method: :delete,
+                      class: 'btn btn-danger', alt: 'Delete') do %>
+            <i class="fas fa-trash fa-fw"></i>
+          <% end %>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+<% end %>

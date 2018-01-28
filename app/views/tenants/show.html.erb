@@ -5,7 +5,7 @@
 
 <div class="card w-100 mb-3">
   <h4 class="card-header">Tenancy Applications</h4>
-  <div class="card-content">
+  <div class="card-content pb-0">
     <table class="table">
       <thead class="thead-light">
       <tr>
@@ -63,89 +63,23 @@
   </div>
 </div>
 
-<% if !@tenant.current_application.present? && @tenant.tenant_checks.empty? %>
-  <div class="alert alert-danger">
-    <strong>Tenant check required</strong>: please ensure that one is carried out prior to any tenancies.
-    You can record a completed check <%= link_to('here', new_tenant_check_path(@tenant)) %>.
+<div class="card w-100 mb-3">
+  <h4 class="card-header">Tenant Check</h4>
+  <div class="card-content pb-0">
+    <%= render 'tenants/checks/table', checks: @tenant.tenant_checks %>
   </div>
-<% else %>
-  <div class="card w-100 mb-3">
-    <h4 class="card-header">Tenant Check</h4>
-    <div class="card-content">
-      <table class="table">
-        <thead class="thead-light">
-        <tr>
-          <th>Date</th>
-          <th>Document Type</th>
-          <th>Expires</th>
-          <th>View</th>
-        </tr>
-        </thead>
-        <tbody class="bg-white">
-          <% @tenant.tenant_checks.unscoped.each do |check| %>
-          <tr>
-            <th><%= check.created_at.to_s(:rfc822) %></th>
-            <td><%= check.document_type %></td>
-            <td><%= check.expires.present? ? check.expires.to_s(:rfc822) : '<i>Indefinite</i>'.html_safe %></td>
-            <td>
-              <%= link_to(tenant_check_path(check), class: 'btn btm-sm btn-info', alt: 'View') do %>
-                <i class="fas fa-search fa-fw"></i>
-              <% end %>
-            </td>
-          </tr>
-          <% end %>
-        </tbody>
-        <tfoot>
-        <tr>
-          <td colspan="4" class="text-right">
-            <%= link_to('Add Tenant Check', new_tenant_check_path(@tenant), class: 'btn btn-primary') %>
-          </td>
-        </tr>
-        </tfoot>
-      </table>
-    </div>
-  </div>
-<% end %>
+</div>
 
-<% unless @tenant.mandates.empty? %>
-  <div class="card mb-3">
-    <h4 class="card-header">Billing Mandate</h4>
-    <div class="card-content">
-      <table class="table">
-        <thead class="thead-light">
-        <tr>
-          <th>#</th>
-          <th>Type</th>
-          <th>Status</th>
-          <th>Last Payment</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @tenant.mandates.unscoped.each do |m| %>
-          <tr>
-            <th><%= m.reference %></th>
-            <td><%= m.method %></td>
-            <td>
-              <% if m.active? %>
-              <span class="badge badge-success">Active</span>
-              <% elsif m.cancelled? %>
-              <span class="badge badge-danger">Cancelled</span>
-              <% else %>
-              <span class="badge badge-secondary">Pending</span>
-              <% end %>
-            </td>
-            <td><%= m.last_success.nil? ? '' : m.last_success.to_s(:rfc822) %></td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
-    </div>
+<div class="card mb-3">
+  <h4 class="card-header">Billing Mandate</h4>
+  <div class="card-content">
+    <%= render 'mandates/table', mandates: @tenant.mandates %>
   </div>
-<% end %>
+</div>
 
 <div class="card w-100 mb-3">
   <h4 class="card-header">Contacts</h4>
-  <div class="card-content">
+  <div class="card-content pb-0">
     <table class="table">
       <thead class="thead-light">
       <tr>
@@ -187,9 +121,11 @@
             <%= link_to(edit_tenant_user_path(@tenant, c.user), class: 'btn btn-warning', alt: 'Edit') do %>
               <i class="fas fa-edit fa-fw"></i>
             <% end %>
+            <% unless c.primary? %>
             <%= link_to(tenant_user_path(@tenant, c.user), data: {:confirm => 'Are you sure?'}, method: :delete,
               class: 'btn btn-danger', alt: 'Delete') do %>
               <i class="fas fa-trash fa-fw"></i>
+            <% end %>
             <% end %>
             <% else %>
             <%= link_to(edit_tenant_contact_path(@tenant, c), class: 'btn btn-warning', alt: 'Edit') do %>
@@ -221,42 +157,7 @@
 
 <div class="card w-100 mb-3">
   <h4 class="card-header">Tenancies</h4>
-  <div class="card-content">
-    <table class="table">
-      <thead class="thead-light">
-      <tr>
-        <th>Property</th>
-        <th>Room</th>
-        <th>From</th>
-        <th>To</th>
-        <th>Status</th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @tenant.tenancies.order(start_date: :asc).each do |tenancy| %>
-      <tr>
-        <th><%= tenancy.property.name %></th>
-        <td><%= tenancy.belongs_to_room? ? tenancy.rentable.name : '' %></td>
-        <td><%= tenancy.start_date.to_s(:rfc822) %></td>
-        <td><%= tenancy.end_date.empty? ? 'Open-ended' : tenancy.end_date.to_s(:rfc822) %></td>
-        <td>
-          <% if tenancy.is_active? %>
-          <span class="badge badge-success">Active</span>
-          <% elsif tenancy.is_future? %>
-          <span class="badge badge-info">Future</span>
-          <% else %>
-          <span class="badge badge-secondary">Past</span>
-          <% end %>
-        </td>
-        <td>
-          <%= link_to(tenancy_path(tenancy), class: 'btn btn-sm btn-primary', alt: 'View') do %>
-            <i class="fas fa-search fa-fw"></i>
-          <% end %>
-        </td>
-      </tr>
-      <% end %>
-      </tbody>
-    </table>
+  <div class="card-content pb-0">
+    <%= render 'tenancies/table', tenancies: @tenant.tenancies.order(start_date: :asc) %>
   </div>
 </div>

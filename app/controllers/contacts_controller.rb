@@ -25,7 +25,21 @@ class ContactsController < ApplicationController
 
   def index
     @current_user = current_user
-    @contacts = current_user.user_association.associable.contacts
+    @contacts     = current_user.user_association.associable.contacts
+  end
+
+  def search
+    if current_user.is_landlord?
+      results = Contact.where.not(email: nil).all
+    elsif current_user.is_tenant?
+      landlord = Landlord.first
+      results  = landlord.contacts.where.not(email: nil)
+    else
+      render status: 403
+    end
+
+    results = results.search(params[:q]) if params[:q].present?
+    render json: paginate(results.order(:id), 15)
   end
 
   def new
@@ -60,5 +74,23 @@ class ContactsController < ApplicationController
 
   def contact_params
     params.require(:contact).permit(:title, :first_name, :last_name, :role, :email, :phone, :address)
+  end
+
+  def paginate(scope, default_per_page = 15)
+    collection = scope.page(params[:page]).per((params[:per_page] || default_per_page).to_i)
+
+    current, total, per_page = collection.current_page, collection.total_pages, collection.limit_value
+
+    {
+        pagination: {
+            current:  current,
+            previous: (current > 1 ? (current - 1) : nil),
+            next:     (current == total ? nil : (current + 1)),
+            per_page: per_page,
+            pages:    total,
+            count:    collection.total_count
+        },
+        results:    collection
+    }
   end
 end

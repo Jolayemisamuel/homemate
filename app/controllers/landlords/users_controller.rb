@@ -27,6 +27,7 @@ module Landlords
     def edit
       landlord = Landlord.find(params[:landlord_id])
       @user = landlord.users.find(params[:id])
+      render 'users/edit', associable: landlord
     end
 
     def update

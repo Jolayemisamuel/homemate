@@ -16,7 +16,6 @@ $(document).ready(function() {
             mutation.addedNodes.forEach(function () {
                 fontawesome.dom.i2svg(this)
             })
-
         }
     }
 })

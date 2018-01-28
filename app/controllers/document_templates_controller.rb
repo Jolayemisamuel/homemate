@@ -29,4 +29,21 @@ class DocumentTemplatesController < ApplicationController
   def show
     @template = DocumentTemplate.find(params[:id])
   end
+
+  def new
+    @template = DocumentTemplate.new
+  end
+
+  def create
+    @template = DocumentTemplate.new
+  end
+
+  def variables
+  end
+
+  private
+
+  def template_params
+    params.require(:template).permit([:document_to_attach, :variables])
+  end
 end

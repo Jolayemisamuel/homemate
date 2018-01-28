@@ -1,0 +1,32 @@
+<table class="table">
+  <thead class="thead-light">
+  <tr>
+    <th>#</th>
+    <th>Type</th>
+    <th>Status</th>
+    <th>Last Payment</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% if mandates.unscoped.each do |m| %>
+    <tr>
+      <th><%= m.reference %></th>
+      <td><%= m.method %></td>
+      <td>
+        <% if m.active? %>
+          <span class="badge badge-success">Active</span>
+        <% elsif m.cancelled? %>
+          <span class="badge badge-danger">Cancelled</span>
+        <% else %>
+          <span class="badge badge-secondary">Pending</span>
+        <% end %>
+      </td>
+      <td><%= m.last_success.nil? ? '' : m.last_success.to_s(:rfc822) %></td>
+    </tr>
+  <% end.empty? %>
+  <tr>
+    <td colspan="4" class="text-center">There are no mandates recorded on the system.</td>
+  </tr>
+  <% end %>
+  </tbody>
+</table>

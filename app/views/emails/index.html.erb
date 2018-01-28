@@ -1,0 +1,59 @@
+<% @title = 'Messages' %>
+
+<ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link<%= tab == 'inbox' ? ' active bg-white' : '' %>" href="<%= emails_path %>" role="tab">
+      Inbox
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link<%= tab == 'sent' ? ' active bg-white' : '' %>" href="<%= emails_sent_path %>" role="tab">
+      Sent
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link<%= tab == 'trash' ? ' active bg-white' : '' %>" href="<%= emails_trash_path %>" role="tab">
+      Deleted
+    </a>
+  </li>
+</ul>
+<div class="tab-content bg-white px-3 pt-2">
+  <div class="tab-pane fade show active" role="tabpanel">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th class="border-top-0" scope="col">Subject</th>
+        <th class="border-top-0" scope="col">Last Updated</th>
+        <th class="border-top-0" scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% if @messages.each do |c| %>
+      <tr>
+        <th><%= c.subject %></th>
+        <td><%= l c.updated_at %></td>
+        <td class="text-right">
+          <%= link_to(email_path(c.id), class: 'btn btn-sm btn-primary', alt: 'View') do %>
+            <i class="fas fa-search fa-fw"></i>
+          <% end %>
+        </td>
+      </tr>
+      <% end.empty? %>
+      <tr>
+        <td colspan="3" class="text-center">You have no messages.</td>
+      </tr>
+      <% end %>
+      </tbody>
+      <tfoot>
+      <tr>
+        <td colspan="3">
+          <div class="w-100 d-flex justify-content-md-between">
+            <div class="text-left"><%= link_to('New Message', new_email_path, class: 'btn btn-primary') %></div>
+            <div class="text-right"><%= paginate @messages %></div>
+          </div>
+        </td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

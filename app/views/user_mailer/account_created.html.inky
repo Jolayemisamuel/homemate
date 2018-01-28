@@ -3,8 +3,10 @@
 </row>
 <row>
     <columns>
-        <p>Dear <%= @user.contact.first_name %>,</p>
-        <p>An account has been created for you at HomeMate.</p>
+        <p>Hi <%= @user.contact.first_name %>,</p>
+        <p>We heard that you are looking for a new home? Look no further: an account has been created for you at
+        HomeMate.</p>
+        <p>With your account, you can track the status of any tenancy application and any tenancies!</p>
     </columns>
 </row>
 <row>
@@ -17,7 +19,8 @@
 </row>
 <row>
     <columns>
-        <p>For the security of your account, please login and change your password as soon as possible.</p>
+        <p>We care about the security of your account so generated a random password for you for the moment. When you
+        have a moment, login and change it to something memoriable.</p>
         <center><button href="<%= root_url %>" class="small-expanded">Login</button></center>
     </columns>
 </row>

@@ -27,6 +27,7 @@ module Tenants
     def edit
       tenant = Tenant.find(params[:tenant_id])
       @user = tenant.users.find(params[:id])
+      render 'users/edit', associable: tenant
     end
 
     def update

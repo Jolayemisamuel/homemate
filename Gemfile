@@ -16,10 +16,16 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'config'
 gem 'devise', '~> 4.4.0'
 gem 'hashid-rails', '~> 1.0'
+gem 'search_cop'
+
 gem 'inky-rb', require: 'inky'
 gem 'premailer-rails'
+
 gem 'simple_form'
-gem 'mail_form'
+gem 'mailboxer'
+
+gem 'kaminari'
+
 gem 'pdfkit'
 gem 'gocardless_pro'
 

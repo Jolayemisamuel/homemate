@@ -1,0 +1,17 @@
+<row>
+  <columns><center><h2><%= @notification.subject.html_safe? ? @notification.subject : strip_tags(@notification.subject) %></h2></center></columns>
+</row>
+<row>
+  <columns><p>A new notification has been sent to you:</p></columns>
+</row>
+<row>
+  <columns>
+    <blockquote>
+      <p><%= raw @message.body %></p>
+    </blockquote>
+  </columns>
+</row>
+<hr />
+<row>
+  <columns><small>To view more details, go to <%= link_to 'the HomeMate portal', root_url %>.</small></columns>
+</row>

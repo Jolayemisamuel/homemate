@@ -20,8 +20,15 @@
 ##
 
 class Contact < ApplicationRecord
+  acts_as_messageable
+  include SearchCop
+
   belongs_to :contactable, polymorphic: true
   has_one :user, required: false
+
+  search_scope :search do
+    attributes :first_name, :last_name, :email
+  end
 
   validates :title, presence: true
   validates :first_name, presence: true
@@ -36,6 +43,10 @@ class Contact < ApplicationRecord
 
   def name
     first_name + ' ' + last_name
+  end
+
+  def messaging_email(messageable)
+    email
   end
 
   def readable_address(separator)

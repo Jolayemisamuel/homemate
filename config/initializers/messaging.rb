@@ -10,7 +10,7 @@ Mailboxer.setup do |config|
   config.notification_mailer = NotificationMailer
 
   #Configures the methods needed by mailboxer
-  config.email_method = :mailboxer_email
+  config.email_method = :messaging_email
   config.name_method = :name
   config.notify_method = :notify
 

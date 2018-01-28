@@ -1,43 +1,4 @@
 <% @title = 'Invoices' %>
 
 <h2>Invoices</h2>
-
-<table class="table">
-  <thead class="thead-light">
-  <tr>
-    <th>Date</th>
-    <th>Balance</th>
-    <th>Paid</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody class="bg-white">
-  <% @invoices.each do |i| %>
-  <tr>
-    <th><%= i.issued_on.to_s(:rfc822) %></th>
-    <td>
-      <% if i.balance_in_credit? %><i>(<%= i.readable_balance %>)</i><% else %><%= i.readable_balance %><% end %>
-    </td>
-    <td>
-      <% if i.paid %>
-      <span class="text-success">Paid</span>
-      <% else %>
-      <span class="text-danger">Due on <%= i.due_on.to_s(:rfc822) %></span>
-      <% end %>
-    </td>
-    <td>
-      <%= link_to(invoice_path(i), class: 'btn btn-primary btn-sm', alt: 'View details') do %>
-        <i class="fas fa-search fa-fw"></i>
-      <% end %>
-    </td>
-  </tr>
-  <% end %>
-  </tbody>
-  <tfoot>
-  <tr>
-    <td colspan="4" class="text-right">
-      <%= link_to('Back', transactions_path, class: 'btn btn-secondary') %>
-    </td>
-  </tr>
-  </tfoot>
-</table>
+<%= render 'table', invoices: @invoices %>

@@ -1,6 +1,6 @@
 <% @title = 'Tenancy Application' %>
 
-<h2>Tenancy Application</h2>
+<h2>Tenancy Application<%= current_user.is_landlord? ? ' for ' + @application.tenant.name : '' %></h2>
 
 <div class="row mb-3">
   <div class="col-12 col-md-4">
@@ -77,7 +77,8 @@
       <p class="mb-0">You should have been informed of the outcome of the application. Please get in touch if it is not the case.</p>
     </div>
     <% end %>
-    <% if @current_user.is_landlord? && @application.documents.present? %>
+    <% if @current_user.is_landlord? %>
+    <% if @application.documents.present? %>
     <div class="card w-100 mb-3">
       <div class="card-body">
         <table class="table mb-0">
@@ -97,6 +98,8 @@
         </table>
       </div>
     </div>
+    <% end %>
+    <%= link_to('Send Application Outcome', complete_application_path, method: :post, class: 'btn btn-primary') %>
     <% end %>
     <%= link_to('Back', _back_url, class: 'btn btn-secondary') %>
   </div>

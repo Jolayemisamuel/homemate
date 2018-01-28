@@ -26,6 +26,7 @@ module Tenants
     def edit
       tenant = Tenant.find(params[:tenant_id])
       @contact = tenant.contacts.find(params[:id])
+      render 'contacts/edit', associable: tenant
     end
 
     def update
@@ -42,7 +43,6 @@ module Tenants
     def new
       tenant = Tenant.find(params[:tenant_id])
       @contact = tenant.contacts.new
-
       render 'contacts/new', associable: tenant
     end
 

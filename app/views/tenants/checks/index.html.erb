@@ -17,9 +17,7 @@
     <th><%= check.created_at.to_formatted_s(:rfc822) %></th>
     <td><%= check.document_type %></td>
     <td>
-      <%= link_to(view_document_path(check.document), class: 'btn btn-info btn-small', alt: 'View') do %>
-        <i class="fas fa-cloud-download-alt"></i>&nbsp;&nbsp;View
-      <% end %>
+      <%= render 'shared/document', document: check.document %>
     </td>
     <td>
       <% if check.active %>

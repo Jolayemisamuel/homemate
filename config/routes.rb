@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   root 'pages#home'
 
   resources :applications, controller: 'tenants/applications' do
+    post :complete, on: :member
     resources :documents, controller: 'tenants/application_documents', only: [:new, :create]
   end
 
@@ -37,6 +38,8 @@ Rails.application.routes.draw do
     post 'webhook', to: 'billing#webhook'
   end
 
+  get 'contacts', to: 'contacts#search', as: :contacts_search
+
   resources :documents, only: [:new, :create, :destroy]
 
   scope 'documents' do
@@ -44,6 +47,10 @@ Rails.application.routes.draw do
     get ':id(/:passphrase)', to: 'documents#show'
     resources :templates, controller: :document_templates
   end
+
+  get 'emails/sent', to: 'emails#sent'
+  get 'emails/trash', to: 'emails#trash'
+  resources :emails
 
   resources :landlords, except: [:index, :destroy] do
     scope module: :landlords do

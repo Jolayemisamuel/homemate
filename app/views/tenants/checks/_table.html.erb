@@ -1,0 +1,39 @@
+<table class="table">
+  <thead class="thead-light">
+  <tr>
+    <th>Date</th>
+    <th>Document Type</th>
+    <th>Expires</th>
+    <th>View</th>
+  </tr>
+  </thead>
+  <tbody class="bg-white">
+  <% if checks.unscoped.each do |check| %>
+    <tr>
+      <th><%= check.created_at.to_s(:rfc822) %></th>
+      <td><%= check.document_type %></td>
+      <td><%= check.expires.present? ? check.expires.to_s(:rfc822) : '<i>Indefinite</i>'.html_safe %></td>
+      <td>
+        <%= link_to(tenant_check_path(check), class: 'btn btm-sm btn-info', alt: 'View') do %>
+          <i class="fas fa-search fa-fw"></i>
+        <% end %>
+      </td>
+    </tr>
+  <% end.empty? %>
+  <tr>
+    <td colspan="4" class="text-center">
+      <span class="text-danger font-weight-bold">No teannt check has yet been recorded: please ensure that one is
+      carried out prior to any tenancies.</span><br />
+      You can record a completed check <%= link_to('here', new_tenant_check_path(@tenant)) %>.
+    </td>
+  </tr>
+  <% end %>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td colspan="4" class="text-right">
+      <%= link_to('Add Tenant Check', new_tenant_check_path(@tenant), class: 'btn btn-primary') %>
+    </td>
+  </tr>
+  </tfoot>
+</table>

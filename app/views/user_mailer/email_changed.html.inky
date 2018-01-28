@@ -3,8 +3,12 @@
 </row>
 <row>
   <columns>
-    <p>Dear <%= @resource.contact.first_name %>,</p>
-    <p>This is to let you know that the email of your account has been changed to <%= @resource.email %>.</p>
-    <p>Please urgently get in touch if you didn't initiate this.</p>
+    <p>Hi <%= @resource.contact.first_name %>,</p>
+    <p>We're just writing to confirm that your email has been successfully changed to <%= @resource.email %>. You can
+    login to your account here:</p>
+    <center><button href="<%= root_url %>" class="small-expanded">Login</button></center>
+    <p>Is that it? Yes it is! Any new messages will simply to sent to your new email address.</p>
+    <p>We care about the security of your data. If it wasn't you please get in touch so we can help you regain
+    access to your account.</p>
   </columns>
 </row>

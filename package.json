@@ -2,7 +2,6 @@
   "name": "homemate",
   "private": true,
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^1.0.0-alpha.2",
     "@fortawesome/fontawesome": "1.x",
     "@fortawesome/fontawesome-free-brands": "5.x",
     "@fortawesome/fontawesome-free-regular": "5.x",
@@ -16,7 +15,9 @@
     "jquery-ujs": "1.x",
     "pdfjs-dist": "2.x",
     "popper.js": "1.x",
+    "select2": "^4.0.6-rc.1",
     "stimulus": "0.x",
+    "trix": "0.x",
     "turbolinks": "5.x"
   },
   "devDependencies": {

@@ -1,0 +1,16 @@
+<row>
+  <columns><center><h2>New Message</h2></center></columns>
+</row>
+<row>
+  <columns><p>You've got a new message!</p></columns>
+</row>
+<callout>
+  <row>
+    <columns>
+      <%= raw @message.body %>
+    </columns>
+  </row>
+</callout>
+<row>
+  <columns><center><button href="<%= emails_url %>" class="small-expanded">Reply</button></center></columns>
+</row>

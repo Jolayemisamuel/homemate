@@ -10,7 +10,7 @@
   </tr>
   </thead>
   <tbody class="bg-white">
-  <% @tenants.each do |tenant| %>
+  <% if @tenants.each do |tenant| %>
   <tr>
     <th><%= tenant.name %></th>
     <td>
@@ -35,6 +35,10 @@
         <% end %>
       </div>
     </td>
+  </tr>
+  <% end.empty? %>
+  <tr>
+    <td colspan="3" class="text-center">There are no tenants on the system.</td>
   </tr>
   <% end %>
   </tbody>

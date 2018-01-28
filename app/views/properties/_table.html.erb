@@ -1,0 +1,26 @@
+<table class="table table-responsive-md" id="properties">
+  <thead class="thead-light">
+  <tr>
+    <th></th>
+    <th>Property</th>
+    <th>Tenant</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody class="bg-white">
+  <% if properties.each do |p| %>
+    <%= render 'properties/property', property: p %>
+  <% end.empty? %>
+    <tr>
+      <td colspan="4" class="text-center">There are no properties on the system.</td>
+    </tr>
+  <% end %>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td colspan="4" class="text-right">
+      <%= link_to('Add property', new_property_path, class: 'btn btn-primary') %>
+    </td>
+  </tr>
+  </tfoot>
+  </table>

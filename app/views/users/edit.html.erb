@@ -3,7 +3,7 @@
 <h2>Update Account</h2>
 
 <%= simple_form_for(@user, url: url_for([@associable, @user]), wrapper: :horizontal_form) do |f| %>
-  <%= f.simple_fields_for(@contact, wrapper: :horizontal_form) do |contact| %>
+  <%= f.simple_fields_for(@user.contact, wrapper: :horizontal_form) do |contact| %>
     <%= contact.input :title, label: "Title" %>
     <%= contact.input :first_name, label: "First Name" %>
     <%= contact.input :last_name, label: "Last Name" %>

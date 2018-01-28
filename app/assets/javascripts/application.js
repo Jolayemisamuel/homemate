@@ -6,28 +6,30 @@ import 'bootstrap'
 
 import { Application } from 'stimulus'
 import { autoload } from 'stimulus/webpack-helpers'
+import Turbolinks from 'turbolinks'
 
 import fontawesome from '@fortawesome/fontawesome'
 import '@fortawesome/fontawesome-free-solid'
 import '@fortawesome/fontawesome-free-regular'
 import '@fortawesome/fontawesome-free-brands'
 
-import Turbolinks from 'turbolinks'
-
-window.$ = $
+import 'trix'
+import 'select2/dist/js/select2'
 
 const application = Application.start()
 const controllers = require.context('../controllers', true, /\.js$/)
 
 autoload(controllers, application)
 Turbolinks.start()
-$(document).ready(function() {
-    const callback = function(mutationsList) {
+
+window.$ = $
+
+$(document).ready(function () {
+    const callback = function (mutationsList) {
         for (let mutation of mutationsList) {
-            mutation.addedNodes.forEach(function() {
+            mutation.addedNodes.forEach(function () {
                 fontawesome.dom.i2svg(this)
             })
-
         }
     }
 
